@@ -1,0 +1,18 @@
+@import 'base/variables';
+@import 'base/mixins';
+@import 'layout/nav';
+.chat-container {
+  display: flex;
+  flex-direction: row;
+
+  max-width: 1100px; //$chat-container-width;
+  max-height: calc(100vh - 100px); // 10px + header + 10px
+  min-height: 500px;
+  margin: 5px auto;
+
+  // @include mq-small {
+  //   flex-direction: column;
+
+  //   margin: 5px;
+  // }
+}

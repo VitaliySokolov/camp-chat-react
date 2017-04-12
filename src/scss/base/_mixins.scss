@@ -1,0 +1,20 @@
+@mixin userImage($size: 50px) {
+  width: $user-img-size;
+  height: $user-img-size;
+  margin: 5px;
+
+  border-radius: 50%;
+  background-color: $user-img-bg-color;
+}
+
+@mixin mq-small {
+  @media (max-width: $screen-small - 1px) {
+    @content;
+  }
+}
+
+@mixin mq-medium {
+  @media (min-width: $screen-small) and (max-width: $screen-medium - 1px) {
+    @content;
+  }
+}

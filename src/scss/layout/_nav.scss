@@ -1,0 +1,65 @@
+$nav-height: 50px;
+
+.nav-main {
+  background-color: darken($primary-light, 3%);
+  display: flex;
+  height: $nav-height;
+  padding-left: 10vw;
+  position: relative;
+
+  align-items: center;
+
+  @include mq-medium {
+    padding-left: 0;
+  }
+
+  a {
+    color: $primary-dark;
+    padding: 5px;
+    text-decoration: none;
+    &:first-of-type {
+      margin-left: 10px;
+    }
+    &:not(:last-of-type) {
+      border-right: 1px solid $secondary-light;
+    }
+    &.active {
+      border-bottom: 1px solid $secondary-light;
+    }
+  }
+}
+
+.auth-info {
+  // display: flex;
+  padding-right: 10vw;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  line-height: $nav-height;
+  @include mq-medium {
+    padding-right: 0;
+  }
+  .user-image {
+      @include userImage();
+      //width: calc(100% - 10px);
+      width: initial;
+      height: calc(100% - 10px);
+      vertical-align: top;
+  }
+  .user-name {
+    padding: 0 10px;
+  }
+  button {
+    padding: 0 10px;
+    display: inline-block;
+    height: 100%;
+    background-color: $primary-mid;
+    border: none;
+    color: $secondary-light;
+    &:hover {
+      background-color: $primary-dark;
+      color: $secondary-mid;
+    }
+  }
+}

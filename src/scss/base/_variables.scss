@@ -1,0 +1,38 @@
+// color pallete
+$primary-light: #d7d8f1;
+$primary-mid: #989ad7;
+$primary-dark: #3b3e99;
+$secondary-light: #fff;
+$secondary-mid: #f23f79;
+$secondary-dark: #ed145b;
+
+// colors
+$main-bg-color: $primary-light;
+$user-list-bg-color: $primary-dark;
+$message-list-bg-color: $secondary-light;
+$message-item-color: #f1f1fb;
+$self-message-item-color: $primary-mid;
+$user-img-bg-color: #ccc;
+$self-user-color: $secondary-mid;
+$self-user-bg-color: $secondary-light;
+
+// sizes
+$chat-container-width: 1100px;
+$user-img-size: 50px;
+$user-list-max-width: 400px; // 60px/400px
+$user-list-hide-max-width: 75px;
+$user-list-text-max-width: 300px;
+$container-max-height: calc(100vh - 40px); //80vh;
+$container-min-width: 300px;
+
+// fonts
+$body-font: serif;
+$body-font-size: 17px;
+
+// form vars
+$form-link-color: $primary-dark;
+
+// screens
+$screen-small: 480px;
+$screen-medium: 768px;
+$screen-large: 1000px;
