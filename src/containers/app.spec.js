@@ -2,14 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 
-import { App } from './app';
+import App from './app';
 import {
   Header,
   Navbar,
   Sidebar,
   Main,
   Footer
-} from './layout';
+} from '../components/layout';
 
 describe('App component', () => {
   it('renders w/o crashing', () => {
