@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
-class UserList extends Component {
-
+class RoomList extends Component {
   render() {
     return (
       <div>
@@ -11,4 +10,4 @@ class UserList extends Component {
   }
 }
 
-export default UserList;
+export default RoomList;

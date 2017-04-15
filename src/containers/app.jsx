@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+
 // import {
 //   Header,
 //   Navbar,
@@ -9,27 +10,70 @@ import { connect } from 'react-redux';
 //   Footer
 // } from '../components/layout';
 import { Authbar } from '../components/auth';
-import ChatList from '../components/chats/chat-list';
+
+import RoomList from '../components/rooms/room-list';
+import RoomItem from '../components/rooms/room-item';
 import MessageList from '../components/messages/message-list';
+import MessageItem from '../components/messages/message-item';
 import UserList from '../components/users/user-list';
+import UserItem from '../components/users/user-item';
+
 import * as chatActions from '../actions/chatActioins';
 
 class App extends Component {
 
+  componentDidMount() {
+    // console.log('in cdm');
+    this.props.chatActions.getRoomList();
+  }
+
+  getRooms() {
+    const {rooms } = this.props;
+    const { toggleChatRoom } = this.props.chatActions;
+    return (rooms) ?
+      rooms.map(room => (
+        <RoomItem
+          key={room.id}
+          room={room}
+          toggleChatRoom={toggleChatRoom} />
+      )) : null
+  }
+
+  getMessages() {
+    const {messages, users} = this.props;
+    const getAuthor = (message) => users.find(user => user.id === message.authorId);
+    return (messages) ?
+      messages.map(message => (
+        <MessageItem key={message.id} message={message} user={getAuthor(message)} />
+      )) : null
+  }
+
+  getUsers() {
+    const {users} = this.props;
+    return (users) ?
+      users.map(user => (
+        <UserItem key={user.id} user={user} />
+      )) : null
+  }
+
   render() {
-    const { chat, chats, users, messages } = this.props;
-    const { switchChat } = this.props.chatActions;
     return (
       <div className="App">
-        <header>
-          {/*<Authbar/>*/}
+        <header className="header">
+          <Authbar/>
         </header>
-        <aside>
-          <ChatList chats={chats} switchChat={switchChat}/>
-          {/*<UserList users={users}/>*/}
+        <aside className="sidebar">
+          <RoomList>
+            {this.getRooms()}
+          </RoomList>
+          <UserList>
+            {this.getUsers()}
+          </UserList>
         </aside>
         <main>
-          <MessageList chat={chat} messages={messages}/>
+          <MessageList>
+            {this.getMessages()}
+          </MessageList>
         </main>
       </div>
     );
@@ -38,10 +82,10 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    chats: state.chats,
+    rooms: state.rooms,
     users: state.users,
     messages: state.messages,
-    chat: state.chat
+    roomId: state.roomId
   };
 }
 
@@ -54,4 +98,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-  )(App);
+)(App);

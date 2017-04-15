@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 
 class MessageItem extends Component {
   render() {
-    const { user, text } = this.props.message
+    const { user, message } = this.props;
+    const { authorId, text } = message;
     return (
       <div>
-        {user.name}: {text}
+        {user.name}(id: {authorId}):  {text}
       </div>
     );
   }
