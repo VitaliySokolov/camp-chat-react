@@ -8,7 +8,8 @@ import { createLogger } from 'redux-logger';
 import rootReducer from './reducers';
 import App from './containers/app';
 import './index.css';
-// import { getAllRooms } from './api/mock_server';
+// import { addNewRoom } from './api/mock_server';
+// import { loginRhcloud, registerRhcloud, getAllUsersRhcloud, getAllMessagesRhcloud } from './api/api';
 
 const logger = createLogger();
 const store = createStore(rootReducer, applyMiddleware(thunk, logger));
@@ -20,3 +21,11 @@ ReactDOM.render((
 ),
   document.getElementById('root')
 );
+
+
+// addNewRoom('new room');
+// registerRhcloud('someone', 'qwerty', 'someone@somewhere.com');
+// loginRhcloud('someone', 'qwety').then(data => console.log(data));
+
+//getAllUsersRhcloud().then(data => console.log(data));
+//getAllMessagesRhcloud().then(data => console.log(data));

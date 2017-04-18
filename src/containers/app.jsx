@@ -1,101 +1,103 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect,
+  withRouter
+} from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// import {
-//   Header,
-//   Navbar,
-//   Sidebar,
-//   Main,
-//   Footer
-// } from '../components/layout';
-import { Authbar } from '../components/auth';
+import {
+  //   Header,
+  Navbar,
+  //   Sidebar,
+  //   Main,
+  //   Footer
+} from '../components/layout';
+import { Authbar, LoginForm, RegisterForm } from '../components/auth';
+import Chats from './chats';
 
-import RoomList from '../components/rooms/room-list';
-import RoomItem from '../components/rooms/room-item';
-import MessageList from '../components/messages/message-list';
-import MessageItem from '../components/messages/message-item';
-import UserList from '../components/users/user-list';
-import UserItem from '../components/users/user-item';
+import * as userActions from '../actions/userActions.js';
 
-import * as chatActions from '../actions/chatActioins';
+
+const Home = (props) => (
+  <div className="page-wrapper">
+    <main className="main main--single">
+      Home page
+    </main>
+  </div>
+);
+
+const Login = (props) => (
+  <div className="page-wrapper">
+    <main className="main main--single">
+      <LoginForm {...props} />
+    </main>
+  </div>
+);
+
+const Register = (props) => (
+  <div className="page-wrapper">
+    <main className="main main--single">
+      <RegisterForm {...props} />
+    </main>
+  </div>
+);
+
+const GuardRoute = ({component: Component, ...rest}) => (
+  <Route {...rest} render={props => (
+    rest.isAuthenticated()
+    ? (<Chats {...props} />)
+    : (<Redirect to={{pathname: '/login',
+    state: {from: props.location}}}/>))}/>
+)
 
 class App extends Component {
-
-  componentDidMount() {
-    // console.log('in cdm');
-    this.props.chatActions.getRoomList();
+  constructor(props) {
+    super(props);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
   }
 
-  getRooms() {
-    const {rooms } = this.props;
-    const { toggleChatRoom } = this.props.chatActions;
-    return (rooms) ?
-      rooms.map(room => (
-        <RoomItem
-          key={room.id}
-          room={room}
-          toggleChatRoom={toggleChatRoom} />
-      )) : null
-  }
-
-  getMessages() {
-    const {messages, users} = this.props;
-    const getAuthor = (message) => users.find(user => user.id === message.authorId);
-    return (messages) ?
-      messages.map(message => (
-        <MessageItem key={message.id} message={message} user={getAuthor(message)} />
-      )) : null
-  }
-
-  getUsers() {
-    const {users} = this.props;
-    return (users) ?
-      users.map(user => (
-        <UserItem key={user.id} user={user} />
-      )) : null
+  isAuthenticated() {
+    return !!this.props.loggedUser.name
   }
 
   render() {
+    const { handleLogin } = this.props.userActions;
     return (
-      <div className="App">
-        <header className="header">
-          <Authbar/>
-        </header>
-        <aside className="sidebar">
-          <RoomList>
-            {this.getRooms()}
-          </RoomList>
-          <UserList>
-            {this.getUsers()}
-          </UserList>
-        </aside>
-        <main>
-          <MessageList>
-            {this.getMessages()}
-          </MessageList>
-        </main>
-      </div>
+      <Router>
+        <div className="App">
+          <header className="main-header">
+            <div className="header-contents">
+              <Navbar />
+              <Authbar user={this.props.loggedUser} />
+            </div>
+          </header>
+          <Route exact path="/" component={Home} />
+          <GuardRoute path="/chats" component={Chats}
+            isAuthenticated={this.isAuthenticated} />
+          {/*<Route path="/chats" component={Chats} />*/}
+          <Route path="/login" component={
+            () => (<Login handleLogin={handleLogin} />)} />
+          <Route path="/register" component={Register} />
+        </div>
+      </Router>
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    rooms: state.rooms,
-    users: state.users,
-    messages: state.messages,
-    roomId: state.roomId
+    loggedUser: state.user,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    chatActions: bindActionCreators(chatActions, dispatch)
+    userActions: bindActionCreators(userActions, dispatch)
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

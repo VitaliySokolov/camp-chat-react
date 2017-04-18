@@ -5,8 +5,12 @@ class MessageItem extends Component {
     const { user, message } = this.props;
     const { authorId, text } = message;
     return (
-      <div>
-        {user.name}(id: {authorId}):  {text}
+      <div className="message-list-row">
+        <img src={"/img/anonym.jpg"} alt="img" className="user-image"/>
+        <div className="message">
+          <div className="message-text">{user.name}(id: {authorId}): {text}</div>
+          <time>1h</time>
+        </div>
       </div>
     );
   }

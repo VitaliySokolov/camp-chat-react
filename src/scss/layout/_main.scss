@@ -1,0 +1,17 @@
+.main {
+  background-color: #fff;
+  border-radius: 0 10px 10px 0;
+  width: 100%;
+  &--single {
+    border-radius: 10px;
+    padding: 10px;
+  }
+}
+
+.cb-toggle-sb:checked~.main {
+  display: none;
+
+  @include mq-medium {
+    display: block;
+  }
+}

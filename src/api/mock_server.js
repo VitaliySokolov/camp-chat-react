@@ -1,4 +1,4 @@
-import rooms from './rooms.json';
+import jrooms from './rooms.json';
 import messages from './messages.json';
 import users from './users.json';
 
@@ -15,8 +15,30 @@ const TIMEOUT = 500;
 //   getMessages: (roomId, cb, timeout) => setTimeout(() => cb(filterMessages(roomId)), timeout || TIMEOUT)
 // }
 
+const rooms = jrooms;
+let max_room_id = jrooms[jrooms.length - 1].id;
+
 export function getAllRooms() {
   return rooms;
+}
+
+export function addNewRoom(title) {
+  return new Promise(
+    (resolve, reject) => setTimeout(
+      () => {
+        if (typeof (title) !== 'string' || title === '') {
+          reject('Room title must be non-empty string');
+        } else {
+          let id = ++max_room_id;
+          let new_room = { id, title };
+          try {
+            rooms.push(new_room);
+          } catch (error) {
+            reject('error adding new room ' + error);
+          }
+          resolve({room: new_room});
+        }
+      }, TIMEOUT));
 }
 
 export const fetchAllRooms = () => {
@@ -44,6 +66,6 @@ export const fetchChatRoomData = roomId =>
         } catch (error) {
           reject(new Error('Error in fetching room room data: ' + error));
         }
- }, TIMEOUT));
+      }, TIMEOUT));
 
 // export const fetchUsers

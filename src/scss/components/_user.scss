@@ -1,0 +1,47 @@
+.user {
+  display: flex;
+  //justify-content: space-between;
+  align-items: center;
+
+  &:hover {
+    color: red;
+    cursor: pointer;
+  }
+
+  .user-image {
+    @include userImage();
+  }
+
+  &__info-wrapper {
+    flex: 1;
+    margin: 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  &__name {
+    font-weight: bold;
+    font-size: larger;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__last-message {
+    font-style: italic;
+    font-size: smaller;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__last-message-time {
+    background-color: $secondary-light;
+    border-radius: 10px;
+    color: $primary-dark;
+    font-size: smaller;
+    margin: 5px;
+    padding: 5px 10px;
+  }
+}
+.user:nth-of-type(odd) {
+  background-color: lighten($primary-dark, 5%);
+}

@@ -5,8 +5,15 @@ class UserItem extends Component {
     const { user } = this.props
     const { name } = user
     return (
-      <div>
-        {name}
+      <div className="user">
+        <div className="user__avatar">
+          <img src="/img/anonym.jpg" alt="" className="user-image" />
+        </div>
+        <div className="user__info-wrapper">
+          <div className="user__name">{name}</div>
+          <div className="user__last-message">some message 1</div>
+        </div>
+        <div className="user__last-message-time">1min</div>
       </div>
     );
   }

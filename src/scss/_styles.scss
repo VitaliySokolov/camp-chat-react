@@ -1,18 +1,29 @@
+@import 'base/colors';
 @import 'base/variables';
 @import 'base/mixins';
-@import 'layout/nav';
-.chat-container {
-  display: flex;
-  flex-direction: row;
 
-  max-width: 1100px; //$chat-container-width;
-  max-height: calc(100vh - 100px); // 10px + header + 10px
-  min-height: 500px;
-  margin: 5px auto;
+@import 'base/reset';
 
-  // @include mq-small {
-  //   flex-direction: column;
+// components
+@import 'components/links';
 
-  //   margin: 5px;
-  // }
-}
+@import 'components/room-list';
+@import 'components/room';
+@import 'components/room-new';
+@import 'components/user-list';
+@import 'components/user';
+@import 'components/user-new';
+
+// layout
+@import 'layout/main-wrapper';
+@import 'layout/header';
+@import 'layout/navbar';
+@import 'layout/authbar';
+@import 'layout/sidebar';
+@import 'layout/main';
+@import 'layout/footer';
+@import 'layout/toolbar';
+
+@import 'forms';
+@import 'user-list';
+@import 'messages';

@@ -6,7 +6,12 @@ import users from './users';
 
 import {
   TOGGLE_CHAT_ROOM
-} from '../actions/chatActioins';
+} from '../actions/chatActions';
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL
+} from '../actions/userActions.js';
 
 const roomId = (state = null, action) => {
   switch (action.type) {
@@ -19,8 +24,34 @@ const roomId = (state = null, action) => {
   }
 }
 
+const userInitialState = {
+  name: '',
+  email: '',
+  avatarLink: '',
+  logging: false,
+  error: '',
+  token: ''
+}
+const user = (state = userInitialState, action) => {
+  switch (action.type) {
+    case LOGIN_REQUEST:
+      return {...state, logging: true};
+    case LOGIN_SUCCESS:
+      return {...state, logging: false,
+        name: action.payload.user.username,
+        email: action.payload.user.email,
+        token: action.payload.token
+      };
+    case LOGIN_FAIL:
+      return {...state, logging: false, error: action.payload.error};
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   roomId,
+  user,
   rooms,
   messages,
   users
@@ -34,7 +65,7 @@ export default combineReducers({
 //   TOGGLE_CHAT_ROOM,
 //   RECEIVE_CHAT_DATA,
 //   RECEIVE_ROOM_LIST
-// } from '../actions/chatActioins';
+// } from '../actions/chatActions';
 
 // const outside_data = {
 //   messages: [

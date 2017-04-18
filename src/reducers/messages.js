@@ -1,6 +1,6 @@
 import {
   RECEIVE_CHAT_DATA
-} from '../actions/chatActioins';
+} from '../actions/chatActions';
 
 const messagesReducer = (state = [], action) => {
   switch (action.type) {
