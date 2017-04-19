@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
   Route,
-  Link,
-  Redirect,
-  withRouter
+  Redirect
 } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -65,7 +63,7 @@ class App extends Component {
   }
 
   render() {
-    const { handleLogin } = this.props.userActions;
+    const { handleLogin, handleRegister } = this.props.userActions;
     return (
       <Router>
         <div className="App">

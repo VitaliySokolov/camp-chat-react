@@ -16,7 +16,7 @@ class RoomItem extends Component {
     return (
       <div className="room" onClick={this.onRoomClick}>
         <div className="room__creator-avatar">
-          <img src={'/img/anonym.jpg'} className="user-image" />
+          <img src={'/img/anonym.jpg'} alt="ava" className="user-image" />
         </div>
         <div className="room__info-wrapper">
           <div className="room-title">

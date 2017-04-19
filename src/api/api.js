@@ -20,7 +20,7 @@ const getFromRhcloud = (url, method='GET', bodyObj={}) => {
       if (data.status === 200) {
         return data.json()
       } else {
-        return Promise.reject(`${data.status}: ${data.statusText}`);
+        Promise.reject(`${data.status}: ${data.statusText}`);
       }
     })
     .catch(error => {
@@ -45,7 +45,7 @@ export const loginRhcloud = (username, password) => {
     json => {
       // console.log('finish fetch');
       // console.log(json);
-      const { token, tokenType, user } = json;
+      // const { token, tokenType, user } = json;
       // console.log(token);
       // console.log(tokenType);
       // console.log(user);

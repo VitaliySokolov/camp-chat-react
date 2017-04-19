@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {emit} from '../../api/websocket';
 
 class MessageNew extends Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class MessageNew extends Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log(`send msg: "${this.textarea.value}"`);
+    emit('message', this.textarea.value);
     this.textarea.value = '';
   }
 

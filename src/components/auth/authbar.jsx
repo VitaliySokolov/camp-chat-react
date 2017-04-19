@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import Auth from "../../modules/auth";
+// import Auth from "../../modules/auth";
 
 export class Authbar extends Component {
   constructor(props) {
@@ -15,21 +15,6 @@ export class Authbar extends Component {
   }
 
   render() {
-    const btnLogin = (
-      <a href="#"
-        className="btn btn-login"
-        onClick={this.handleLoginClick}>
-        Login
-      </a>
-    );
-
-    const btnRegister = (
-      <a href="#"
-        className="btn btn-register">
-        Register
-      </a>
-    );
-
     const btnLogout = (
       <button
         className="btn-logout">
@@ -49,12 +34,10 @@ export class Authbar extends Component {
           className={location.pathname.startsWith('/register') && 'active'}>
           Register
         </Link>
-          {/*{btnLogin}
-          {btnRegister}*/}
         </div>
       ) : (
         <div className="logged auth-wrapper">
-          <img src="/img/anonym.jpg" className="user-image"  />
+          <img src="/img/anonym.jpg" alt="ava" className="user-image"  />
           <div className="user-name"> {this.props.user.name} </div>
           {btnLogout}
         </div>

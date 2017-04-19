@@ -1,8 +1,13 @@
-import { loginRhcloud } from '../api/api';
+import { loginRhcloud, registerRhcloud } from '../api/api';
+import { connectWS } from '../api/websocket';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAIL = 'LOGIN_FAIL'
+
+export const REGISTER_REQUEST = 'REGISTER_REQUEST'
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+export const REGISTER_FAIL = 'REGISTER_FAIL'
 
 export const handleLogin = (userInfo) => dispatch => {
   const { username, password } = userInfo
@@ -15,6 +20,8 @@ export const handleLogin = (userInfo) => dispatch => {
       type: LOGIN_SUCCESS,
       payload: data
     });
+    //dispatch(handleLoginWS(data));
+    connectWS(data);
   }).catch(error => {
     dispatch({
       type: LOGIN_FAIL,
@@ -23,3 +30,25 @@ export const handleLogin = (userInfo) => dispatch => {
   });
 }
 
+export const handleRegister = (userInfo) => dispatch => {
+  const { username, password, email } = userInfo
+  dispatch({
+    type: REGISTER_REQUEST
+  });
+  registerRhcloud(username, password, email).then(data => {
+    console.log(data);
+    (data !== 'OK') || Promise.reject(data);
+    dispatch({
+      type: REGISTER_SUCCESS
+    });
+  }).catch(error => {
+    dispatch({
+      type: REGISTER_FAIL,
+      payload: { error }
+    })
+  });
+}
+
+// const hadleLoginWS = (data) => (dispatch, getState) => {
+//   connectWS(data);
+// }

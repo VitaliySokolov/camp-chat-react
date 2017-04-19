@@ -6,6 +6,14 @@ export const RECEIVE_CHAT_DATA = 'RECEIVE_CHAT_DATA';
 export const ADD_CHAT_ROOM = 'ADD_CHAT_ROOM';
 export const ERROR_ROOM_ACTION = 'ERROR_ROOM_ACTION';
 
+export const getRoomList = () => dispatch => {
+  console.log('in getRoomList');
+  api.fetchAllRooms().then(rooms => dispatch({
+    type: 'RECEIVE_ROOM_LIST',
+    payload: { rooms: [].concat(rooms) }
+  }));
+}
+
 const getChatRoom = roomId => dispatch => {
   api.fetchChatRoomData(roomId)
     .then(data =>
@@ -14,6 +22,19 @@ const getChatRoom = roomId => dispatch => {
           type: RECEIVE_CHAT_DATA,
           payload: data
         }));
+}
+
+export const toggleChatRoom = roomId => (dispatch, getState) => {
+  const { roomId: oldRoomId } = getState();
+  if (oldRoomId === roomId)
+    return;
+  dispatch({
+    type: TOGGLE_CHAT_ROOM,
+    payload: {
+      roomId
+    }
+  });
+  dispatch(getChatRoom(roomId));
 }
 
 export const addChatRoom = (title) => dispatch => {
@@ -31,27 +52,6 @@ export const addChatRoom = (title) => dispatch => {
         payload: error
       })
     });
-}
-
-export const toggleChatRoom = roomId => (dispatch, getState) => {
-  const { roomId: oldRoomId } = getState();
-  if (oldRoomId === roomId)
-    return;
-  dispatch({
-    type: TOGGLE_CHAT_ROOM,
-    payload: {
-      roomId
-    }
-  });
-  dispatch(getChatRoom(roomId));
-}
-
-export const getRoomList = () => dispatch => {
-  console.log('in getRoomList');
-  api.fetchAllRooms().then(rooms => dispatch({
-    type: 'RECEIVE_ROOM_LIST',
-    payload: { rooms: [].concat(rooms) }
-  }));
 }
 
 // const fetchMessages = roomId => dispatch => {

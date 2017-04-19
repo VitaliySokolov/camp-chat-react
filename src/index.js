@@ -10,7 +10,7 @@ import App from './containers/app';
 import './index.css';
 // import { addNewRoom } from './api/mock_server';
 // import { loginRhcloud, registerRhcloud, getAllUsersRhcloud, getAllMessagesRhcloud } from './api/api';
-import { initWS, emit } from './api/websocket';
+import { initWS } from './api/websocket';
 
 const logger = createLogger();
 const store = createStore(rootReducer, applyMiddleware(thunk, logger));
