@@ -11,7 +11,7 @@ const getChatRoom = roomId => dispatch => {
     .then(data =>
       dispatch(
         {
-          type: 'RECEIVE_CHAT_DATA',
+          type: RECEIVE_CHAT_DATA,
           payload: data
         }));
 }

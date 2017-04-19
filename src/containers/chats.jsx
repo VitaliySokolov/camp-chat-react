@@ -7,6 +7,7 @@ import RoomItem from '../components/rooms/room-item';
 import RoomNew from '../components/rooms/room-new';
 import MessageList from '../components/messages/message-list';
 import MessageItem from '../components/messages/message-item';
+import MessageNew from '../components/messages/message-new';
 import UserList from '../components/users/user-list';
 import UserItem from '../components/users/user-item';
 import UserNew from '../components/users/user-new';
@@ -19,6 +20,7 @@ class Chats extends Component {
   componentDidMount() {
     // console.log('in cdm');
     this.props.chatActions.getRoomList();
+    this.props.chatActions.toggleChatRoom(1);
   }
 
   getRooms() {
@@ -50,6 +52,13 @@ class Chats extends Component {
       )) : null
   }
 
+  showMessageNew() {
+    const { roomId } = this.props;
+    return (roomId) && (
+      <MessageNew />
+    );
+  }
+
   render() {
     const { addChatRoom } = this.props.chatActions;
     return (
@@ -71,13 +80,13 @@ class Chats extends Component {
               <img src="/img/menu.png" alt="menu" />
             </div>
           </header>
-          <div className="rooms-wrapper">
+          <div className="rooms-wrapper hidden">
             <RoomList>
               {this.getRooms()}
             </RoomList>
             <RoomNew addChatRoom={addChatRoom} />
           </div>
-          <div className="users-wrapper hidden">
+          <div className="users-wrapper">
             <UserList>
               {this.getUsers()}
             </UserList>
@@ -90,6 +99,7 @@ class Chats extends Component {
           <MessageList>
             {this.getMessages()}
           </MessageList>
+          {this.showMessageNew()}
         </main>
       </div>
     )

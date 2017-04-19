@@ -18,7 +18,7 @@ export const handleLogin = (userInfo) => dispatch => {
   }).catch(error => {
     dispatch({
       type: LOGIN_FAIL,
-      error
+      payload: { error }
     })
   });
 }

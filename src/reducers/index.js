@@ -25,7 +25,7 @@ const roomId = (state = null, action) => {
 }
 
 const userInitialState = {
-  name: '',
+  name: 'default',
   email: '',
   avatarLink: '',
   logging: false,
