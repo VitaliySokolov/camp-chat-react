@@ -44,19 +44,39 @@ const Register = (props) => (
   </div>
 );
 
-const GuardRoute = ({component: Component, ...rest}) => (
+const GuardRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     rest.isAuthenticated()
-    ? (<Chats {...props} />)
-    : (<Redirect to={{pathname: '/login',
-    state: {from: props.location}}}/>))}/>
+      ? (<Chats {...props} />)
+      : (<Redirect to={{
+        pathname: '/login',
+        state: { from: props.location }
+      }} />))} />
 )
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.props.userActions.handleLoginFromStorage();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('app did update');
+    if (this.isAuthenticated) {
+      const { loggedUser } = this.props;
+      const token = localStorage.getItem('token');
+      if (token !== loggedUser.token) {
+        localStorage.setItem('token', loggedUser.token);
+        localStorage.setItem('username', loggedUser.name)
+      }
+    }
+  }
+
+  componentDidMount() {
+    console.log('app did mount');
+  }
+
 
   isAuthenticated() {
     return !!this.props.loggedUser.name
@@ -79,7 +99,8 @@ class App extends Component {
           {/*<Route path="/chats" component={Chats} />*/}
           <Route path="/login" component={
             () => (<Login handleLogin={handleLogin} />)} />
-          <Route path="/register" component={Register} />
+          <Route path="/register" component={
+            () => (<Register handleRegister={handleRegister} />)} />
         </div>
       </Router>
     );
@@ -88,7 +109,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    loggedUser: state.user,
+    loggedUser: state.user
   };
 }
 

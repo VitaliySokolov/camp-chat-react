@@ -23,7 +23,7 @@ export class LoginForm extends Component {
         <div className="signin-wrapper">
           <form action="#" method="POST" className="signin-form visible" onSubmit={this.handleLoginClick}>
             <div className="form-group">
-              <input type="text" name="login" id="login" required placeholder="Login"
+              <input type="email" name="login" id="login" required placeholder="Email"
               ref={(input) => this.loginInput = input} />
             </div>
             <div className="form-group">

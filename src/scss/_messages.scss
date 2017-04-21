@@ -66,6 +66,16 @@
     }
   }
 
+  &:nth-of-type(odd) {
+    justify-content: flex-start;
+     .message {
+       order: 1;
+    }
+    .message-time {
+      float: right;
+    }
+  }
+
   &--self {
     justify-content: flex-start;
      .message {

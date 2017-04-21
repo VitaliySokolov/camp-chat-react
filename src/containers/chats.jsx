@@ -19,8 +19,12 @@ class Chats extends Component {
 
   componentDidMount() {
     // console.log('in cdm');
-    this.props.chatActions.getRoomList();
-    this.props.chatActions.toggleChatRoom(1);
+    // this.props.chatActions.getRoomList();
+    // this.props.chatActions.toggleChatRoom(4);
+
+    // work!!
+    //this.props.chatActions.getUserList();
+    //this.props.chatActions.getMessageList();
   }
 
   getRooms() {
@@ -36,12 +40,15 @@ class Chats extends Component {
   }
 
   getMessages() {
-    const { messages, users } = this.props;
-    const getAuthor = (message) => users.find(user => user.id === message.authorId);
+    const { messages
+      // , users
+     } = this.props;
+    // const getAuthor = (message) => users.find(user => user.id === message.authorId);
     return (messages) ?
       messages.map(message => (
-        <MessageItem key={message.id} message={message} user={getAuthor(message)} />
+        <MessageItem key={message.id} message={message}  />
       )) : null
+    // user={getAuthor(message)}
   }
 
   getUsers() {
@@ -53,7 +60,8 @@ class Chats extends Component {
   }
 
   showMessageNew() {
-    const { roomId } = this.props;
+    //const { roomId } = this.props;
+    const roomId = true;
     return (roomId) && (
       <MessageNew />
     );

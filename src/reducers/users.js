@@ -1,5 +1,6 @@
 import {
-  RECEIVE_CHAT_DATA
+  RECEIVE_CHAT_DATA,
+  RECEIVE_ALL_USERS
 } from '../actions/chatActions';
 
 const usersReducer = (state = [], action) => {
@@ -7,6 +8,13 @@ const usersReducer = (state = [], action) => {
     case RECEIVE_CHAT_DATA: {
       const { users } = action.payload;
       return users;
+    }
+    case RECEIVE_ALL_USERS: {
+      const { users } = action.payload;
+      const modUsers = users.map((user, index) => {
+        return { id: index, name: user.username || `user${index}` }
+      });
+      return modUsers;
     }
     default:
       return state;

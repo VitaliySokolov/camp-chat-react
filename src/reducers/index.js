@@ -39,7 +39,7 @@ const user = (state = userInitialState, action) => {
     case LOGIN_SUCCESS:
       return {...state, logging: false,
         name: action.payload.user.username,
-        email: action.payload.user.email,
+        // email: action.payload.user.email,
         token: action.payload.token
       };
     case LOGIN_FAIL:

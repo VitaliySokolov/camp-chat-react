@@ -1,4 +1,5 @@
-import * as api from '../api/mock_server'
+import * as mock_api from '../api/mock_server'
+import * as api from '../api/api';
 
 export const RECEIVE_ROOM_LIST = 'RECEIVE_ROOM_LIST';
 export const TOGGLE_CHAT_ROOM = 'TOGGLE_CHAT_ROOM';
@@ -6,16 +7,24 @@ export const RECEIVE_CHAT_DATA = 'RECEIVE_CHAT_DATA';
 export const ADD_CHAT_ROOM = 'ADD_CHAT_ROOM';
 export const ERROR_ROOM_ACTION = 'ERROR_ROOM_ACTION';
 
+export const REQUEST_ALL_USERS = 'REQUEST_ALL_USERS';
+export const RECEIVE_ALL_USERS = 'RECEIVE_ALL_USERS';
+export const FAIL_ALL_USERS = 'FAIL_ALL_USERS';
+
+export const REQUEST_ALL_MESSAGES = 'REQUEST_ALL_MESSAGES';
+export const RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
+export const FAIL_ALL_MESSAGES = 'FAIL_ALL_MESSAGES';
+
 export const getRoomList = () => dispatch => {
   console.log('in getRoomList');
-  api.fetchAllRooms().then(rooms => dispatch({
+  mock_api.fetchAllRooms().then(rooms => dispatch({
     type: 'RECEIVE_ROOM_LIST',
     payload: { rooms: [].concat(rooms) }
   }));
 }
 
 const getChatRoom = roomId => dispatch => {
-  api.fetchChatRoomData(roomId)
+  mock_api.fetchChatRoomData(roomId)
     .then(data =>
       dispatch(
         {
@@ -38,7 +47,7 @@ export const toggleChatRoom = roomId => (dispatch, getState) => {
 }
 
 export const addChatRoom = (title) => dispatch => {
-  api.addNewRoom(title)
+  mock_api.addNewRoom(title)
     .then(data => {
       dispatch({
         type: ADD_CHAT_ROOM,
@@ -52,6 +61,41 @@ export const addChatRoom = (title) => dispatch => {
         payload: error
       })
     });
+}
+
+export const getUserList = () => dispatch => {
+  dispatch({
+    type: REQUEST_ALL_USERS
+  });
+  api.getAllUsersRhcloud().then(users => {
+
+    dispatch({
+      type: RECEIVE_ALL_USERS,
+      payload: { users }
+    })
+  }).catch(error => {
+    dispatch({
+      type: FAIL_ALL_USERS,
+      payload: { error }
+    })
+  });
+}
+
+export const getMessageList = () => dispatch => {
+  dispatch({
+    type: REQUEST_ALL_MESSAGES
+  });
+  api.getAllMessagesRhcloud().then(messages => {
+    dispatch({
+      type: RECEIVE_ALL_MESSAGES,
+      payload: { messages }
+    });
+  }).catch(error => {
+    dispatch({
+      type: FAIL_ALL_MESSAGES,
+      payload: { error }
+    });
+  });
 }
 
 // const fetchMessages = roomId => dispatch => {

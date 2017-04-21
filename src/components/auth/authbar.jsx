@@ -22,7 +22,7 @@ export class Authbar extends Component {
       </button>
     );
 
-    console.log(this.props.user);
+    // console.log(this.props.user);
     const children = !this.props.user.name //!Auth.isLoggedIn()
       ? (
         <div className="link-list guest auth-wrapper">

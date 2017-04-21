@@ -15,9 +15,11 @@
   },
   "devDependencies": {
     "enzyme": "^2.8.0",
+    "jest-fetch-mock": "^1.0.8",
     "node-sass": "^4.5.2",
     "react-addons-test-utils": "15.4.2",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "redux-mock-store": "^1.2.3"
   },
   "scripts": {
     "start-js": "react-scripts start",

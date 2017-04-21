@@ -9,13 +9,13 @@ export class RegisterForm extends Component {
   handleRegisterClick(event) {
     event.preventDefault();
     const { handleRegister } = this.props;
-    if (this.passInput.value != this.repassInput.value) {
+    if (this.passInput.value !== this.repassInput.value) {
       new Error('passwords don\'t match');
     }
     const user = {
-      username: this.nameInput.value,
+      username: this.emailInput.value,
       password: this.passInput.value,
-      email: this.email.value
+      // email: this.email.value
     };
     console.log(user);
     handleRegister(user);
@@ -26,9 +26,9 @@ export class RegisterForm extends Component {
       <div className="auth-form-wrapper">
         <div className="signup-wrapper">
           <form action="#" method="POST" className="signup-form" onSubmit={this.handleRegisterClick}>
-            <div className="form-group">
-              <input type="text" name="name" id="name" placeholder="Name" ref={(input) => this.nameInput = input} />
-            </div>
+            {/*<div className="form-group">
+              <input type="text" name="name" id="name" placeholder="Login or Email" ref={(input) => this.nameInput = input} />
+            </div>*/}
             {/*<div className="form-group">
               <input type="text" name="lastname" id="lastname" placeholder="Last Name" ref={(input) => this.loginInput = input} />
             </div>*/}

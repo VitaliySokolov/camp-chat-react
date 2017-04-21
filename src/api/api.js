@@ -2,7 +2,7 @@
  * Helper for fetching from rhcloud
  * @param {*} url
  */
-const getFromRhcloud = (url, method='GET', bodyObj={}) => {
+const getFromRhcloud = (url, method='GET', bodyObj=null) => {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   const init = {
@@ -20,11 +20,11 @@ const getFromRhcloud = (url, method='GET', bodyObj={}) => {
       if (data.status === 200) {
         return data.json()
       } else {
-        Promise.reject(`${data.status}: ${data.statusText}`);
+        return Promise.reject(`${data.status}: ${data.statusText}`);
       }
     })
     .catch(error => {
-      return new Error(error);
+      return Promise.reject(error);
     });
 }
 
@@ -41,19 +41,7 @@ export const loginRhcloud = (username, password) => {
     userInfo['password'] = password;
   }
   const url = 'http://eleksfrontendcamp-mockapitron.rhcloud.com/login';
-  return getFromRhcloud(url, 'POST', userInfo).then(
-    json => {
-      // console.log('finish fetch');
-      // console.log(json);
-      // const { token, tokenType, user } = json;
-      // console.log(token);
-      // console.log(tokenType);
-      // console.log(user);
-      return json
-    }
-    ).catch(error => {
-      console.log(error);
-    });
+  return getFromRhcloud(url, 'POST', userInfo);
 }
 
 /**
@@ -82,11 +70,15 @@ export const registerRhcloud = (username, password, email) => {
 
   return fetch('http://eleksfrontendcamp-mockapitron.rhcloud.com/signup', init)
     .then(data => {
-      if (data.status === 200)
+      if (data.status === 201) {
         return 'OK'
+      } else {
+        return Promise.reject(`Code: ${data.status} (${data.statusText})`)
+      }
+
     })
     .catch(error => {
-      console.log(new Error(error));
+      return Promise.reject(error)
     });
 }
 

@@ -19,7 +19,7 @@ export const emit = (type, payload) =>
   socket.emit(type, payload);
 
 export const connectWS = (data) => {
-  console.log(data.token);
+  // console.log(data.token);
   socket.disconnect()
   socket.connect();
   socket.on('connect', () => {

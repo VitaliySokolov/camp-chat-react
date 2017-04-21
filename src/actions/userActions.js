@@ -30,6 +30,24 @@ export const handleLogin = (userInfo) => dispatch => {
   });
 }
 
+export const handleLoginFromStorage = () => dispatch => {
+  const token = localStorage.getItem('token');
+  // console.log([token]);
+  if (token) {
+    const username = localStorage.getItem('username');
+    const payload = { token, user: { username } }
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload
+    });
+    connectWS({ token });
+  } else {
+    dispatch({
+      type: 'FAIL_AUTOLOGIN'
+    });
+  }
+}
+
 export const handleRegister = (userInfo) => dispatch => {
   const { username, password, email } = userInfo
   dispatch({

@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
 
-import App from './app';
+import AppContainer from './app';
 import {
   Header,
   Navbar,
@@ -11,13 +13,37 @@ import {
   Footer
 } from '../components/layout';
 
-describe('App component', () => {
-  it('renders w/o crashing', () => {
-    const wrapper = shallow(<App />);
-    expect(wrapper.length).toBe(1);
+const middlewares = [];
+const mockStore = configureStore(middlewares);
+const storeFake = (state) => {
+	return {
+		default: () => {},
+		subscribe: () => {},
+		dispatch: () => {},
+		getState: () => {
+			return { ...state };
+		},
+	};
+};
+
+describe('App container', () => {
+  let Component;
+
+  beforeEach(() => {
+    const store = mockStore({user: {name: 'default'}});
+    const wrapper = mount(
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    );
+    Component = wrapper.find(AppContainer);
   });
 
-  it('should contain main layout components', () => {
+  it('renders w/o crashing', () => {
+    expect(Component.length).toBe(1);
+  });
+
+  xit('should contain main layout components', () => {
     const wrapper = shallow(<App />);
     expect(wrapper.containsAllMatchingElements([
       <Header/>,

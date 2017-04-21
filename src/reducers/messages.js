@@ -1,5 +1,6 @@
 import {
-  RECEIVE_CHAT_DATA
+  RECEIVE_CHAT_DATA,
+  RECEIVE_ALL_MESSAGES
 } from '../actions/chatActions';
 
 const messagesReducer = (state = [], action) => {
@@ -7,6 +8,29 @@ const messagesReducer = (state = [], action) => {
     case RECEIVE_CHAT_DATA: {
       const { messages } = action.payload;
       return messages
+    }
+    case RECEIVE_ALL_MESSAGES: {
+      const { messages } = action.payload;
+      const modMsg =  messages.map((message, index) => {
+        return {
+          id: index,
+          text: message.msg.msg || message.msg,
+          author: message.user,
+          time: message.time
+        }
+      });
+      return modMsg;
+    }
+    case 'message': {
+      const maxIndex = Math.max.apply(
+        null, state.map(msg => msg.id));
+      const message = action.payload;
+      return [...state, {
+          id: maxIndex + 1,
+          text: message.msg.msg || message.msg,
+          author: message.user,
+          time: message.time
+        }];
     }
     default:
       return state;
