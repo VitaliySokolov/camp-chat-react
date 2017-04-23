@@ -23,8 +23,8 @@ class Chats extends Component {
     // this.props.chatActions.toggleChatRoom(4);
 
     // work!!
-    //this.props.chatActions.getUserList();
-    //this.props.chatActions.getMessageList();
+    // this.props.chatActions.getUserList();
+    this.props.chatActions.getMessageList();
   }
 
   getRooms() {
@@ -40,13 +40,25 @@ class Chats extends Component {
   }
 
   getMessages() {
-    const { messages
-      // , users
+    const {
+      messages,
+      selectedMessage,
+      loggedUser
      } = this.props;
     // const getAuthor = (message) => users.find(user => user.id === message.authorId);
+    const {
+      selectMessage,
+      unselectMessage
+    } = this.props.chatActions;
     return (messages) ?
       messages.map(message => (
-        <MessageItem key={message.id} message={message}  />
+        <MessageItem
+          key={message.id}
+          message={message}
+          loggedUser={loggedUser}
+          selectedMessage={selectedMessage}
+          unselectMessage={unselectMessage}
+          selectMessage={selectMessage}  />
       )) : null
     // user={getAuthor(message)}
   }
@@ -98,7 +110,7 @@ class Chats extends Component {
             <UserList>
               {this.getUsers()}
             </UserList>
-            <UserNew />
+            {/*<UserNew />*/}
           </div>
         </aside>
         <main className="main">
@@ -119,7 +131,9 @@ function mapStateToProps(state) {
     rooms: state.rooms,
     users: state.users,
     messages: state.messages,
-    roomId: state.roomId
+    roomId: state.roomId,
+    selectedMessage: state.selectedMessage,
+    loggedUser: state.user
   };
 }
 

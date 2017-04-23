@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export class Navbar extends Component {
   constructor(props) {
@@ -23,14 +23,17 @@ export class Navbar extends Component {
   render() {
     return (
       <nav className="nav-main">
-        <Link to="/"
-          className={location.pathname === '/' && 'active'}>
+        <NavLink to="/"
+          activeClassName='active'
+          exact
+          className="nav-link">
           Home
-        </Link>
-        <Link to="/chats"
-          className={location.pathname.startsWith('/chats') && 'active'}>
+        </NavLink>
+        <NavLink to="/chats"
+          activeClassName='active'
+          className="nav-link">
           Chats
-        </Link>
+        </NavLink>
       </nav>
     );
   }

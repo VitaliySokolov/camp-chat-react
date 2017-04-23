@@ -14,7 +14,7 @@ const messagesReducer = (state = [], action) => {
       const modMsg =  messages.map((message, index) => {
         return {
           id: index,
-          text: message.msg.msg || message.msg,
+          text: message.msg ? message.msg.msg || message.msg : "",
           author: message.user,
           time: message.time
         }
@@ -29,6 +29,28 @@ const messagesReducer = (state = [], action) => {
           id: maxIndex + 1,
           text: message.msg.msg || message.msg,
           author: message.user,
+          time: message.time
+        }];
+    }
+    case 'join': {
+      const maxIndex = Math.max.apply(
+        null, state.map(msg => msg.id));
+      const message = action.payload;
+      return [...state, {
+          id: maxIndex + 1,
+          text: `${message.user.username} joined chat`,
+          author: 'robot',
+          time: message.time
+        }];
+    }
+    case 'leave': {
+      const maxIndex = Math.max.apply(
+        null, state.map(msg => msg.id));
+      const message = action.payload;
+      return [...state, {
+          id: maxIndex + 1,
+          text: `${message.user.username} leaved chat`,
+          author: 'robot',
           time: message.time
         }];
     }

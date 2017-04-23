@@ -5,13 +5,24 @@ import messages from './messages';
 import users from './users';
 
 import {
-  TOGGLE_CHAT_ROOM
+  TOGGLE_CHAT_ROOM,
+  SELECT_MESSAGE,
+  UNSELECT_MESSAGE
 } from '../actions/chatActions';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
-  LOGIN_FAIL
+  LOGIN_FAILURE,
+  LOGOUT
 } from '../actions/userActions.js';
+
+import { createReducer } from '../utils';
+
+const selectedMessage = createReducer(null, {
+  [SELECT_MESSAGE]: (state, payload) =>
+    (payload.message !== state) ? payload.message : state,
+  [UNSELECT_MESSAGE]: (state, payload) => null
+});
 
 const roomId = (state = null, action) => {
   switch (action.type) {
@@ -35,15 +46,18 @@ const userInitialState = {
 const user = (state = userInitialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
-      return {...state, logging: true};
+      return { ...state, logging: true };
     case LOGIN_SUCCESS:
-      return {...state, logging: false,
+      return {
+        ...state, logging: false,
         name: action.payload.user.username,
         // email: action.payload.user.email,
         token: action.payload.token
       };
-    case LOGIN_FAIL:
-      return {...state, logging: false, error: action.payload.error};
+    case LOGIN_FAILURE:
+      return { ...state, logging: false, error: action.payload.error };
+    case LOGOUT:
+      return userInitialState;
     default:
       return state;
   }
@@ -54,7 +68,8 @@ export default combineReducers({
   user,
   rooms,
   messages,
-  users
+  users,
+  selectedMessage
 });
 
 

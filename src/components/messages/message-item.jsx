@@ -1,20 +1,59 @@
 import React, { Component } from 'react';
+import autobind from 'autobindr';
+import classNames from 'classnames';
+import moment from 'moment';
+import Avatar from '../avatar';
 
 class MessageItem extends Component {
+  constructor(props) {
+    super(props);
+    autobind(this);
+  }
+
+  handleSelectClick(event) {
+    event.preventDefault();
+    // console.log('you click:')
+    // console.log(this.props.message);
+    const { selectMessage, unselectMessage,
+      message, selectedMessage } = this.props;
+    if (selectedMessage !== message) {
+      selectMessage(message);
+    } else {
+      unselectMessage(message);
+    }
+
+  }
+
+  componentDidMount() {
+    console.log('mi:cdm');
+    this.node.scrollIntoView()
+  }
+
   render() {
     const {
-      // user,
-      message } = this.props;
-    const { text, time } = message;
-    const ltime = (new Date(time)).toLocaleString();
-    console.log(text);
-    console.log(message);
+      loggedUser,
+      message,
+      selectedMessage } = this.props;
+    const { text, time, author } = message;
+    const ltime = moment(+time).fromNow();
+    // console.log(message);
+    const rowClassName = classNames('message-list-row', {
+      'message-list-row--self': author.username === loggedUser.name
+    })
+    const selectionClassName = classNames('message-text', {
+      'bg-red': selectedMessage === message,
+      'robot': author === 'robot'
+    })
     return (
-      <div className="message-list-row">
-        <img src={"/img/anonym.jpg"} alt="img" className="user-image"/>
+      <div className={rowClassName}
+        ref={(node) => this.node = node} onClick={this.handleSelectClick}>
+        <Avatar user={author} />
         <div className="message">
-          <div className="message-text">{text}</div>
-          <time>{ltime}</time>
+          <b>{author.username}</b>
+          <div className={selectionClassName}>
+            {text}
+          </div>
+          <time className="message-time">{ltime}</time>
         </div>
       </div>
     );

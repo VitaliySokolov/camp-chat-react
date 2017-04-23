@@ -1,6 +1,7 @@
 import {
   RECEIVE_CHAT_DATA,
-  RECEIVE_ALL_USERS
+  RECEIVE_ALL_USERS,
+  RECEIVE_ALL_MESSAGES
 } from '../actions/chatActions';
 
 const usersReducer = (state = [], action) => {
@@ -12,10 +13,33 @@ const usersReducer = (state = [], action) => {
     case RECEIVE_ALL_USERS: {
       const { users } = action.payload;
       const modUsers = users.map((user, index) => {
-        return { id: index, name: user.username || `user${index}` }
+        return { id: index, username: user.username || `user${index}` }
       });
       return modUsers;
     }
+    // case RECEIVE_ALL_MESSAGES: {
+    //   const { messages } = action.payload;
+    //   let userId = 0;
+    //   const users = messages.reduce((users, next) => {
+    //     if (users.find(v => v === next.user.username)) {
+    //       users.push({
+    //         id: userId++,
+    //         username: next.user.username
+    //       })
+    //     }
+    //   }, [] );
+    //   console.log(users);
+    //   return state;
+      // const modMsg =  messages.map((message, index) => {
+      //   return {
+      //     id: index,
+      //     text: message.msg ? message.msg.msg || message.msg : "",
+      //     author: message.user,
+      //     time: message.time
+      //   }
+      // });
+      // return modMsg;
+    // }
     default:
       return state;
   }

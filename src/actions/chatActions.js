@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import * as mock_api from '../api/mock_server'
 import * as api from '../api/api';
 
@@ -14,6 +16,19 @@ export const FAIL_ALL_USERS = 'FAIL_ALL_USERS';
 export const REQUEST_ALL_MESSAGES = 'REQUEST_ALL_MESSAGES';
 export const RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
 export const FAIL_ALL_MESSAGES = 'FAIL_ALL_MESSAGES';
+
+export const SELECT_MESSAGE = 'SELECT_MESSAGE';
+export const UNSELECT_MESSAGE = 'UNSELECT_MESSAGE';
+
+export const selectMessage = (message) => ({
+  type: SELECT_MESSAGE,
+  payload: { message }
+});
+
+export const unselectMessage = (message) => ({
+  type: UNSELECT_MESSAGE,
+  payload: { message }
+})
 
 export const getRoomList = () => dispatch => {
   console.log('in getRoomList');
@@ -90,6 +105,11 @@ export const getMessageList = () => dispatch => {
       type: RECEIVE_ALL_MESSAGES,
       payload: { messages }
     });
+    const users = messages.map(msg => msg.user).filter((user, index, self) => self.findIndex(u => u.username === user.username) === index)
+    dispatch({
+      type: RECEIVE_ALL_USERS,
+      payload: { users }
+    })
   }).catch(error => {
     dispatch({
       type: FAIL_ALL_MESSAGES,

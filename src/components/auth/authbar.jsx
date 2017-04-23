@@ -1,6 +1,19 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 // import Auth from "../../modules/auth";
+import autobind from 'autobindr';
+import Avatar from '../avatar';
+
+const LogoutButton = withRouter(props => {
+  return (
+    <button
+      className="btn-logout"
+      onClick={() => { props.handleLogoutClick(); props.history.goBack(); }}>
+      Logout
+    </button>
+  )
+});
+
 
 export class Authbar extends Component {
   constructor(props) {
@@ -8,38 +21,39 @@ export class Authbar extends Component {
     this.state = {
       logged: true
     };
+    autobind(this);
   }
 
   handleLoginClick(event) {
     console.log('click login');
   }
 
-  render() {
-    const btnLogout = (
-      <button
-        className="btn-logout">
-        Logout
-      </button>
-    );
+  handleLogoutClick(event) {
+    this.props.logout();
+  }
 
+  render() {
     // console.log(this.props.user);
     const children = !this.props.user.name //!Auth.isLoggedIn()
       ? (
         <div className="link-list guest auth-wrapper">
-        <Link to="/login"
-          className={location.pathname.startsWith('/login') && 'active'}>
-          Login
-        </Link>
-        <Link to="/register"
-          className={location.pathname.startsWith('/register') && 'active'}>
-          Register
-        </Link>
+          <NavLink to="/login"
+            activeClassName='active'
+            className="nav-link">
+            Login
+          </NavLink>
+          <NavLink to="/register"
+            activeClassName='active'
+            className="nav-link">
+            Register
+          </NavLink>
         </div>
       ) : (
         <div className="logged auth-wrapper">
-          <img src="/img/anonym.jpg" alt="ava" className="user-image"  />
+          <Avatar user={this.props.user} size={40} />
+          {/*<img src="/img/anonym.jpg" alt="ava" className="user-image" />*/}
           <div className="user-name"> {this.props.user.name} </div>
-          {btnLogout}
+          <LogoutButton handleLogoutClick={this.handleLogoutClick} />
         </div>
       );
     return (

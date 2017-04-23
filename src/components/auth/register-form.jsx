@@ -25,7 +25,7 @@ export class RegisterForm extends Component {
     return (
       <div className="auth-form-wrapper">
         <div className="signup-wrapper">
-          <form action="#" method="POST" className="signup-form" onSubmit={this.handleRegisterClick}>
+          <form noValidate action="#" method="POST" className="signup-form" onSubmit={this.handleRegisterClick}>
             {/*<div className="form-group">
               <input type="text" name="name" id="name" placeholder="Login or Email" ref={(input) => this.nameInput = input} />
             </div>*/}

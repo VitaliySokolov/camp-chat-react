@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import autobind from 'autobindr';
 
 import {
   //   Header,
@@ -57,8 +58,9 @@ const GuardRoute = ({ component: Component, ...rest }) => (
 class App extends Component {
   constructor(props) {
     super(props);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
-    this.props.userActions.handleLoginFromStorage();
+    autobind(this);
+    // this.isAuthenticated = this.isAuthenticated.bind(this);
+    // this.props.userActions.handleLoginFromStorage();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -83,14 +85,21 @@ class App extends Component {
   }
 
   render() {
-    const { handleLogin, handleRegister } = this.props.userActions;
+    const {
+      handleLogin,
+      handleRegister,
+      logout
+    } = this.props.userActions;
     return (
       <Router>
         <div className="App">
           <header className="main-header">
             <div className="header-contents">
               <Navbar />
-              <Authbar user={this.props.loggedUser} />
+              <Authbar
+                user={this.props.loggedUser}
+
+                logout={logout} />
             </div>
           </header>
           <Route exact path="/" component={Home} />
@@ -98,7 +107,10 @@ class App extends Component {
             isAuthenticated={this.isAuthenticated} />
           {/*<Route path="/chats" component={Chats} />*/}
           <Route path="/login" component={
-            () => (<Login handleLogin={handleLogin} />)} />
+            () => (
+              <Login
+                handleLogin={handleLogin}
+                isAuthenticated={this.isAuthenticated} />)} />
           <Route path="/register" component={
             () => (<Register handleRegister={handleRegister} />)} />
         </div>
