@@ -1,7 +1,6 @@
 import {
   RECEIVE_CHAT_DATA,
-  RECEIVE_ALL_USERS,
-  RECEIVE_ALL_MESSAGES
+  RECEIVE_ALL_USERS
 } from '../actions/chatActions';
 
 import {getMaxIndex} from '../utils';

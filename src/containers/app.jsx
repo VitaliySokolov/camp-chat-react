@@ -76,7 +76,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('app did mount');
+    // console.log('app did mount');
   }
 
 

@@ -58,7 +58,7 @@ export const initWS = (data, store) => dispatch => {
       connectWsToStore(dispatch)
       socket.emit('authenticate', { token: data.token });
       socket.on('join', (jdata) => {
-        const { time, user } = jdata;
+        const { user } = jdata;
         if (user.username === data.user.username) {
           dispatch(loginWsSuccess(jdata))
         } else {

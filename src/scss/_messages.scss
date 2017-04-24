@@ -62,7 +62,7 @@
       padding: 20px 30px;
     }
     .message-time {
-      color: $main-bg-color;
+      color: darken($main-bg-color, 20%);
       font-size: smaller;
       margin-top: 5px;
     }

@@ -34,6 +34,7 @@ class MessageNew extends Component {
   handleEmoji(event) {
     event.preventDefault();
     console.log('push emoji');
+    this.setState({'showEmojiPicker': true});
   }
 
   render() {
@@ -47,7 +48,7 @@ class MessageNew extends Component {
           onKeyDown={this.handleChange}
           ref={(ta) => this.textarea = ta}></textarea>
         <button className="emoji" onClick={this.handleEmoji}>
-          <img src="img/smile.png" alt=":)" />
+          {/*<img src="img/smile.png" alt=":)" />*/}
         </button>
         <input type="submit" value="Send" className="message-new__submit" />
       </form>

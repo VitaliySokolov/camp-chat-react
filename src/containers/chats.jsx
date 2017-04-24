@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Sidebar from '../components/layout/sidebar';
 import RoomList from '../components/rooms/room-list';
 import RoomItem from '../components/rooms/room-item';
 import RoomNew from '../components/rooms/room-new';
@@ -10,7 +11,7 @@ import MessageItem from '../components/messages/message-item';
 import MessageNew from '../components/messages/message-new';
 import UserList from '../components/users/user-list';
 import UserItem from '../components/users/user-item';
-import UserNew from '../components/users/user-new';
+// import UserNew from '../components/users/user-new';
 
 import * as chatActions from '../actions/chatActions';
 
@@ -58,7 +59,7 @@ class Chats extends Component {
           loggedUser={loggedUser}
           selectedMessage={selectedMessage}
           unselectMessage={unselectMessage}
-          selectMessage={selectMessage}  />
+          selectMessage={selectMessage} />
       )) : null
     // user={getAuthor(message)}
   }
@@ -84,22 +85,7 @@ class Chats extends Component {
     return (
       <div className="page-wrapper">
         <input type="checkbox" name="toggle_sb" id="toggle_sb" className="cb-toggle-sb hidden" />
-        <aside className="sidebar">
-          <header className="sidebar__header">
-            <label className="sidebar__toggle" htmlFor="toggle_sb">
-              <span className="toggle-sign"></span>
-            </label>
-            <div className="sidebar-search">
-              <input name="search" type="search" value=""
-                className="sidebar-search__input" placeholder="search..." />
-              <button className="sidebar-search__btn">
-                <img src="/img/search.png" alt="s" />
-              </button>
-            </div>
-            <div className="sidebar__menu">
-              <img src="/img/menu.png" alt="menu" />
-            </div>
-          </header>
+        <Sidebar>
           <div className="rooms-wrapper hidden">
             <RoomList>
               {this.getRooms()}
@@ -112,7 +98,7 @@ class Chats extends Component {
             </UserList>
             {/*<UserNew />*/}
           </div>
-        </aside>
+        </Sidebar>
         <main className="main">
           <div className="messages-header">
           </div>

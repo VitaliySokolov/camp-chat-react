@@ -25,7 +25,7 @@ class MessageItem extends Component {
   }
 
   componentDidMount() {
-    console.log('mi:cdm');
+    // console.log('mi:cdm');
     this.node.scrollIntoView()
   }
 
