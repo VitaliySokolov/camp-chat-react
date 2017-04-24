@@ -65,10 +65,21 @@ class Chats extends Component {
   }
 
   getUsers() {
-    const { users } = this.props;
+    let selectedUser = null;
+    const { users, selectedMessage, messages } = this.props;
+    // messages.filter(msg => msg.author.username === user
+    const getLastMessage = (user, messages) => {
+        return messages.filter(msg => msg.author.username === user.username)
+          .reduce((last, next) => last.time > next.time ? last : next, {time:0})
+    }
+    if (selectedMessage) {
+      // console.log(selectedMessage.author);
+      selectedUser = selectedMessage.author;
+    }
     return (users) ?
       users.map(user => (
-        <UserItem key={user.id} user={user} />
+        <UserItem key={user.id} user={user} selectedUser={selectedUser}
+          lastMessage={getLastMessage(user, messages)} />
       )) : null
   }
 

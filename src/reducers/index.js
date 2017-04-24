@@ -24,7 +24,8 @@ import {
 
 const selectedMessage = createReducer(null, {
   [SELECT_MESSAGE]: (state, payload) =>
-    (payload.message !== state) ? payload.message : state,
+    (payload.message !== state &&
+     payload.message.author !== 'robot') ? payload.message : state,
   [UNSELECT_MESSAGE]: (state, payload) => null
 });
 

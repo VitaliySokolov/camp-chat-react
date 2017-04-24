@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
+import autobind from 'autobindr';
+import classNames from 'classnames';
+import moment from 'moment';
 
 import Avatar from '../avatar';
 
 class UserItem extends Component {
   render() {
-    const { user } = this.props
+    const { user, selectedUser, lastMessage } = this.props
     const { username } = user
+    // console.log(lastMessage);
+    const userClassName = classNames('user', {
+      'bg-red': selectedUser && selectedUser.username === user.username
+    });
+    const lastMessageText = (lastMessage) ? lastMessage.text : '';
+    const lastMessageTime = (lastMessage)
+      ? moment(lastMessage.time).fromNow(true)
+      : '';
     return (
-      <div className="user">
+      <div className={userClassName}>
         <Avatar user={user} />
         <div className="user__info-wrapper">
           <div className="user__name">{username}</div>
-          <div className="user__last-message">some message 1</div>
+          <div className="user__last-message">{lastMessageText}</div>
         </div>
-        <div className="user__last-message-time">1min</div>
+        <div className="user__last-message-time">{lastMessageTime}</div>
       </div>
     );
   }

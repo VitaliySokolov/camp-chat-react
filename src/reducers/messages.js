@@ -15,9 +15,10 @@ const messagesReducer = (state = [], action) => {
     case RECEIVE_ALL_MESSAGES: {
       const { messages } = action.payload;
       const modMsg = messages.map((message, index) => {
+        const text = (typeof message.msg !== 'string') ? "" : message.msg
         return {
           id: index,
-          text: message.msg ? message.msg.msg || message.msg : "",
+          text: text,
           author: message.user,
           time: message.time
         }
@@ -27,10 +28,11 @@ const messagesReducer = (state = [], action) => {
     case 'message': {
       const maxIndex = getMaxIndex(state);
       const message = action.payload;
+      const text = (typeof message.msg !== 'string') ? "" : message.msg
       // console.log(state);
       return [...state, {
         id: maxIndex + 1,
-        text: message.msg.msg || message.msg,
+        text: text, //message.msg.msg || message.msg.message || message.msg,
         author: message.user,
         time: message.time
       }];
