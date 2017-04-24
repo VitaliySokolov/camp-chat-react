@@ -23,3 +23,10 @@ export const checkHttpStatus = (response) => {
 }
 
 export const parseJSON = (response) => response.json()
+
+export function getMaxIndex(arr) {
+  if (arr.length !== 0) {
+    return Math.max.apply(null, arr.map(item => item.id));
+  }
+  return 0;
+}

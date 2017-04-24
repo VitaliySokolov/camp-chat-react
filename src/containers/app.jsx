@@ -112,7 +112,9 @@ class App extends Component {
                 handleLogin={handleLogin}
                 isAuthenticated={this.isAuthenticated} />)} />
           <Route path="/register" component={
-            () => (<Register handleRegister={handleRegister} />)} />
+            () => (<Register
+                    handleRegister={handleRegister}
+                    isAuthenticated={this.isAuthenticated} />)} />
         </div>
       </Router>
     );
@@ -121,7 +123,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    loggedUser: state.user
+    loggedUser: state.auth
   };
 }
 

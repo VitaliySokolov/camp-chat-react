@@ -18,7 +18,7 @@ class LoginFormWithoutRouter extends Component {
     console.log(user);
     handleLogin(user);
     event.preventDefault();
-    console.log(this.props.history);
+    // console.log(this.props.history);
   }
 
   render() {

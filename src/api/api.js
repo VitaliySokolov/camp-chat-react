@@ -1,8 +1,10 @@
+import { SERVER_URL } from '../config';
+
 /**
  * Helper for fetching from rhcloud
  * @param {*} url
  */
-const getFromRhcloud = (url, method='GET', bodyObj=null) => {
+const getFromRhcloud = (url, method = 'GET', bodyObj = null) => {
   const headers = new Headers();
   headers.append('Content-Type', 'application/json');
   const init = {
@@ -40,7 +42,7 @@ export const loginRhcloud = (username, password) => {
   if (password) {
     userInfo['password'] = password;
   }
-  const url = 'http://eleksfrontendcamp-mockapitron.rhcloud.com/login';
+  const url = `${SERVER_URL}/login`;
   return getFromRhcloud(url, 'POST', userInfo);
 }
 
@@ -68,7 +70,7 @@ export const registerRhcloud = (username, password, email) => {
     body: JSON.stringify(userInfo)
   };
 
-  return fetch('http://eleksfrontendcamp-mockapitron.rhcloud.com/signup', init)
+  return fetch(`${SERVER_URL}/signup`, init)
     .then(data => {
       if (data.status === 201) {
         return 'OK'
@@ -87,7 +89,7 @@ export const registerRhcloud = (username, password, email) => {
  * @return Promise with Array[{username: 'someone', ...}]
  */
 export const getAllUsersRhcloud = () => {
-  const url = 'http://eleksfrontendcamp-mockapitron.rhcloud.com/users';
+  const url = `${SERVER_URL}/users`;
   return getFromRhcloud(url)
     .then(users => users.filter(
       user => ('username' in user))) //&& 'email' in user)))
@@ -99,6 +101,6 @@ export const getAllUsersRhcloud = () => {
  * }}]
  */
 export const getAllMessagesRhcloud = () => {
-  const url = 'http://eleksfrontendcamp-mockapitron.rhcloud.com/messages';
+  const url = `${SERVER_URL}/messages`;
   return getFromRhcloud(url)
 }

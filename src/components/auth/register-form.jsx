@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import autobind from 'autobindr';
+import { withRouter, Redirect } from 'react-router-dom';
 
-export class RegisterForm extends Component {
+export class RegisterFormWithoutRouter extends Component {
   constructor(props) {
     super(props);
-    this.handleRegisterClick = this.handleRegisterClick.bind(this);
+    autobind(this);
   }
 
   handleRegisterClick(event) {
@@ -22,6 +24,11 @@ export class RegisterForm extends Component {
   }
 
   render() {
+    const { isAuthenticated } = this.props;
+    const { from } = this.props.location.state || { from: { pathname: '/'} }
+    if (isAuthenticated()) {
+      return <Redirect to={from} />
+    }
     return (
       <div className="auth-form-wrapper">
         <div className="signup-wrapper">
@@ -51,3 +58,6 @@ export class RegisterForm extends Component {
     );
   }
 }
+
+const RegisterForm = withRouter(RegisterFormWithoutRouter);
+export { RegisterForm }

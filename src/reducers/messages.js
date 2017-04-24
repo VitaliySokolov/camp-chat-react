@@ -3,6 +3,9 @@ import {
   RECEIVE_ALL_MESSAGES
 } from '../actions/chatActions';
 
+import {getMaxIndex} from '../utils';
+
+
 const messagesReducer = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_CHAT_DATA: {
@@ -11,7 +14,7 @@ const messagesReducer = (state = [], action) => {
     }
     case RECEIVE_ALL_MESSAGES: {
       const { messages } = action.payload;
-      const modMsg =  messages.map((message, index) => {
+      const modMsg = messages.map((message, index) => {
         return {
           id: index,
           text: message.msg ? message.msg.msg || message.msg : "",
@@ -22,37 +25,35 @@ const messagesReducer = (state = [], action) => {
       return modMsg;
     }
     case 'message': {
-      const maxIndex = Math.max.apply(
-        null, state.map(msg => msg.id));
+      const maxIndex = getMaxIndex(state);
       const message = action.payload;
+      // console.log(state);
       return [...state, {
-          id: maxIndex + 1,
-          text: message.msg.msg || message.msg,
-          author: message.user,
-          time: message.time
-        }];
+        id: maxIndex + 1,
+        text: message.msg.msg || message.msg,
+        author: message.user,
+        time: message.time
+      }];
     }
     case 'join': {
-      const maxIndex = Math.max.apply(
-        null, state.map(msg => msg.id));
+      const maxIndex = getMaxIndex(state);
       const message = action.payload;
       return [...state, {
-          id: maxIndex + 1,
-          text: `${message.user.username} joined chat`,
-          author: 'robot',
-          time: message.time
-        }];
+        id: maxIndex + 1,
+        text: `${message.user.username} joined chat`,
+        author: 'robot',
+        time: message.time
+      }];
     }
     case 'leave': {
-      const maxIndex = Math.max.apply(
-        null, state.map(msg => msg.id));
+      const maxIndex = getMaxIndex(state);
       const message = action.payload;
       return [...state, {
-          id: maxIndex + 1,
-          text: `${message.user.username} leaved chat`,
-          author: 'robot',
-          time: message.time
-        }];
+        id: maxIndex + 1,
+        text: `${message.user.username} leaved chat`,
+        author: 'robot',
+        time: message.time
+      }];
     }
     default:
       return state;

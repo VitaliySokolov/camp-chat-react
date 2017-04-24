@@ -24,7 +24,7 @@ class Chats extends Component {
 
     // work!!
     // this.props.chatActions.getUserList();
-    this.props.chatActions.getMessageList();
+    // this.props.chatActions.getMessageList();
   }
 
   getRooms() {
@@ -133,7 +133,7 @@ function mapStateToProps(state) {
     messages: state.messages,
     roomId: state.roomId,
     selectedMessage: state.selectedMessage,
-    loggedUser: state.user
+    loggedUser: state.auth
   };
 }
 

@@ -1,7 +1,5 @@
 import io from 'socket.io-client';
-
-const SOCKET_URL = 'http://eleksfrontendcamp-mockapitron.rhcloud.com';
-const ALT_SOCKET_URL = 'http://eleksfrontendcamp-mockapitron.rhcloud.com:8000';
+import { WS_SERVER_URL } from '../config';
 
 export const LOGIN_WS_REQUEST = 'LOGIN_WS_REQUEST';
 export const LOGIN_WS_SUCCESS = 'LOGIN_WS_SUCCESS';
@@ -55,12 +53,12 @@ export const logoutWS = () => dispatch => {
 export const initWS = (data, store) => dispatch => {
   try {
     dispatch(loginWsRequest());
-    socket = io(ALT_SOCKET_URL);
+    socket = io(WS_SERVER_URL);
     socket.on('connect', () => {
       connectWsToStore(dispatch)
       socket.emit('authenticate', { token: data.token });
       socket.on('join', (jdata) => {
-        const {time, user} = jdata;
+        const { time, user } = jdata;
         if (user.username === data.user.username) {
           dispatch(loginWsSuccess(jdata))
         } else {
