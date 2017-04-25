@@ -6,6 +6,10 @@ export const LOGIN_WS_SUCCESS = 'LOGIN_WS_SUCCESS';
 export const LOGIN_WS_FAILURE = 'LOGIN_WS_FAILURE';
 export const LOGOUT_WS = 'LOGOUT_WS';
 
+export const WS_MESSAGE = 'WS_MESSAGE';
+export const WS_JOIN = 'WS_JOIN';
+export const WS_LEAVE = 'WS_LEAVE';
+
 export const typesWS = [
   'message',
   'join',
@@ -17,7 +21,7 @@ let socket;
 export const connectWsToStore = dispatch => {
   typesWS.forEach(type =>
     socket.on(type, (payload) =>
-      dispatch({ type, payload })));
+      dispatch({ type: `WS_${type.toUpperCase()}`, payload })));
 }
 
 export const emit = (type, payload) =>

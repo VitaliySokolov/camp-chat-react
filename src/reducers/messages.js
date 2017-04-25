@@ -1,12 +1,20 @@
 import {
   RECEIVE_CHAT_DATA,
-  RECEIVE_ALL_MESSAGES
+  RECEIVE_ALL_MESSAGES,
+  REQUEST_ALL_MESSAGES,
+  FAIL_ALL_MESSAGES
 } from '../actions/chatActions';
 
-import {getMaxIndex} from '../utils';
+import {
+  WS_JOIN,
+  WS_LEAVE,
+  WS_MESSAGE
+} from '../actions/wsActions';
+
+import { getMaxIndex } from '../utils';
 
 
-const messagesReducer = (state = [], action) => {
+const messages = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_CHAT_DATA: {
       const { messages } = action.payload;
@@ -25,7 +33,7 @@ const messagesReducer = (state = [], action) => {
       });
       return modMsg;
     }
-    case 'message': {
+    case WS_MESSAGE: {
       const maxIndex = getMaxIndex(state);
       const message = action.payload;
       const text = (typeof message.msg !== 'string') ? "" : message.msg
@@ -37,7 +45,7 @@ const messagesReducer = (state = [], action) => {
         time: message.time
       }];
     }
-    case 'join': {
+    case WS_JOIN: {
       const maxIndex = getMaxIndex(state);
       const message = action.payload;
       return [...state, {
@@ -47,7 +55,7 @@ const messagesReducer = (state = [], action) => {
         time: message.time
       }];
     }
-    case 'leave': {
+    case WS_LEAVE: {
       const maxIndex = getMaxIndex(state);
       const message = action.payload;
       return [...state, {
@@ -61,6 +69,50 @@ const messagesReducer = (state = [], action) => {
       return state;
   }
 }
+
+const initialMessages = {
+  items: [],
+  isFetching: false,
+  didInvalidate: false
+}
+
+const messagesReducer = (state = initialMessages, action) => {
+  switch (action.type) {
+    case RECEIVE_ALL_MESSAGES:
+    case WS_JOIN:
+    case WS_LEAVE:
+    case WS_MESSAGE:
+      const items = messages(state.items, action)
+      return (items !== state.items) ?
+        {
+          ...state,
+          items,
+          isFetching: false,
+          didInvalidate: false
+        } : state
+    case REQUEST_ALL_MESSAGES:
+      return { ...state, isFetching: true }
+    case FAIL_ALL_MESSAGES:
+      return {
+        ...state,
+        isFetching: false,
+        didInvalidate: true,
+        error: action.payload['error']
+      }
+    default:
+      return state;
+  }
+}
+
+// const messagesByRoom = (state = {}, action) => {
+//   switch (action.type) {
+//     case RECEIVE_ALL_MESSAGES:
+//       return {
+//         ...state,
+//         [action.roomId]: messages(state[action.roomId], action)
+//       }
+//   }
+// }
 
 export default messagesReducer;
 

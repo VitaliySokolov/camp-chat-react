@@ -11,16 +11,6 @@ import {
   SELECT_MESSAGE,
   UNSELECT_MESSAGE
 } from '../actions/chatActions';
-// import {
-//   LOGIN_REQUEST,
-//   LOGIN_SUCCESS,
-//   LOGIN_FAILURE,
-//   LOGOUT,
-//   REGISTER_SUCCESS,
-//   REGISTER_REQUEST,
-//   REGISTER_FAILURE
-// } from '../actions/userActions.js';
-
 
 const selectedMessage = createReducer(null, {
   [SELECT_MESSAGE]: (state, payload) =>
@@ -39,57 +29,6 @@ const roomId = (state = null, action) => {
       return state
   }
 }
-
-// const userInitialState = {
-//   name: '',
-//   email: '',
-//   avatarLink: '',
-//   logging: false,
-//   error: '',
-//   token: '',
-//   registering: false,
-//   isRegistered: false
-// }
-// const user = (state = userInitialState, action) => {
-//   switch (action.type) {
-//     case LOGIN_REQUEST:
-//       return { ...state, logging: true };
-//     case LOGIN_SUCCESS:
-//       return {
-//         ...state, logging: false,
-//         name: action.payload.user.username,
-//         // email: action.payload.user.email,
-//         token: action.payload.token
-//       };
-//     case LOGIN_FAILURE:
-//       return { ...state, logging: false, error: action.payload.error };
-//     case LOGOUT:
-//       return userInitialState;
-
-//     case REGISTER_REQUEST:
-//       return {
-//         ...state,
-//         registering: true
-//       }
-
-//     case REGISTER_SUCCESS:
-//       return {
-//         ...state,
-//         registering: false,
-//         isRegistered: true
-//       }
-
-//     case REGISTER_FAILURE:
-//       return {
-//         ...state,
-//         registering: false,
-//         isRegistered: false
-//       }
-
-//     default:
-//       return state;
-//   }
-// }
 
 export default combineReducers({
   roomId,

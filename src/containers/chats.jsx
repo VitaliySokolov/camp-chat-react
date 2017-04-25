@@ -127,7 +127,7 @@ function mapStateToProps(state) {
   return {
     rooms: state.rooms,
     users: state.users,
-    messages: state.messages,
+    messages: state.messages.items,
     roomId: state.roomId,
     selectedMessage: state.selectedMessage,
     loggedUser: state.auth

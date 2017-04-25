@@ -65,14 +65,14 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log('app did update');
-    if (this.isAuthenticated) {
-      const { loggedUser } = this.props;
-      const token = localStorage.getItem('token');
-      if (token !== loggedUser.token) {
-        localStorage.setItem('token', loggedUser.token);
-        localStorage.setItem('username', loggedUser.name)
-      }
-    }
+    // if (this.isAuthenticated) {
+    //   const { loggedUser } = this.props;
+    //   const token = localStorage.getItem('token');
+    //   if (token !== loggedUser.token) {
+    //     localStorage.setItem('token', loggedUser.token);
+    //     localStorage.setItem('username', loggedUser.name)
+    //   }
+    // }
   }
 
   componentDidMount() {

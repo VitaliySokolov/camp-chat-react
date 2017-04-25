@@ -15,28 +15,30 @@ import {
 
 const middlewares = [];
 const mockStore = configureStore(middlewares);
-const storeFake = (state) => {
-	return {
-		default: () => {},
-		subscribe: () => {},
-		dispatch: () => {},
-		getState: () => {
-			return { ...state };
-		},
-	};
-};
+// const storeFake = (state) => {
+// 	return {
+// 		default: () => {},
+// 		subscribe: () => {},
+// 		dispatch: () => {},
+// 		getState: () => {
+// 			return { ...state };
+// 		},
+// 	};
+// };
 
 describe('App container', () => {
   let Component;
 
   beforeEach(() => {
-    const store = mockStore({user: {name: 'default'}});
-    const wrapper = mount(
+    const store = mockStore({loggedUser: {name: 'default'}});
+    const wrapper = shallow(
       <Provider store={store}>
         <AppContainer />
       </Provider>
     );
+    // console.log(wrapper);
     Component = wrapper.find(AppContainer);
+    // console.log(Component);
   });
 
   it('renders w/o crashing', () => {

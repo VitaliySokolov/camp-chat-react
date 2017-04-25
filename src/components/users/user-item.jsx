@@ -6,6 +6,11 @@ import moment from 'moment';
 import Avatar from '../avatar';
 
 class UserItem extends Component {
+  constructor(props) {
+    super(props);
+    autobind(this);
+  }
+
   render() {
     const { user, selectedUser, lastMessage } = this.props
     const { username } = user
