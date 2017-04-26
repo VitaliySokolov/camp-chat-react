@@ -52,7 +52,7 @@ class Chats extends Component {
       unselectMessage
     } = this.props.chatActions;
     return (messages) ?
-      messages.map(message => (
+      filterMessages(messages).map(message => (
         <MessageItem
           key={message.id}
           message={message}
@@ -69,8 +69,9 @@ class Chats extends Component {
     const { users, selectedMessage, messages } = this.props;
     // messages.filter(msg => msg.author.username === user
     const getLastMessage = (user, messages) => {
-        return messages.filter(msg => msg.author.username === user.username)
-          .reduce((last, next) => last.time > next.time ? last : next, {time:0})
+      return messages.filter(msg => msg.author.username === user.username)
+        .reduce((lastMsg, next) =>
+          lastMsg.time > next.time ? lastMsg : next, { time: 0 })
     }
     if (selectedMessage) {
       // console.log(selectedMessage.author);
@@ -121,6 +122,10 @@ class Chats extends Component {
       </div>
     )
   }
+}
+
+function filterMessages(items, last = 10) {
+  return items.sort((a, b) => (a.time > b.time)).slice(items.length - last);
 }
 
 function mapStateToProps(state) {

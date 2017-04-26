@@ -12,21 +12,18 @@ class MessageItem extends Component {
 
   handleSelectClick(event) {
     event.preventDefault();
-    // console.log('you click:')
-    // console.log(this.props.message);
     const { selectMessage, unselectMessage,
       message, selectedMessage } = this.props;
-    if (selectedMessage !== message) {
-      selectMessage(message);
-    } else {
-      unselectMessage(message);
-    }
+    // if (selectedMessage !== message) {
+    //   selectMessage(message);
+    // } else {
+    //   unselectMessage(message);
+    // }
 
   }
 
   componentDidMount() {
-    // console.log('mi:cdm');
-    this.node.scrollIntoView()
+    this.node.scrollIntoView();
   }
 
   render() {
@@ -36,7 +33,6 @@ class MessageItem extends Component {
       selectedMessage } = this.props;
     const { text, time, author } = message;
     const ltime = moment(+time).fromNow();
-    // console.log(message);
     const rowClassName = classNames('message-list-row', {
       'message-list-row--self': author.username === loggedUser.name
     })
@@ -61,4 +57,3 @@ class MessageItem extends Component {
 }
 
 export default MessageItem;
-// {user.name}(id: {authorId}):
