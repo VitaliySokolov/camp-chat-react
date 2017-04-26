@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { createReducer } from '../utils';
 
 import rooms from './rooms';
-import messages from './messages';
+import messages from './messages-reducer';
 import users from './users';
 import auth from './auth-reducer';
 

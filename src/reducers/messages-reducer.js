@@ -13,7 +13,6 @@ import {
 
 import { getMaxIndex } from '../utils';
 
-
 const messages = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_CHAT_DATA: {
@@ -50,7 +49,7 @@ const messages = (state = [], action) => {
       const message = action.payload;
       return [...state, {
         id: maxIndex + 1,
-        text: `${message.user.username} joined chat`,
+        text: `${message.user.username}'s joined the chat`,
         author: 'robot',
         time: message.time
       }];
@@ -60,7 +59,7 @@ const messages = (state = [], action) => {
       const message = action.payload;
       return [...state, {
         id: maxIndex + 1,
-        text: `${message.user.username} leaved chat`,
+        text: `${message.user.username}'s left the chat`,
         author: 'robot',
         time: message.time
       }];
@@ -104,6 +103,7 @@ const messagesReducer = (state = initialMessages, action) => {
   }
 }
 
+export default messagesReducer;
 // const messagesByRoom = (state = {}, action) => {
 //   switch (action.type) {
 //     case RECEIVE_ALL_MESSAGES:
@@ -113,8 +113,6 @@ const messagesReducer = (state = initialMessages, action) => {
 //       }
 //   }
 // }
-
-export default messagesReducer;
 
 // import { combineReducers } from 'redux';
 
