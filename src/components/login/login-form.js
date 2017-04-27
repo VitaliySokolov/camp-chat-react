@@ -6,7 +6,6 @@ class LoginFormWithoutRouter extends Component {
   constructor(props) {
     super(props);
     autobind(this);
-    // this.state = { loggedIn: false }
   }
 
   handleLoginClick(event) {
@@ -18,7 +17,6 @@ class LoginFormWithoutRouter extends Component {
     console.log(user);
     handleLogin(user);
     event.preventDefault();
-    // console.log(this.props.history);
   }
 
   render() {
@@ -32,7 +30,7 @@ class LoginFormWithoutRouter extends Component {
         <div className="signin-wrapper">
           <form noValidate action="#" method="POST" className="signin-form visible" onSubmit={this.handleLoginClick}>
             <div className="form-group">
-              <input type="text" name="login" id="login" required placeholder="Email"
+              <input type="text" name="login" id="login" required placeholder="Email or Login"
                 ref={(input) => this.loginInput = input} />
             </div>
             <div className="form-group">
@@ -44,7 +42,6 @@ class LoginFormWithoutRouter extends Component {
             </div>
             <div className="form-group">
               <input type="submit" value="Login" className="button login-button" />
-              {/*<button type="button" className="button login-button">Login</button>*/}
             </div>
           </form>
         </div>
@@ -54,4 +51,4 @@ class LoginFormWithoutRouter extends Component {
 }
 
 const LoginForm = withRouter(LoginFormWithoutRouter);
-export { LoginForm }
+export default LoginForm

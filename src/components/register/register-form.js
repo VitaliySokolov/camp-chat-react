@@ -60,4 +60,4 @@ export class RegisterFormWithoutRouter extends Component {
 }
 
 const RegisterForm = withRouter(RegisterFormWithoutRouter);
-export { RegisterForm }
+export default RegisterForm;

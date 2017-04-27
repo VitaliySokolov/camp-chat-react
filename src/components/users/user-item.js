@@ -14,7 +14,6 @@ class UserItem extends Component {
   render() {
     const { user, selectedUser, lastMessage } = this.props
     const { username } = user
-    // console.log(lastMessage);
     const userClassName = classNames('user', {
       'bg-red': selectedUser && selectedUser.username === user.username
     });

@@ -66,11 +66,11 @@ export const initWS = (data, store) => dispatch => {
         if (user.username === data.user.username) {
           dispatch(loginWsSuccess(jdata))
         } else {
-          dispatch(loginWsFailure('some went wrong'));
+          dispatch(loginWsFailure('error'));
         }
       })
     });
-  } catch (e) {
-    dispatch(loginWsFailure(e));
+  } catch (error) {
+    dispatch(loginWsFailure(error));
   }
 }

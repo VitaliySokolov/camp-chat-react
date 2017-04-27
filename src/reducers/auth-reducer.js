@@ -15,6 +15,7 @@ const authInitialState = {
   email: '',
   avatarLink: '',
   logging: false,
+  isLogged: false,
   error: '',
   token: '',
   registering: false,
@@ -26,12 +27,14 @@ export default createReducer(authInitialState, {
   [LOGIN_SUCCESS]: (state, { user, token }) => ({
     ...state,
     logging: false,
+    isLogged: true,
     name: user.username,
     token
   }),
   [LOGIN_FAILURE]: (state, { error }) => ({
     ...state,
     logging: false,
+    isLogged: false,
     error
   }),
   [LOGOUT]: () => authInitialState,

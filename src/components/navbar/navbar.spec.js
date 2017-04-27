@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { shallow } from 'enzyme';
 
-import { Navbar } from './navbar';
-import { Authbar } from '../auth';
+import Navbar from './navbar';
 
 describe('Navbar Layout Component', () => {
   it('should render Navbar', () => {
@@ -11,8 +10,8 @@ describe('Navbar Layout Component', () => {
     expect(wrapper.length).toBe(1);
   });
 
-  xit('should contain Authbar', () => {
-    const wrapper = shallow(<Navbar/>);
-    expect(wrapper.containsMatchingElement(<Authbar />)).toBe(true);
+  it('should contain Authbar', () => {
+    const wrapper = shallow(<Navbar />);
+    expect(wrapper.find('.nav-link').length).toBe(2);
   });
 });

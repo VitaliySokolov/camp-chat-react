@@ -5,7 +5,6 @@ import autobind from 'autobindr';
 class MessageNew extends Component {
   constructor(props) {
     super(props);
-    // this.handleSubmit = this.handleSubmit.bind(this);
     autobind(this);
   }
 
@@ -18,11 +17,6 @@ class MessageNew extends Component {
 
   handleChange(event) {
     const txt = event.target.value.trim();
-    // console.log(txt);
-    // console.log(event);
-    // console.log(event.ctrlKey);
-    // console.log(event.key);
-    // console.log(event.which);
     if (event.ctrlKey && event.which === 13) {
       if (txt !== '') {
         emit('message', txt);

@@ -38,7 +38,8 @@
 
 .message-list {
   list-style: none;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-right: -20px;
   padding-right: 20px;
 }

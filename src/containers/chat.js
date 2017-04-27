@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Sidebar from '../components/layout/sidebar';
+import Sidebar from '../components/sidebar/sidebar';
+import Chat from '../components/chat/chat';
 import RoomList from '../components/rooms/room-list';
 import RoomItem from '../components/rooms/room-item';
 import RoomNew from '../components/rooms/room-new';
@@ -16,7 +17,7 @@ import UserItem from '../components/users/user-item';
 import * as chatActions from '../actions/chatActions';
 
 
-class Chats extends Component {
+class ChatContainer extends Component {
 
   componentDidMount() {
     // console.log('in cdm');
@@ -111,20 +112,18 @@ class Chats extends Component {
             {/*<UserNew />*/}
           </div>
         </Sidebar>
-        <main className="main">
-          <div className="messages-header">
-          </div>
+        <Chat>
           <MessageList>
             {this.getMessages()}
           </MessageList>
           {this.showMessageNew()}
-        </main>
+        </Chat>
       </div>
     )
   }
 }
 
-function filterMessages(items, last = 10) {
+function filterMessages(items, last = 50) {
   return items.sort((a, b) => (a.time > b.time)).slice(items.length - last);
 }
 
@@ -145,4 +144,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Chats);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChatContainer);

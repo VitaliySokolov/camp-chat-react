@@ -11,15 +11,13 @@ class MessageItem extends Component {
   }
 
   handleSelectClick(event) {
-    event.preventDefault();
-    const { selectMessage, unselectMessage,
-      message, selectedMessage } = this.props;
+    // const { selectMessage, unselectMessage,
+    //   message, selectedMessage } = this.props;
     // if (selectedMessage !== message) {
     //   selectMessage(message);
     // } else {
     //   unselectMessage(message);
     // }
-
   }
 
   componentDidMount() {
