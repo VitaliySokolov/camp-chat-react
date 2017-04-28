@@ -33,10 +33,9 @@ function loginWsRequest() {
   }
 }
 
-function loginWsSuccess(data) {
+function loginWsSuccess() {
   return {
     type: LOGIN_WS_SUCCESS,
-    payload: data
   }
 }
 
@@ -60,15 +59,11 @@ export const initWS = (data, store) => dispatch => {
     socket = io(WS_SERVER_URL);
     socket.on('connect', () => {
       connectWsToStore(dispatch)
-      socket.emit('authenticate', { token: data.token });
-      socket.once('join', (jdata) => {
-        const { user } = jdata;
-        if (user.username === data.user.username) {
-          dispatch(loginWsSuccess(jdata))
-        } else {
-          dispatch(loginWsFailure('error'));
-        }
-      })
+      socket.emit('authenticate', { token: data.token })
+        .on('authenticated', () => dispatch(
+          loginWsSuccess()))
+        .on('unauthorized', (msg) => dispatch(
+          loginWsFailure("unauthorized: " + JSON.stringify(msg.data))))
     });
   } catch (error) {
     dispatch(loginWsFailure(error));
