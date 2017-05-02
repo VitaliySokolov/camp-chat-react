@@ -20,7 +20,7 @@ $sidebar-animation-function: ease-in;
 
 
   // .sidebar__header
-  &__header {
+  .sidebar__header {
     display: flex;
     flex-shrink: 0;
     justify-content: space-between;
@@ -33,11 +33,14 @@ $sidebar-animation-function: ease-in;
   }
 
   // .sidebar__toggle
-  .sidebar__toogle {
-    background-color: #0f0;
+  .sidebar__toggle {
+    // background-color: #0f0;
     height: 100%;
     text-align: center;
-    overflow-x: hidden;
+    overflow: hidden;
+    // margin: 20px;
+    padding: 10px;
+    flex-shrink: 0;
 
     @include mq-small {
       min-width: $sidebar-medium;
@@ -45,23 +48,25 @@ $sidebar-animation-function: ease-in;
   }
 
   // in .sidebar__toggle
-  .toggle-sign {
+  .toggle__sign {
     cursor: pointer;
     display: inline-block;
-    height: $sidebar-medium - 40px;
-    width: $sidebar-medium - 40px;
-    margin: 20px;
-    transform: rotate(45deg);
-    transition: $sidebar-animation-duration $sidebar-animation-function;
-    border-right: 5px solid #aaa;
-    border-top: 5px solid #aaa;
+    height: $sidebar-medium;
+    width: $sidebar-medium;
+    // margin: 20px !important;
+    // transform: rotate(45deg);
+    // transition: $sidebar-animation-duration $sidebar-animation-function;
+    // border-right: 5px solid #aaa;
+    // border-top: 5px solid #aaa;
     &:hover {
-      border-color: #fff;
+      color: #fff !important;
     }
   }
 
   // .sidebar-search
-  &-search {
+  .sidebar-search {
+    display: flex;
+    flex-shrink: 2 !important;
     position: relative;
     &__input {
       border-radius: 10px;
@@ -93,15 +98,17 @@ $sidebar-animation-function: ease-in;
   }
 
   // .sidebar__menu
-  &__menu {
+  .sidebar__menu {
     padding: 0 10px;
+    flex-shrink: 0;
     img {
       width: 20px;
     }
   }
 }
 
-.cb-toggle-sb:checked+.sidebar {
+.cb-toggle-sb:checked+.sidebar,
+.sidebar--opened {
   border-radius: 10px;
   overflow-y: auto;
   width: 100%;
@@ -127,8 +134,8 @@ $sidebar-animation-function: ease-in;
 
   // in .sidebar__toggle
   .toggle-sign {
-    transform: rotate(-135deg);
-    transition: $sidebar-animation-duration $sidebar-animation-function;
+    // transform: rotate(-135deg);
+    // transition: $sidebar-animation-duration $sidebar-animation-function;
   }
   // .sidebar__search
   .sidebar-search {

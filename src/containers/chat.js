@@ -97,7 +97,7 @@ class ChatContainer extends Component {
     const { addChatRoom } = this.props.chatActions;
     return (
       <div className="page-wrapper">
-        <input type="checkbox" name="toggle_sb" id="toggle_sb" className="cb-toggle-sb hidden" />
+        {/*<input type="checkbox" name="toggle_sb" id="toggle_sb" className="cb-toggle-sb hidden" />*/}
         <Sidebar>
           <div className="rooms-wrapper hidden">
             <RoomList>

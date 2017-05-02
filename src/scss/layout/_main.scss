@@ -7,12 +7,14 @@
   width: 100%;
   &--single {
     border-radius: 10px;
-    padding: 10px;
+    // padding: 10px;
   }
 }
 
-.cb-toggle-sb:checked~.main {
+.cb-toggle-sb:checked~.main,
+.sidebar--opened~.main {
   display: none;
+  // display: none;
 
   @include mq-medium {
     display: flex;
