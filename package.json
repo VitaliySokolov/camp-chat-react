@@ -5,6 +5,7 @@
   "dependencies": {
     "autobindr": "^1.0.2",
     "classnames": "^2.2.5",
+    "material-ui": "^0.17.4",
     "moment": "^2.18.1",
     "npm-run-all": "^4.0.2",
     "react": "15.4.2",
@@ -12,6 +13,8 @@
     "react-dom": "15.4.2",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^2.0.1",
+    "react-transition-group": "^1.1.2",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.1",
     "redux-thunk": "^2.2.0",
