@@ -1,0 +1,49 @@
+.message-list-row {
+  display: flex;
+  padding: 5px;
+
+  flex-flow: row;
+  justify-content: flex-end;
+  .user-image {
+    @include userImage();
+  }
+  .message {
+    max-width: 60%;
+
+    order: -1;
+    .message-text {
+      background-color: $message-item-color;
+      border-radius: 10px;
+      padding: 20px 30px;
+    }
+    .message-time {
+      color: darken($main-bg-color, 20%);
+      font-size: smaller;
+      margin-top: 5px;
+    }
+  }
+
+  &:nth-of-type(odd) {
+    justify-content: flex-start;
+     .message {
+       order: 1;
+    }
+    .message-time {
+      float: right;
+    }
+  }
+
+  &--self {
+    // justify-content: flex-start;
+     .message {
+      //  order: 1;
+       .message-text {
+        background-color: $self-message-item-color;
+        color: #fff;
+      }
+    }
+    // .message-time {
+    //   float: right;
+    // }
+  }
+}

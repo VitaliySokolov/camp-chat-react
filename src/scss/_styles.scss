@@ -13,6 +13,9 @@
 @import 'components/user-list';
 @import 'components/user';
 @import 'components/user-new';
+@import 'components/message-list';
+@import 'components/message';
+@import 'components/message-new';
 
 // layout
 @import 'layout/main-wrapper';
@@ -26,4 +29,4 @@
 
 @import 'forms';
 // @import 'user-list';
-@import 'messages';
+// @import 'messages';

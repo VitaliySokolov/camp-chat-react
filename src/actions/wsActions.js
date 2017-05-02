@@ -10,6 +10,8 @@ export const WS_MESSAGE = 'WS_MESSAGE';
 export const WS_JOIN = 'WS_JOIN';
 export const WS_LEAVE = 'WS_LEAVE';
 
+export const SEND_MESSAGE = 'SEND_MESSAGE';
+
 export const typesWS = [
   'message',
   'join',
@@ -26,6 +28,13 @@ export const connectWsToStore = dispatch => {
 
 export const emit = (type, payload) =>
   socket.emit(type, payload);
+
+export const sendMessage = (messageText) => {
+  messageText = messageText.trim();
+  if (messageText) {
+    emit('message', messageText)
+  }
+}
 
 function loginWsRequest() {
   return {
