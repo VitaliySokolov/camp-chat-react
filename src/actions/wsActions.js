@@ -9,13 +9,15 @@ export const LOGOUT_WS = 'LOGOUT_WS';
 export const WS_MESSAGE = 'WS_MESSAGE';
 export const WS_JOIN = 'WS_JOIN';
 export const WS_LEAVE = 'WS_LEAVE';
+export const WS_ERROR = 'WS_ERROR';
 
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 
 export const typesWS = [
   'message',
   'join',
-  'leave'
+  'leave',
+  'error'
 ]
 
 let socket;

@@ -40,7 +40,7 @@ class MessageNew extends Component {
 
   handleEmoji(event) {
     event.preventDefault();
-    console.log('push emoji');
+    // console.log('push emoji');
     this.setState({ 'showEmojiPicker': true });
   }
 

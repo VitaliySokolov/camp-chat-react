@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import autobind from 'autobindr';
 import { withRouter, Redirect } from 'react-router-dom';
+
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
+import Progress from '../progress';
 
 const REQUIRED_FIELD_ERROR = "This field is required"
 
@@ -10,9 +13,12 @@ class LoginFormWithoutRouter extends Component {
   constructor(props) {
     super(props);
     autobind(this);
+
+    const { loggedUser } = this.props;
+
     this.state = {
       login: null,
-      loginError: '',
+      loginError: (loggedUser.error === '401: Unauthorized') ? 'Invalid Login or password': '',
       password: null,
       passwordError: '',
     };
@@ -61,10 +67,14 @@ class LoginFormWithoutRouter extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props;
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
-    if (isAuthenticated()) {
-      return <Redirect to={from} />
+    const { loggedUser } = this.props;
+    if ( loggedUser.isLogged ) {
+      return <Redirect to='/chats' />
+    }
+    if (loggedUser.logging) {
+      return (
+        <Progress />
+      )
     }
     return (
       <div className="auth-form-wrapper">

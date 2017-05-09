@@ -10,7 +10,7 @@ class RoomNew extends Component {
   handleSubmit(event) {
     event.preventDefault();
     const { addChatRoom } = this.props
-    console.log('add new room');
+    // console.log('add new room');
     addChatRoom(this.input.value);
     this.input.value = '';
   }

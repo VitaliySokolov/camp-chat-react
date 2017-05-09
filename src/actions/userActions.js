@@ -94,7 +94,7 @@ export const handleRegister = (userInfo) => dispatch => {
     type: REGISTER_REQUEST
   });
   registerRhcloud(username, password, email).then(data => {
-    console.log(data);
+    // console.log(data);
     // (data !== 'OK') || Promise.reject(data);
     dispatch({
       type: REGISTER_SUCCESS

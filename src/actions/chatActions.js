@@ -31,7 +31,7 @@ export const unselectMessage = (message) => ({
 })
 
 export const getRoomList = () => dispatch => {
-  console.log('in getRoomList');
+  // console.log('in getRoomList');
   mock_api.fetchAllRooms().then(rooms => dispatch({
     type: 'RECEIVE_ROOM_LIST',
     payload: { rooms: [].concat(rooms) }

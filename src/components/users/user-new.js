@@ -4,7 +4,7 @@ class UserNew extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('add new user');
+    // console.log('add new user');
   }
   render() {
     return (

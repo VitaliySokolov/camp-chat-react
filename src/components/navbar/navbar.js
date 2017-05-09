@@ -12,7 +12,7 @@ class Navbar extends Component {
 
   handleLinkClick(event) {
     event.preventDefault();
-    console.log(`clicked ${event.target.href}`);
+    // console.log(`clicked ${event.target.href}`);
 
     if (event.target.href.match(/\/chats$/)) {
       this.setState({ active: 'chats' });

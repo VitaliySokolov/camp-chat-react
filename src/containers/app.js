@@ -60,11 +60,11 @@ class App extends Component {
             () => (
               <Login
                 handleLogin={handleLogin}
-                isAuthenticated={this.isAuthenticated} />)} />
+                loggedUser={this.props.loggedUser} />)} />
           <Route path="/register" component={
             () => (<Register
               handleRegister={handleRegister}
-              isAuthenticated={this.isAuthenticated} />)} />
+              loggedUser={this.props.loggedUser} />)} />
         </div>
       </Router>
     );

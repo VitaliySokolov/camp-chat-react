@@ -19,7 +19,7 @@ const authInitialState = {
   error: '',
   token: '',
   registering: false,
-  isRegistered: false
+  isRegister: false
 }
 
 export default createReducer(authInitialState, {

@@ -16,10 +16,15 @@ import './index.css';
 // Needed for onTouchTap
 injectTapEventPlugin();
 
-const logger = createLogger();
+let middlewares = [thunk]
+if (process.env.NODE_ENV !== 'production') {
+  const logger = createLogger();
+  middlewares = [...middlewares, logger]
+}
+
 const store = createStore(
   rootReducer,
-  applyMiddleware(thunk, logger));
+  applyMiddleware(...middlewares));
 
 ReactDOM.render((
   <Provider store={store}>
