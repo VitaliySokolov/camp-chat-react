@@ -4,7 +4,7 @@ class ChatTitle extends Component {
   render() {
     return (
       <div>
-        room title
+        Common Room
       </div>
     );
   }

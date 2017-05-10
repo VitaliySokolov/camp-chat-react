@@ -9,7 +9,7 @@ class PrivateMessages extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newBadges: 20,
+      newBadges: 0,
     }
   }
 

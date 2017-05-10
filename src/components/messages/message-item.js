@@ -3,6 +3,7 @@ import autobind from 'autobindr';
 import classNames from 'classnames';
 import moment from 'moment';
 import Avatar from '../avatar';
+import MultilineText from '../multiline-text';
 
 class MessageItem extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class MessageItem extends Component {
         <div className="message">
           <b>{author.username}</b>
           <div className={selectionClassName}>
-            {text}
+            <MultilineText text={text} />
           </div>
           <time className="message-time">{ltime}</time>
         </div>

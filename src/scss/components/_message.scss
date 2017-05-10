@@ -9,6 +9,7 @@
   }
   .message {
     max-width: 60%;
+    min-width: 10%;
 
     order: -1;
     .message-text {
@@ -23,27 +24,27 @@
     }
   }
 
-  &:nth-of-type(odd) {
+  // &:nth-of-type(odd) {
+  //   justify-content: flex-start;
+  //    .message {
+  //      order: 1;
+  //   }
+  //   .message-time {
+  //     float: right;
+  //   }
+  // }
+
+  &--self {
     justify-content: flex-start;
      .message {
        order: 1;
-    }
-    .message-time {
-      float: right;
-    }
-  }
-
-  &--self {
-    // justify-content: flex-start;
-     .message {
-      //  order: 1;
        .message-text {
         background-color: $self-message-item-color;
         color: #fff;
       }
     }
-    // .message-time {
-    //   float: right;
-    // }
+    .message-time {
+      float: right;
+    }
   }
 }
