@@ -6,9 +6,8 @@ import {
 } from '../actions/chatActions';
 
 import {
-  WS_JOIN,
-  WS_LEAVE,
-  WS_MESSAGE
+  WS_MESSAGE,
+  WS_MESSAGES
 } from '../actions/wsActions';
 
 import { getMaxIndex } from '../utils';
@@ -20,7 +19,7 @@ const messages = (state = [], action) => {
       return messages
     }
     case RECEIVE_ALL_MESSAGES: {
-      const { messages } = action.payload;
+      const { messages }  = action.payload;
       const modMsg = messages.map((message, index) => {
         const text = (typeof message.msg !== 'string') ? "" : message.msg
         return {
@@ -32,38 +31,51 @@ const messages = (state = [], action) => {
       });
       return modMsg;
     }
+    case WS_MESSAGES:
+      const messages = action.payload;
+      const modMsg = messages.map((message, index) => {
+        const text = (typeof message.msg !== 'string') ? "" : message.msg
+        return {
+          id: message.id || index,
+          text: text,
+          author: message.user,
+          time: message.time
+        }
+      });
+      return modMsg;
+
     case WS_MESSAGE: {
       const maxIndex = getMaxIndex(state);
       const message = action.payload;
       const text = (typeof message.msg !== 'string') ? "" : message.msg
       // console.log(state);
       return [...state, {
-        id: maxIndex + 1,
+        id: message.id || maxIndex + 1,
         text: text, //message.msg.msg || message.msg.message || message.msg,
         author: message.user,
         time: message.time
       }];
     }
-    case WS_JOIN: {
-      const maxIndex = getMaxIndex(state);
-      const message = action.payload;
-      return [...state, {
-        id: maxIndex + 1,
-        text: `${message.user.username}'s joined the chat`,
-        author: 'robot',
-        time: message.time
-      }];
-    }
-    case WS_LEAVE: {
-      const maxIndex = getMaxIndex(state);
-      const message = action.payload;
-      return [...state, {
-        id: maxIndex + 1,
-        text: `${message.user.username}'s left the chat`,
-        author: 'robot',
-        time: message.time
-      }];
-    }
+    // case WS_JOIN: {
+    //   const maxIndex = getMaxIndex(state);
+    //   const message = action.payload;
+    //   return [...state, {
+    //     id: message.id || maxIndex + 1,
+    //     text: `${message.user.username}'s joined the chat`,
+    //     author: 'robot',
+    //     time: message.time
+    //   }];
+    // }
+    // case WS_LEAVE: {
+    //   const maxIndex = getMaxIndex(state);
+    //   const message = action.payload;
+    //   return [...state, {
+    //     id: message.id || maxIndex + 1,
+    //     text: `${message.user.username}'s left the chat`,
+    //     author: 'robot',
+    //     time: message.time
+    //   }];
+    // }
     default:
       return state;
   }
@@ -78,9 +90,8 @@ const initialMessages = {
 const messagesReducer = (state = initialMessages, action) => {
   switch (action.type) {
     case RECEIVE_ALL_MESSAGES:
-    case WS_JOIN:
-    case WS_LEAVE:
     case WS_MESSAGE:
+    case WS_MESSAGES:
       const items = messages(state.items, action)
       return (items !== state.items) ?
         {

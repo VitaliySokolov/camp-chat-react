@@ -4,7 +4,6 @@ import { withRouter, Redirect } from 'react-router-dom';
 
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
-import CircularProgress from 'material-ui/CircularProgress';
 import Progress from '../progress';
 
 const REQUIRED_FIELD_ERROR = "This field is required"

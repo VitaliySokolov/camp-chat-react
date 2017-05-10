@@ -29,6 +29,7 @@ export default createReducer(authInitialState, {
     logging: false,
     isLogged: true,
     name: user.username,
+    error: '',
     token
   }),
   [LOGIN_FAILURE]: (state, { error }) => ({
@@ -42,7 +43,8 @@ export default createReducer(authInitialState, {
   [REGISTER_SUCCESS]: (state, payload) => ({
     ...state,
     registering: false,
-    isRegister: true
+    isRegister: true,
+    error: ''
   }),
   [REGISTER_FAILURE]: (state, { error }) => ({
     ...state,

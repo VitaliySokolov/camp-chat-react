@@ -7,6 +7,7 @@ export const LOGIN_WS_FAILURE = 'LOGIN_WS_FAILURE';
 export const LOGOUT_WS = 'LOGOUT_WS';
 
 export const WS_MESSAGE = 'WS_MESSAGE';
+export const WS_MESSAGES = 'WS_MESSAGES';
 export const WS_JOIN = 'WS_JOIN';
 export const WS_LEAVE = 'WS_LEAVE';
 export const WS_ERROR = 'WS_ERROR';
@@ -17,7 +18,8 @@ export const typesWS = [
   'message',
   'join',
   'leave',
-  'error'
+  'error',
+  'messages'
 ]
 
 let socket;
@@ -64,6 +66,10 @@ export const logoutWS = () => dispatch => {
   })
 }
 
+export const getWsMessages = () => {
+  emit('get messages');
+}
+
 export const initWS = (data, store) => dispatch => {
   try {
     dispatch(loginWsRequest());
@@ -71,10 +77,13 @@ export const initWS = (data, store) => dispatch => {
     socket.on('connect', () => {
       connectWsToStore(dispatch)
       socket.emit('authenticate', { token: data.token })
-        .on('authenticated', () => dispatch(
+        .once('authenticated', () => dispatch(
           loginWsSuccess()))
-        .on('unauthorized', (msg) => dispatch(
+        .once('unauthorized', (msg) => dispatch(
           loginWsFailure("unauthorized: " + JSON.stringify(msg.data))))
+        .once('join', () => {
+          getWsMessages();
+        })
     });
   } catch (error) {
     dispatch(loginWsFailure(error));

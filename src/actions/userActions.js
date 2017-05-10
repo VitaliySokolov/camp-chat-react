@@ -1,6 +1,6 @@
 import { loginRhcloud, registerRhcloud } from '../api/api';
 import { initWS, logoutWS } from './wsActions';
-import { getMessageList } from './chatActions';
+// import { getMessageList } from './chatActions';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -62,7 +62,8 @@ export const handleLogin = (userInfo) => (dispatch, getStore) => {
   loginRhcloud(username, password).then(data => {
     dispatch(handleLoginSuccess(data));
     dispatch(initWS(data));
-    dispatch(getMessageList())
+    // getWsMessages();
+    // dispatch(getMessageList())
   }).catch(error => {
     dispatch(handleLoginFailure(error));
   });
@@ -79,7 +80,8 @@ export const loginFromStorage = () => dispatch => {
       payload
     });
     dispatch(initWS(payload));
-    dispatch(getMessageList())
+    // getWsMessages();
+    // dispatch(getMessageList())
     // connectWS({ token });
   } else {
     dispatch({

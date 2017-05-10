@@ -11,15 +11,21 @@ import autobind from 'autobindr';
 import Header from '../components/header/header';
 import Home from '../components/home/home';
 import ChatContainer from './chat';
+import SidebarContainer from './sidebar';
 import Login from '../components/login/login';
 import Register from '../components/register/register';
 
 import * as userActions from '../actions/userActions.js';
 
-const GuardRoute = ({ component: Component, ...rest }) => (
+const GuardChatsRoute = ({ ...rest }) => (
   <Route {...rest} render={props => (
     rest.isAuthenticated()
-      ? (<ChatContainer {...props} />)
+      ? (
+        <div className="page-wrapper">
+          <SidebarContainer />
+          <ChatContainer />
+        </div>
+      )
       : (<Redirect to={{
         pathname: '/login',
         state: { from: props.location }
@@ -47,6 +53,7 @@ class App extends Component {
       handleRegister,
       logout
     } = this.props.userActions;
+
     return (
       <Router>
         <div className="App">
@@ -54,7 +61,7 @@ class App extends Component {
             user={this.props.loggedUser}
             logout={logout} />
           <Route exact path="/" component={Home} />
-          <GuardRoute path="/chats" component={ChatContainer}
+          <GuardChatsRoute path="/chats"
             isAuthenticated={this.isAuthenticated} />
           <Route path="/login" component={
             () => (
