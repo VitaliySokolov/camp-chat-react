@@ -66,8 +66,12 @@ export const logoutWS = () => dispatch => {
   })
 }
 
-export const getWsMessages = () => {
-  emit('get messages');
+export const getWsMessages = (cutoff, limitCount) => {
+  const filter = {
+    cutoff: cutoff || new Date(),
+    limitCount: limitCount || 10
+  }
+  emit('get messages', filter);
 }
 
 export const initWS = (data, store) => dispatch => {

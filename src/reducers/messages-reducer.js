@@ -12,6 +12,29 @@ import {
 
 import { getMaxIndex } from '../utils';
 
+const initMessage = {
+  text: '',
+  author: '',
+  time: '',
+}
+
+const messageReduser = (state = initMessage, action) => {
+  switch (action.type) {
+    case WS_MESSAGE:
+    case WS_MESSAGES:
+      const message = action.payload;
+      const modMsg = {
+        id: message.id,
+        author: message.user,
+        text: message.msg,
+        time: message.time,
+      }
+      return {...state, ...modMsg}
+    default:
+      return state
+  }
+}
+
 const messages = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_CHAT_DATA: {
@@ -19,7 +42,7 @@ const messages = (state = [], action) => {
       return messages
     }
     case RECEIVE_ALL_MESSAGES: {
-      const { messages }  = action.payload;
+      const { messages } = action.payload;
       const modMsg = messages.map((message, index) => {
         const text = (typeof message.msg !== 'string') ? "" : message.msg
         return {
@@ -33,6 +56,9 @@ const messages = (state = [], action) => {
     }
     case WS_MESSAGES:
       const messages = action.payload;
+      if (messages.length === state.length) {
+        return state;
+      }
       const modMsg = messages.map((message, index) => {
         const text = (typeof message.msg !== 'string') ? "" : message.msg
         return {
@@ -82,24 +108,72 @@ const messages = (state = [], action) => {
 }
 
 const initialMessages = {
-  items: [],
+  items: {},
   isFetching: false,
-  didInvalidate: false
+  didInvalidate: false,
+  theOldestTime: null,
+  noMore: false,
 }
 
 const messagesReducer = (state = initialMessages, action) => {
   switch (action.type) {
     case RECEIVE_ALL_MESSAGES:
     case WS_MESSAGE:
+      const message = action.payload;
+      const item = {
+        [message.id]: messageReduser(state.items[message.id], {
+            type: action.type,
+            payload: message
+          })
+      }
+      return {...state, items: {...state.items, ...item} };
     case WS_MESSAGES:
-      const items = messages(state.items, action)
-      return (items !== state.items) ?
-        {
-          ...state,
-          items,
-          isFetching: false,
-          didInvalidate: false
-        } : state
+      // const items = messages(state.items, action);
+      if (action.payload.length === 0) {
+        return {...state, noMore: true}
+      }
+      let items = state.items;
+      let oldest = action.payload[0].time;
+      action.payload.forEach(message => {
+        items = Object.assign({}, items, {
+          [message.id]: messageReduser(state.items[message.id], {
+            type: action.type,
+            payload: message
+          })
+        })
+        if (message.time < oldest) {
+          oldest = message.time
+        }
+      });
+      return {
+        ...state,
+        items,
+        isFetching: false,
+        didInvalidate: false,
+        theOldestTime: oldest
+    }
+
+      //   const text = (typeof message.msg !== 'string') ? "" : message.msg
+      //   return {
+      //     id: message.id || index,
+      //     text: text,
+      //     author: message.user,
+      //     time: message.time
+      //   }
+      // });
+
+
+      // const oldest = items.reduce((acc, next) =>
+      //   (acc.time < next.time) ? acc : next);
+      // console.log(oldest);
+      // return (items !== state.items) ?
+      //   {
+      //     ...state,
+      //     items,
+      //     isFetching: false,
+      //     didInvalidate: false,
+      //     theOldestTime: oldest.time,
+      //   } : state
     case REQUEST_ALL_MESSAGES:
       return { ...state, isFetching: true }
     case FAIL_ALL_MESSAGES:

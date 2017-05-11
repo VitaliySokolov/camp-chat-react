@@ -13,7 +13,7 @@ const initUser = {
   username: '',
   isOnline: false,
   lastMessage: '',
-  lastMessageTime: '',
+  lastMessageTime: 0,
 };
 
 const userReducer = (state = initUser, action) => {
@@ -41,18 +41,18 @@ const usersReducer = (state = {}, action) => {
   switch (action.type) {
     case WS_MESSAGES:
       const messages = action.payload;
-      let users = {};
+      let users = state;
       messages.forEach(message => {
         users = Object.assign({}, users, {
           [message.user.id]: userReducer(
-            state[message.user.id],
+            users[message.user.id],
             {
               type: action.type,
               payload: message
             })
         })
       });
-      return users;
+      return {...state, ...users};
     case WS_MESSAGE:
       const message = action.payload;
       return Object.assign({}, state, {

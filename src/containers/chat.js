@@ -34,7 +34,7 @@ class ChatContainer extends Component {
       unselectMessage
     } = this.props.chatActions;
     return (messages) ?
-      filterMessages(messages).map(message => (
+      sortMessages(Object.values(messages)).map(message => (
         <MessageItem
           key={message.id}
           message={message}
@@ -57,7 +57,9 @@ class ChatContainer extends Component {
   render() {
     return (
       <Chat>
-        <MessageList>
+        <MessageList
+          cutoff={this.props.cutoff}
+          noMore={this.props.noMore}>
           {this.getMessages()}
         </MessageList>
         {this.showMessageNew()}
@@ -66,13 +68,15 @@ class ChatContainer extends Component {
   }
 }
 
-function filterMessages(items, last = 50) {
-  return items.sort((a, b) => (a.time > b.time)).slice(items.length - last);
+function sortMessages(items) {
+  return items.sort((a, b) => (a.time - b.time));
 }
 
 function mapStateToProps(state) {
   return {
     messages: state.messages.items,
+    cutoff: state.messages.theOldestTime,
+    noMore: state.messages.noMore,
     roomId: state.roomId,
     selectedMessage: state.selectedMessage,
     loggedUser: state.auth

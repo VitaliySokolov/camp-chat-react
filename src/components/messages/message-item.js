@@ -22,6 +22,7 @@ class MessageItem extends Component {
   }
 
   componentDidMount() {
+    // console.log(this);
     this.node.scrollIntoView();
   }
 
