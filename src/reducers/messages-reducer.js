@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   RECEIVE_CHAT_DATA,
   RECEIVE_ALL_MESSAGES,
@@ -7,7 +8,9 @@ import {
 
 import {
   WS_MESSAGE,
-  WS_MESSAGES
+  WS_MESSAGES,
+  WS_MESSAGE_CHANGED,
+  WS_MESSAGE_DELETED,
 } from '../actions/wsActions';
 
 import { getMaxIndex } from '../utils';
@@ -30,6 +33,9 @@ const messageReduser = (state = initMessage, action) => {
         time: message.time,
       }
       return {...state, ...modMsg}
+    case WS_MESSAGE_CHANGED:
+      const {id, text} = action.payload;
+      return {...state, text}
     default:
       return state
   }
@@ -118,6 +124,16 @@ const initialMessages = {
 const messagesReducer = (state = initialMessages, action) => {
   switch (action.type) {
     case RECEIVE_ALL_MESSAGES:
+    case WS_MESSAGE_DELETED:
+      if (!(action.payload.id in state.items)) {
+        return state;
+      } else {
+        return {...state, items: _.omit(state.items, action.payload.id)};
+      }
+    case WS_MESSAGE_CHANGED:
+      if (!(action.payload.id in state.items)) {
+        return state;
+      }
     case WS_MESSAGE:
       const message = action.payload;
       const item = {

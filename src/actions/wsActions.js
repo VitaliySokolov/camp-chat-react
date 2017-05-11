@@ -11,6 +11,8 @@ export const WS_MESSAGES = 'WS_MESSAGES';
 export const WS_JOIN = 'WS_JOIN';
 export const WS_LEAVE = 'WS_LEAVE';
 export const WS_ERROR = 'WS_ERROR';
+export const WS_MESSAGE_CHANGED = 'WS_MESSAGE_CHANGED';
+export const WS_MESSAGE_DELETED = 'WS_MESSAGE_DELETED';
 
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 
@@ -19,7 +21,9 @@ export const typesWS = [
   'join',
   'leave',
   'error',
-  'messages'
+  'messages',
+  'message_changed',
+  'message_deleted',
 ]
 
 let socket;
@@ -72,6 +76,14 @@ export const getWsMessages = (cutoff, limitCount) => {
     limitCount: limitCount || 10
   }
   emit('get messages', filter);
+}
+
+export const editWsMessage = ({msgId, msgText}) => {
+  emit('put message', {msgId, msgText})
+}
+
+export const deleteWsMessage = ({msgId}) => {
+  emit('delete message', {msgId})
 }
 
 export const initWS = (data, store) => dispatch => {

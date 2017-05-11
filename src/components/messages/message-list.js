@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactPullToRefresh from 'react-pull-to-refresh';
-import Progress from '../progress';
 import { getWsMessages } from '../../actions/wsActions';
 
 class MessageList extends Component {

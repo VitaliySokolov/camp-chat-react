@@ -23,6 +23,23 @@
       margin-top: 5px;
     }
   }
+  .message-tools{
+    display: none;
+  }
+  &:hover .message-tools {
+    order: -10;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    div {
+      opacity: .5;
+      transition: opacity .3s ease-in;
+      &:hover {
+        opacity: 1;
+        transition: opacity .3s ease-in;
+      }
+    }
+  }
 
   // &:nth-of-type(odd) {
   //   justify-content: flex-start;
@@ -46,5 +63,10 @@
     .message-time {
       float: right;
     }
+    &:hover .message-tools {
+      order: 10;
+      flex-direction: row;
+    }
   }
 }
+

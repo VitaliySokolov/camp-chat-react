@@ -27,7 +27,7 @@ export default createReducer(popupInitialState, {
     message: `${payload.user.username} left the chat`}),
   [WS_MESSAGE]: (state, payload) => ({...state,
     open: true,
-    message: `${payload.user.username} sent a message"`
+    message: `${payload.user.username} sent a message`
   }),
   [WS_MESSAGES]: (state, payload) => ({...state,
     open: true,

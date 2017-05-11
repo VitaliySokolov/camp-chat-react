@@ -11,6 +11,7 @@ import {
 import { createReducer } from '../utils';
 
 const authInitialState = {
+  id: '',
   name: '',
   email: '',
   avatarLink: '',
@@ -26,6 +27,7 @@ export default createReducer(authInitialState, {
   [LOGIN_REQUEST]: (state, payload) => ({ ...state, logging: true }),
   [LOGIN_SUCCESS]: (state, { user, token }) => ({
     ...state,
+    id: user.id,
     logging: false,
     isLogged: true,
     name: user.username,
