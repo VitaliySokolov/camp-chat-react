@@ -14,6 +14,7 @@ import ChatContainer from './chat';
 import SidebarContainer from './sidebar';
 import Login from '../components/login/login';
 import Register from '../components/register/register';
+import Footer from './footer';
 
 import * as userActions from '../actions/userActions.js';
 
@@ -72,6 +73,7 @@ class App extends Component {
             () => (<Register
               handleRegister={handleRegister}
               loggedUser={this.props.loggedUser} />)} />
+          <Footer />
         </div>
       </Router>
     );

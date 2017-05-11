@@ -5,7 +5,7 @@ class Chat extends Component {
   render() {
     return (
       <main className="main">
-        <ChatHeader />
+        <ChatHeader {...this.props}/>
         {this.props.children}
       </main>
     );

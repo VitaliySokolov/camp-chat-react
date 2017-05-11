@@ -5,6 +5,7 @@ import rooms from './rooms';
 import messages from './messages-reducer';
 import users from './users';
 import auth from './auth-reducer';
+import popups from './popups';
 
 import {
   TOGGLE_CHAT_ROOM,
@@ -36,7 +37,8 @@ export default combineReducers({
   rooms,
   messages,
   users,
-  selectedMessage
+  selectedMessage,
+  popups,
 });
 
 

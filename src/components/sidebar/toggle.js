@@ -17,7 +17,7 @@ class SidbarToggle extends Component {
     super(props);
     autobind(this);
     this.state = {
-      open: false
+      open: false,
     }
   }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'autobindr';
 import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -8,6 +9,7 @@ import MailOutline from 'material-ui/svg-icons/communication/mail-outline';
 class PrivateMessages extends Component {
   constructor(props) {
     super(props);
+    autobind(this);
     this.state = {
       newBadges: 0,
     }

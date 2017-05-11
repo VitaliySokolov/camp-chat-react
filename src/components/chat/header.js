@@ -16,7 +16,7 @@ class ChatHeader extends Component {
     return (
       <div>
       <AppBar
-        iconElementLeft={<PrivateMessages />}
+        iconElementLeft={<PrivateMessages {...this.props}/>}
         iconElementRight={<PersonAccount />}
         title={<ChatTitle />}
         titleStyle={{
