@@ -119,7 +119,7 @@ class MessageItem extends Component {
         onTouchTap={this.handleDeleteClose}
       />,
       <FlatButton
-        label="Submit"
+        label="Delete"
         primary={true}
         onTouchTap={this.handleDeleteSubmit}
       />
@@ -131,7 +131,7 @@ class MessageItem extends Component {
       >
         <Edit />
         <Dialog
-          title="Edit message"
+          title="Edit the message"
           modal={true}
           open={this.state.editOpen}
           actions={editActions}
@@ -153,12 +153,12 @@ class MessageItem extends Component {
       >
         <Delete />
         <Dialog
-          title="Delete message"
+          title="Delete the message"
           modal={true}
           open={this.state.deleteOpen}
           actions={deleteActions}
         >
-          this.props.message.text
+          {this.props.message.text}
         </Dialog>
       </IconButton>
     );
@@ -175,7 +175,7 @@ class MessageItem extends Component {
         ref={(node) => this.node = node} onClick={this.handleSelectClick}>
         <Avatar user={author} />
         <div className="message">
-          <b>{author.username}</b>
+          <div className="message-author">{author.username}:</div>
           <div className={selectionClassName}>
             <MultilineText text={text} />
           </div>

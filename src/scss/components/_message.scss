@@ -1,9 +1,11 @@
 .message-list-row {
   display: flex;
   padding: 5px;
+  padding-right: 15px;
 
   flex-flow: row;
   justify-content: flex-end;
+  align-items: center;
   .user-image {
     @include userImage();
   }
@@ -12,6 +14,12 @@
     min-width: 10%;
 
     order: -1;
+    .message-author {
+      display: block;
+      opacity: .5;
+      font-weight: bold;
+      padding-left: 10px;
+    }
     .message-text {
       background-color: $message-item-color;
       border-radius: 10px;
