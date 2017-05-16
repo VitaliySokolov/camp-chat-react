@@ -2,18 +2,18 @@ export {
   createReducers
 };
 
-function createReducers(reducerObj) {
-  return Object.keys(reducerObj).reduce((accum, reducerName) => {
-    accum[reducerName] = createReducer(reducerObj[reducerName]);
+function createReducers (reducerObj) {
+    return Object.keys(reducerObj).reduce((accum, reducerName) => {
+        accum[reducerName] = createReducer(reducerObj[reducerName]);
 
-    return accum;
-  }, {});
+        return accum;
+    }, {});
 }
 
-function createReducer(handlers) {
-  return (state = null, action) => {
-    const actionType = handlers[action.type];
+function createReducer (handlers) {
+    return (state = null, action) => {
+        const actionType = handlers[action.type];
 
-    return actionType ? actionType(state, action) : state;
-  };
+        return actionType ? actionType(state, action) : state;
+    };
 }

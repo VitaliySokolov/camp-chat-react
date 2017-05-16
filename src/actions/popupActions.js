@@ -1,5 +1,5 @@
-export const REQUEST_CLOSE = 'REQUEST_CLOSE';
+export const CLOSE_POPUP = 'CLOSE_POPUP';
 
 export const requestClose = () => ({
-  type: REQUEST_CLOSE
+    type: CLOSE_POPUP
 });

@@ -23,7 +23,9 @@
     "socket.io-client": "^1.7.3"
   },
   "devDependencies": {
+    "@eleks/eslint-config-eleks": "^0.2.1",
     "enzyme": "^2.8.0",
+    "eslint-plugin-react": "^7.0.1",
     "jest-fetch-mock": "^1.0.8",
     "node-sass": "^4.5.2",
     "react-addons-test-utils": "15.4.2",

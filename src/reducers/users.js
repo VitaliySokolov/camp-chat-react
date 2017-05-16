@@ -1,74 +1,78 @@
 import {
-  WS_JOIN,
-  WS_LEAVE,
-  WS_MESSAGE,
-  WS_MESSAGES
-} from '../actions/wsActions';
+    CHAT_JOIN,
+    CHAT_LEAVE,
+    MESSAGE,
+    MESSAGES
+} from '../../shared/socket.io/events';
 
 // function isUserIn(users, user) {
 //   return users.findIndex(u => u.username === user.username) < 0
 // }
 
 const initUser = {
-  username: '',
-  isOnline: false,
-  lastMessage: '',
-  lastMessageTime: 0,
+    username: '',
+    isOnline: false,
+    lastMessage: '',
+    lastMessageTime: 0
 };
 
 const userReducer = (state = initUser, action) => {
-  switch (action.type) {
-    case WS_MESSAGE:
-    case WS_MESSAGES:
-      const message = action.payload;
-      const additionalInfo = {}
-      if (message.time > state.lastMessageTime) {
-        additionalInfo.lastMessage = message.msg;
-        additionalInfo.lastMessageTime = message.time;
-      }
-      return {...state, ...message.user, ...additionalInfo}
+    switch (action.type) {
+        case MESSAGE:
+        case MESSAGES:
+            const message = action.payload;
+            const additionalInfo = {};
 
-    case WS_JOIN:
-      return {...state, ...action.payload.user, ...{isOnline: true}}
-    case WS_LEAVE:
-      return {...state, ...action.payload.user, ...{isOnline: false}}
-    default:
-      return state
-  }
-}
+            if (message.time > state.lastMessageTime) {
+                additionalInfo.lastMessage = message.msg;
+                additionalInfo.lastMessageTime = message.time;
+            }
+            return { ...state, ...message.user, ...additionalInfo };
+
+        case CHAT_JOIN:
+            return { ...state, ...action.payload.user, ...{ isOnline: true } };
+        case CHAT_LEAVE:
+            return { ...state, ...action.payload.user, ...{ isOnline: false } };
+        default:
+            return state;
+    }
+};
 
 const usersReducer = (state = {}, action) => {
-  switch (action.type) {
-    case WS_MESSAGES:
-      const messages = action.payload;
-      let users = state;
-      messages.forEach(message => {
-        users = Object.assign({}, users, {
-          [message.user.id]: userReducer(
-            users[message.user.id],
-            {
-              type: action.type,
-              payload: message
-            })
-        })
-      });
-      return {...state, ...users};
-    case WS_MESSAGE:
-      const message = action.payload;
-      return Object.assign({}, state, {
-        [message.user.id]: userReducer(state[message.user.id], action)
-      });
-    case WS_JOIN:
-    case WS_LEAVE:
-      const info = action.payload;
-      return Object.assign({}, state, {
-        [info.user.id]: userReducer(state[info.user.id], action)
-      });
+    switch (action.type) {
+        case MESSAGES:
+            const messages = action.payload;
+            let users = state;
 
-    default:
-      return state;
-  }
-}
+            messages.forEach(message => {
+                users = Object.assign({}, users, {
+                    [message.user.id]: userReducer(
+                        users[message.user.id],
+                        {
+                            type: action.type,
+                            payload: message
+                        })
+                });
+            });
+            return { ...state, ...users };
+        case MESSAGE:
+            const message = action.payload;
+
+            return Object.assign({}, state, {
+                [message.user.id]: userReducer(state[message.user.id], action)
+            });
+        case CHAT_JOIN:
+        case CHAT_LEAVE:
+            const info = action.payload;
+
+            return Object.assign({}, state, {
+                [info.user.id]: userReducer(state[info.user.id], action)
+            });
+
+        default:
+            return state;
+    }
+};
 
 // const usersReducer = (state = [], action) => {
 //   switch (action.type) {

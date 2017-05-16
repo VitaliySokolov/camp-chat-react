@@ -4,16 +4,24 @@ import {
   ADD_CHAT_ROOM
 } from '../actions/chatActions';
 
-const roomsReducer = (state = [], action) => {
-  switch (action.type) {
-    case RECEIVE_ROOM_LIST:
-      return action.payload.rooms;
-    case ADD_CHAT_ROOM:
-      return state.concat(action.payload.room)
-    default:
-      return state;
-  }
-}
+import {
+  ROOMS
+} from '../../shared/socket.io/events';
+
+const initialRooms = [
+  {title: 'Common Room', id: 0}
+];
+
+const roomsReducer = (state = initialRooms, action) => {
+    switch (action.type) {
+        case RECEIVE_ROOM_LIST:
+            return action.payload.rooms;
+        case ADD_CHAT_ROOM:
+            return state.concat(action.payload.room);
+        default:
+            return state;
+    }
+};
 
 export default roomsReducer;
 

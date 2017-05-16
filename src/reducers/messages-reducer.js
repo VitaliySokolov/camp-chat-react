@@ -7,167 +7,177 @@ import {
 } from '../actions/chatActions';
 
 import {
-  WS_MESSAGE,
-  WS_MESSAGES,
-  WS_MESSAGE_CHANGED,
-  WS_MESSAGE_DELETED,
-} from '../actions/wsActions';
+  EDIT_MESSAGE,
+  DELETE_MESSAGE,
+  MESSAGE,
+  MESSAGES
+} from '../../shared/socket.io/events';
 
 import { getMaxIndex } from '../utils';
 
 const initMessage = {
-  text: '',
-  author: '',
-  time: '',
-}
+    text: '',
+    author: '',
+    time: ''
+};
 
 const messageReduser = (state = initMessage, action) => {
-  switch (action.type) {
-    case WS_MESSAGE:
-    case WS_MESSAGES:
-      const message = action.payload;
-      const modMsg = {
-        id: message.id,
-        author: message.user,
-        text: message.msg,
-        time: message.time,
-      }
-      return {...state, ...modMsg}
-    case WS_MESSAGE_CHANGED:
-      const {id, text} = action.payload;
-      return {...state, text}
-    default:
-      return state
-  }
-}
+    switch (action.type) {
+        case MESSAGE:
+        case MESSAGES:
+            const message = action.payload;
+            const modMsg = {
+                id: message.id,
+                author: message.user,
+                text: message.msg,
+                time: message.time
+            };
 
-const messages = (state = [], action) => {
-  switch (action.type) {
-    case RECEIVE_CHAT_DATA: {
-      const { messages } = action.payload;
-      return messages
-    }
-    case RECEIVE_ALL_MESSAGES: {
-      const { messages } = action.payload;
-      const modMsg = messages.map((message, index) => {
-        const text = (typeof message.msg !== 'string') ? "" : message.msg
-        return {
-          id: index,
-          text: text,
-          author: message.user,
-          time: message.time
-        }
-      });
-      return modMsg;
-    }
-    case WS_MESSAGES:
-      const messages = action.payload;
-      if (messages.length === state.length) {
-        return state;
-      }
-      const modMsg = messages.map((message, index) => {
-        const text = (typeof message.msg !== 'string') ? "" : message.msg
-        return {
-          id: message.id || index,
-          text: text,
-          author: message.user,
-          time: message.time
-        }
-      });
-      return modMsg;
+            return {...state, ...modMsg};
+        case EDIT_MESSAGE:
+            const {id, text} = action.payload;
 
-    case WS_MESSAGE: {
-      const maxIndex = getMaxIndex(state);
-      const message = action.payload;
-      const text = (typeof message.msg !== 'string') ? "" : message.msg
-      // console.log(state);
-      return [...state, {
-        id: message.id || maxIndex + 1,
-        text: text, //message.msg.msg || message.msg.message || message.msg,
-        author: message.user,
-        time: message.time
-      }];
+            return {...state, text};
+        default:
+            return state;
     }
-    // case WS_JOIN: {
-    //   const maxIndex = getMaxIndex(state);
-    //   const message = action.payload;
-    //   return [...state, {
-    //     id: message.id || maxIndex + 1,
-    //     text: `${message.user.username}'s joined the chat`,
-    //     author: 'robot',
-    //     time: message.time
-    //   }];
-    // }
-    // case WS_LEAVE: {
-    //   const maxIndex = getMaxIndex(state);
-    //   const message = action.payload;
-    //   return [...state, {
-    //     id: message.id || maxIndex + 1,
-    //     text: `${message.user.username}'s left the chat`,
-    //     author: 'robot',
-    //     time: message.time
-    //   }];
-    // }
-    default:
-      return state;
-  }
-}
+};
+
+// const messages = (state = [], action) => {
+//     switch (action.type) {
+//         case RECEIVE_CHAT_DATA: {
+//             const { messages } = action.payload;
+
+//             return messages;
+//         }
+//         case RECEIVE_ALL_MESSAGES: {
+//             const { messages } = action.payload;
+//             const modMsg = messages.map((message, index) => {
+//               const text = typeof message.msg !== 'string' ? '' : message.msg;
+
+//               return {
+//                 id: index,
+//                 text,
+//                 author: message.user,
+//                 time: message.time
+//             };
+//           });
+
+//             return modMsg;
+//         }
+//         case WS_MESSAGES:
+//             const messages = action.payload;
+
+//             if (messages.length === state.length)
+//                 return state;
+
+//             const modMsg = messages.map((message, index) => {
+//                 const text = typeof message.msg !== 'string' ? '' : message.msg;
+
+//                 return {
+//                   id: message.id || index,
+//                   text,
+//                   author: message.user,
+//                   time: message.time
+//               };
+//             });
+
+//             return modMsg;
+
+//         case WS_MESSAGE: {
+//             const maxIndex = getMaxIndex(state);
+//             const message = action.payload;
+//             const text = typeof message.msg !== 'string' ? '' : message.msg;
+//       // console.log(state);
+
+//             return [...state, {
+//               id: message.id || maxIndex + 1,
+//               text, // message.msg.msg || message.msg.message || message.msg,
+//               author: message.user,
+//               time: message.time
+//           }];
+//         }
+//     // case WS_JOIN: {
+//     //   const maxIndex = getMaxIndex(state);
+//     //   const message = action.payload;
+//     //   return [...state, {
+//     //     id: message.id || maxIndex + 1,
+//     //     text: `${message.user.username}'s joined the chat`,
+//     //     author: 'robot',
+//     //     time: message.time
+//     //   }];
+//     // }
+//     // case WS_LEAVE: {
+//     //   const maxIndex = getMaxIndex(state);
+//     //   const message = action.payload;
+//     //   return [...state, {
+//     //     id: message.id || maxIndex + 1,
+//     //     text: `${message.user.username}'s left the chat`,
+//     //     author: 'robot',
+//     //     time: message.time
+//     //   }];
+//     // }
+//         default:
+//             return state;
+//     }
+// };
 
 const initialMessages = {
-  items: {},
-  isFetching: false,
-  didInvalidate: false,
-  theOldestTime: null,
-  noMore: false,
-}
+    items: {},
+    isFetching: false,
+    didInvalidate: false,
+    theOldestTime: null,
+    noMore: false
+};
 
 const messagesReducer = (state = initialMessages, action) => {
-  switch (action.type) {
-    case RECEIVE_ALL_MESSAGES:
-    case WS_MESSAGE_DELETED:
-      if (!(action.payload.id in state.items)) {
-        return state;
-      } else {
-        return {...state, items: _.omit(state.items, action.payload.id)};
-      }
-    case WS_MESSAGE_CHANGED:
-      if (!(action.payload.id in state.items)) {
-        return state;
-      }
-    case WS_MESSAGE:
-      const message = action.payload;
-      const item = {
-        [message.id]: messageReduser(state.items[message.id], {
-            type: action.type,
-            payload: message
-          })
-      }
-      return {...state, items: {...state.items, ...item} };
-    case WS_MESSAGES:
+    switch (action.type) {
+        case RECEIVE_ALL_MESSAGES:
+        case DELETE_MESSAGE:
+            if (!(action.payload.id in state.items))
+                return state;
+
+            return {...state, items: _.omit(state.items, action.payload.id)};
+
+        case EDIT_MESSAGE:
+            if (!(action.payload.id in state.items))
+                return state;
+
+        case MESSAGE:
+            const message = action.payload;
+            const item = {
+                [message.id]: messageReduser(state.items[message.id], {
+                    type: action.type,
+                    payload: message
+                })
+            };
+
+            return {...state, items: {...state.items, ...item} };
+        case MESSAGES:
       // const items = messages(state.items, action);
-      if (action.payload.length === 0) {
-        return {...state, noMore: true}
-      }
-      let items = state.items;
-      let oldest = action.payload[0].time;
-      action.payload.forEach(message => {
-        items = Object.assign({}, items, {
-          [message.id]: messageReduser(state.items[message.id], {
-            type: action.type,
-            payload: message
-          })
-        })
-        if (message.time < oldest) {
-          oldest = message.time
-        }
-      });
-      return {
-        ...state,
-        items,
-        isFetching: false,
-        didInvalidate: false,
-        theOldestTime: oldest
-    }
+            if (action.payload.length === 0)
+                return {...state, noMore: true};
+
+            let items = state.items;
+            let oldest = action.payload[0].time;
+
+            action.payload.forEach(message => {
+                items = Object.assign({}, items, {
+                    [message.id]: messageReduser(state.items[message.id], {
+                        type: action.type,
+                        payload: message
+                    })
+                });
+                if (message.time < oldest)
+                    oldest = message.time;
+            });
+            return {
+                ...state,
+                items,
+                isFetching: false,
+                didInvalidate: false,
+                theOldestTime: oldest
+            };
 
       //   const text = (typeof message.msg !== 'string') ? "" : message.msg
       //   return {
@@ -190,19 +200,19 @@ const messagesReducer = (state = initialMessages, action) => {
       //     didInvalidate: false,
       //     theOldestTime: oldest.time,
       //   } : state
-    case REQUEST_ALL_MESSAGES:
-      return { ...state, isFetching: true }
-    case FAIL_ALL_MESSAGES:
-      return {
-        ...state,
-        isFetching: false,
-        didInvalidate: true,
-        error: action.payload['error']
-      }
-    default:
-      return state;
-  }
-}
+        case REQUEST_ALL_MESSAGES:
+            return { ...state, isFetching: true };
+        case FAIL_ALL_MESSAGES:
+            return {
+                ...state,
+                isFetching: false,
+                didInvalidate: true,
+                error: action.payload.error
+            };
+        default:
+            return state;
+    }
+};
 
 export default messagesReducer;
 // const messagesByRoom = (state = {}, action) => {

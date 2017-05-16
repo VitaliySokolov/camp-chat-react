@@ -5,12 +5,12 @@ import SidebarSearch from './search';
 import SidebarMenu from './menu';
 
 class SidebarHeader extends Component {
-  render() {
-    return (
+    render () {
+      return (
       <header className="sidebar__header">
         <SidebarToggle {...this.props} />
-        {/*<SidebarSearch />*/}
-        <SidebarMenu />
+        {/* <SidebarSearch />*/}
+        <SidebarMenu {...this.props}/>
       </header>
     );
   }
