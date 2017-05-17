@@ -1,37 +1,33 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SidebarHeader from './header';
 import classNames from 'classnames';
-import autobind from 'autobindr';
 
 export default class Sidebar extends Component {
-  constructor(props) {
-    super(props);
-    autobind(this);
-    this.state = {
-      opened: false
+    constructor (props) {
+        super(props);
     }
-  }
 
-  toggleSidebar() {
-    this.setState({
-      opened: !this.state.opened
-    });
-  }
+    render () {
+        const { isSidebarOpened, toggleSidebar } = this.props,
+            sidebarClassNames = classNames('sidebar', {
+                'sidebar--opened': isSidebarOpened()
+            });
 
-  render() {
-    const sidebarClassNames = classNames('sidebar', {
-      'sidebar--opened': this.state.opened
-    });
-
-    return (
-      <aside className={sidebarClassNames}>
-        <SidebarHeader
-          {...this.props}
-          toggleSidebar={this.toggleSidebar}
-         />
-        {this.props.children}
-      </aside>
-    );
-  }
+        return (
+            <aside className={sidebarClassNames}>
+                <SidebarHeader
+                    {...this.props}
+                    toggleSidebar={toggleSidebar}
+                />
+                {this.props.children}
+            </aside>
+        );
+    }
 }
 
+Sidebar.propTypes = {
+    isSidebarOpened: PropTypes.func.isRequired,
+    toggleSidebar: PropTypes.func.isRequired,
+    children: PropTypes.array
+};

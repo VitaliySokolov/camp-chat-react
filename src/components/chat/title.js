@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 class ChatTitle extends Component {
-  render() {
-    return (
+    render () {
+        return (
       <div>
-        Common Room
+         {this.props.roomTitle}
       </div>
-    );
-  }
+      );
+    }
 }
 
 export default ChatTitle;

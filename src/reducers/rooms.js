@@ -1,23 +1,43 @@
 
 import {
-  RECEIVE_ROOM_LIST,
-  ADD_CHAT_ROOM
+    RECEIVE_ROOM_LIST,
+    ADD_CHAT_ROOM
 } from '../actions/chatActions';
 
 import {
-  ROOMS
+    ROOMS,
+    ADD_ROOM
 } from '../../shared/socket.io/events';
 
-const initialRooms = [
-  {title: 'Common Room', id: 0}
-];
+const
+    initialCommonRoom = { title: 'Common Room', id: 0 },
+    initialRooms = {
+        items: {0: initialCommonRoom},
+        noMore: false
+    };
 
 const roomsReducer = (state = initialRooms, action) => {
     switch (action.type) {
-        case RECEIVE_ROOM_LIST:
+        case RECEIVE_ROOM_LIST: {
             return action.payload.rooms;
-        case ADD_CHAT_ROOM:
+        }
+        case ADD_CHAT_ROOM: {
             return state.concat(action.payload.room);
+        }
+        case ROOMS: {
+            const { rooms } = action.payload;
+            let obj = state.items;
+
+            rooms.forEach(room => {
+                obj = Object.assign({}, obj, {[room.id]: room});
+            });
+            return { ...state, items: {...obj} };
+        }
+        case ADD_ROOM: {
+            const { room } = action.payload;
+
+            return { ...state, items: {...state.items, ...{[room.id]: room}}};
+        }
         default:
             return state;
     }

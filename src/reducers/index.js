@@ -8,37 +8,38 @@ import auth from './auth-reducer';
 import popups from './popups';
 
 import {
-  TOGGLE_CHAT_ROOM,
-  SELECT_MESSAGE,
-  UNSELECT_MESSAGE
+    TOGGLE_CHAT_ROOM,
+    SELECT_MESSAGE,
+    UNSELECT_MESSAGE
 } from '../actions/chatActions';
 
 const selectedMessage = createReducer(null, {
-  [SELECT_MESSAGE]: (state, payload) =>
-    (payload.message !== state &&
-     payload.message.author !== 'robot') ? payload.message : state,
-  [UNSELECT_MESSAGE]: (state, payload) => null
+    [SELECT_MESSAGE]: (state, payload) =>
+        payload.message !== state
+            && payload.message.author !== 'robot' ? payload.message : state,
+    [UNSELECT_MESSAGE]: (state, payload) => null
 });
 
-const roomId = (state = null, action) => {
-  switch (action.type) {
-    case TOGGLE_CHAT_ROOM: {
-      const { roomId } = action.payload;
-      return (state !== roomId) ? roomId : state;
+const roomId = (state = 0, action) => {
+    switch (action.type) {
+        case TOGGLE_CHAT_ROOM: {
+            const { roomId } = action.payload;
+
+            return state !== roomId ? roomId : state;
+        }
+        default:
+            return state;
     }
-    default:
-      return state
-  }
-}
+};
 
 export default combineReducers({
-  roomId,
-  auth,
-  rooms,
-  messages,
-  users,
-  selectedMessage,
-  popups,
+    roomId,
+    auth,
+    rooms,
+    messages,
+    users,
+    selectedMessage,
+    popups
 });
 
 

@@ -1,7 +1,8 @@
 import _ from 'lodash';
 
-import * as mock_api from '../api/mock_server'
+import * as mock_api from '../api/mock_server';
 import * as api from '../api/api';
+import { joinWSRoom, leaveWSRoom } from './wsActions';
 
 export const RECEIVE_ROOM_LIST = 'RECEIVE_ROOM_LIST';
 export const TOGGLE_CHAT_ROOM = 'TOGGLE_CHAT_ROOM';
@@ -20,103 +21,109 @@ export const FAIL_ALL_MESSAGES = 'FAIL_ALL_MESSAGES';
 export const SELECT_MESSAGE = 'SELECT_MESSAGE';
 export const UNSELECT_MESSAGE = 'UNSELECT_MESSAGE';
 
-export const selectMessage = (message) => ({
-  type: SELECT_MESSAGE,
-  payload: { message }
+export const selectMessage = message => ({
+    type: SELECT_MESSAGE,
+    payload: { message }
 });
 
-export const unselectMessage = (message) => ({
-  type: UNSELECT_MESSAGE,
-  payload: { message }
-})
+export const unselectMessage = message => ({
+    type: UNSELECT_MESSAGE,
+    payload: { message }
+});
 
 export const getRoomList = () => dispatch => {
-  // console.log('in getRoomList');
-  mock_api.fetchAllRooms().then(rooms => dispatch({
-    type: 'RECEIVE_ROOM_LIST',
-    payload: { rooms: [].concat(rooms) }
-  }));
-}
+    // console.log('in getRoomList');
+    mock_api.fetchAllRooms().then(rooms => dispatch({
+        type: 'RECEIVE_ROOM_LIST',
+        payload: { rooms: [].concat(rooms) }
+    }));
+};
 
 const getChatRoom = roomId => dispatch => {
-  mock_api.fetchChatRoomData(roomId)
-    .then(data =>
-      dispatch(
-        {
-          type: RECEIVE_CHAT_DATA,
-          payload: data
-        }));
-}
+    mock_api.fetchChatRoomData(roomId)
+        .then(data =>
+            dispatch(
+                {
+                    type: RECEIVE_CHAT_DATA,
+                    payload: data
+                }));
+};
 
 export const toggleChatRoom = roomId => (dispatch, getState) => {
-  const { roomId: oldRoomId } = getState();
-  if (oldRoomId === roomId)
-    return;
-  dispatch({
-    type: TOGGLE_CHAT_ROOM,
-    payload: {
-      roomId
-    }
-  });
-  dispatch(getChatRoom(roomId));
-}
+    const { roomId: oldRoomId } = getState();
 
-export const addChatRoom = (title) => dispatch => {
-  mock_api.addNewRoom(title)
-    .then(data => {
-      dispatch({
-        type: ADD_CHAT_ROOM,
-        payload: data
-      });
-      dispatch(toggleChatRoom(data.room.id));
-    })
-    .catch(error => {
-      dispatch({
-        type: ERROR_ROOM_ACTION,
-        payload: error
-      })
+    if (oldRoomId === roomId)
+        return;
+    dispatch({
+        type: TOGGLE_CHAT_ROOM,
+        payload: {
+            roomId
+        }
     });
-}
+    if (roomId)
+        joinWSRoom(roomId);
+    else
+        leaveWSRoom(roomId);
+
+    // dispatch(getChatRoom(roomId));
+};
+
+export const addChatRoom = title => dispatch => {
+    mock_api.addNewRoom(title)
+        .then(data => {
+            dispatch({
+                type: ADD_CHAT_ROOM,
+                payload: data
+            });
+            dispatch(toggleChatRoom(data.room.id));
+        })
+        .catch(error => {
+            dispatch({
+                type: ERROR_ROOM_ACTION,
+                payload: error
+            });
+        });
+};
 
 export const getUserList = () => dispatch => {
-  dispatch({
-    type: REQUEST_ALL_USERS
-  });
-  api.getAllUsersRhcloud().then(users => {
-
     dispatch({
-      type: RECEIVE_ALL_USERS,
-      payload: { users }
-    })
-  }).catch(error => {
-    dispatch({
-      type: FAIL_ALL_USERS,
-      payload: { error }
-    })
-  });
-}
+        type: REQUEST_ALL_USERS
+    });
+    api.getAllUsersRhcloud().then(users => {
+        dispatch({
+            type: RECEIVE_ALL_USERS,
+            payload: { users }
+        });
+    }).catch(error => {
+        dispatch({
+            type: FAIL_ALL_USERS,
+            payload: { error }
+        });
+    });
+};
 
 export const getMessageList = () => dispatch => {
-  dispatch({
-    type: REQUEST_ALL_MESSAGES
-  });
-  api.getAllMessagesRhcloud().then(messages => {
     dispatch({
-      type: RECEIVE_ALL_MESSAGES,
-      payload: { messages }
+        type: REQUEST_ALL_MESSAGES
     });
-    const users = messages.map(msg => msg.user).filter((user, index, self) => self.findIndex(u => u.username === user.username) === index)
-    dispatch({
-      type: RECEIVE_ALL_USERS,
-      payload: { users }
-    })
-  }).catch(error => {
-    dispatch({
-      type: FAIL_ALL_MESSAGES,
-      payload: { error }
+    api.getAllMessagesRhcloud().then(messages => {
+        dispatch({
+            type: RECEIVE_ALL_MESSAGES,
+            payload: { messages }
+        });
+        const users = messages.map(msg => msg.user).filter((user, index, self) => self.findIndex(u => u.username === user.username) === index);
+
+        dispatch({
+            type: RECEIVE_ALL_USERS,
+            payload: { users }
+        });
+    }).catch(error => {
+        dispatch({
+            type: FAIL_ALL_MESSAGES,
+            payload: { error }
+        });
     });
-  });
-}
+};
 
 // const fetchMessages = roomId => dispatch => {
 //   dispatch({type: 'REQUEST_MESSAGES'});

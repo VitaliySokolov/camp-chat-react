@@ -18,7 +18,8 @@ import { getMaxIndex } from '../utils';
 const initMessage = {
     text: '',
     author: '',
-    time: ''
+    time: '',
+    roomId: 0
 };
 
 const messageReduser = (state = initMessage, action) => {
@@ -33,6 +34,8 @@ const messageReduser = (state = initMessage, action) => {
                 time: message.time
             };
 
+            if (message.room)
+                modMsg.roomId = message.room;
             return {...state, ...modMsg};
         case EDIT_MESSAGE:
             const {id, text} = action.payload;

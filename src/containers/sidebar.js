@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import autobind from 'autobindr';
 
 import Sidebar from '../components/sidebar/sidebar';
 import RoomList from '../components/rooms/room-list';
 import RoomItem from '../components/rooms/room-item';
-// import RoomNew from '../components/rooms/room-new';
+import RoomNew from '../components/rooms/room-new';
 import UserList from '../components/users/user-list';
 import UserItem from '../components/users/user-item';
-// import UserNew from '../components/users/user-new';
+import UserNew from '../components/users/user-new';
 
 import * as chatActions from '../actions/chatActions';
 
@@ -17,10 +18,21 @@ import * as chatActions from '../actions/chatActions';
 class SidebarContainer extends Component {
     constructor (props) {
         super(props);
+        autobind(this);
+
         this.state = {
             allUsers: true,
-            hideRooms: false
+            hideRooms: true,
+            open: false
         };
+    }
+
+    isSidebarOpened () {
+        return this.state.open;
+    }
+
+    toggleSidebar () {
+        this.setState({open: !this.state.open});
     }
 
     showAllUsers () {
@@ -49,7 +61,7 @@ class SidebarContainer extends Component {
         const { toggleChatRoom } = this.props.chatActions;
 
         return rooms
-            ? rooms.map(room =>
+            ? Object.values(rooms.items).map(room =>
                 <RoomItem
                     key={room.id}
                     room={room}
@@ -87,21 +99,23 @@ class SidebarContainer extends Component {
 
         return (
             <Sidebar
-                showAllUsers={() => this.showAllUsers()}
-                showRoomUsers={() => this.showRoomUsers()}
-                showRooms={() => this.showRooms()}
+                showAllUsers={this.showAllUsers}
+                showRoomUsers={this.showRoomUsers}
+                showRooms={this.showRooms}
+                toggleSidebar={this.toggleSidebar}
+                isSidebarOpened={this.isSidebarOpened}
             >
                 <div className={roomsWrapperClass}>
                     <RoomList>
                         {this.getRooms()}
                     </RoomList>
-                    {/* <RoomNew addChatRoom={addChatRoom} />*/}
+                    {this.isSidebarOpened() && <RoomNew addChatRoom={addChatRoom} />}
                 </div>
                 <div className={usersWrapperClass}>
                     <UserList>
                         {this.getUsers()}
                     </UserList>
-                    {/* <UserNew />*/}
+                    {!this.state.allUsers && <UserNew /> }
                 </div>
             </Sidebar>
         );

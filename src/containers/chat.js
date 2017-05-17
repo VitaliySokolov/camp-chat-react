@@ -9,87 +9,102 @@ import MessageNew from '../components/messages/message-new';
 
 import * as chatActions from '../actions/chatActions';
 
+function NoMessages (props) {
+    return <div>No Messages</div>;
+}
 
 class ChatContainer extends Component {
 
-  componentDidMount() {
-    // console.log('in cdm');
-    // this.props.chatActions.getRoomList();
-    // this.props.chatActions.toggleChatRoom(4);
+    componentDidMount () {
+        // console.log('in cdm');
+        // this.props.chatActions.getRoomList();
+        // this.props.chatActions.toggleChatRoom(4);
 
-    // work!!
-    // this.props.chatActions.getUserList();
-    // this.props.chatActions.getMessageList();
-  }
+        // work!!
+        // this.props.chatActions.getUserList();
+        // this.props.chatActions.getMessageList();
+    }
 
-  getMessages() {
-    const {
+    getMessages () {
+        const {
       messages,
-      selectedMessage,
-      loggedUser
+            selectedMessage,
+            loggedUser,
+            roomId
      } = this.props;
-    // const getAuthor = (message) => users.find(user => user.id === message.authorId);
-    const {
+        // const getAuthor = (message) => users.find(user => user.id === message.authorId);
+        const {
       selectMessage,
-      unselectMessage
+            unselectMessage
     } = this.props.chatActions;
-    return (messages) ?
-      sortMessages(Object.values(messages)).map(message => (
-        <MessageItem
-          key={message.id}
-          message={message}
-          loggedUser={loggedUser}
-          selectedMessage={selectedMessage}
-          unselectMessage={unselectMessage}
-          selectMessage={selectMessage} />
-      )) : null
-    // user={getAuthor(message)}
-  }
 
-  showMessageNew() {
-    //const { roomId } = this.props;
-    const roomId = true;
-    return (roomId) && (
-      <MessageNew />
-    );
-  }
+        return messages
+            ? sortMessages(Object.values(messages), roomId)
+                .map(message =>
+                    <MessageItem
+                        key={message.id}
+                        message={message}
+                        loggedUser={loggedUser}
+                        selectedMessage={selectedMessage}
+                        unselectMessage={unselectMessage}
+                        selectMessage={selectMessage} />
+                ) : <NoMessages />;
+        // user={getAuthor(message)}
+    }
 
-  render() {
-    return (
-      <Chat>
-        <MessageList
-          cutoff={this.props.cutoff}
-          noMore={this.props.noMore}>
-          {this.getMessages()}
-        </MessageList>
-        {this.showMessageNew()}
-      </Chat>
-    )
-  }
+    showMessageNew () {
+        // const { roomId } = this.props;
+        const roomId = true;
+
+        return roomId
+            && <MessageNew />
+            ;
+    }
+
+    render () {
+        const {rooms, roomId} = this.props,
+            roomTitle = rooms.items[roomId].title;
+
+        return (
+            <Chat
+                roomTitle={roomTitle}
+            >
+                <MessageList
+                    cutoff={this.props.cutoff}
+                    noMore={this.props.noMore}>
+                    {this.getMessages()}
+                </MessageList>
+                {this.showMessageNew()}
+            </Chat>
+        );
+    }
 }
 
-function sortMessages(items) {
-  return items.sort((a, b) => (a.time - b.time));
+function sortMessages (items, roomId) {
+    return items
+        .filter(msg => msg.roomId === roomId)
+        .sort((a, b) => a.time - b.time);
 }
 
-function mapStateToProps(state) {
-  return {
-    messages: state.messages.items,
-    cutoff: state.messages.theOldestTime,
-    noMore: state.messages.noMore,
-    roomId: state.roomId,
-    selectedMessage: state.selectedMessage,
-    loggedUser: state.auth
-  };
+function mapStateToProps (state) {
+    return {
+        messages: state.messages.items,
+        cutoff: state.messages.theOldestTime,
+        noMore: state.messages.noMore,
+        roomId: state.roomId,
+        rooms: state.rooms,
+        selectedMessage: state.selectedMessage,
+        loggedUser: state.auth
+    };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    chatActions: bindActionCreators(chatActions, dispatch)
-  };
+function mapDispatchToProps (dispatch) {
+    return {
+        chatActions: bindActionCreators(chatActions, dispatch)
+    };
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ChatContainer);
