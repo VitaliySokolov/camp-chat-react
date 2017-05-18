@@ -1,3 +1,4 @@
+import _ from 'lodash';
 
 import {
     RECEIVE_ROOM_LIST,
@@ -6,13 +7,19 @@ import {
 
 import {
     ROOMS,
-    ADD_ROOM
+    ADD_ROOM,
+    INVITE_USER,
+    EDIT_ROOM,
+    DELETE_ROOM
 } from '../../shared/socket.io/events';
 
 const
-    initialCommonRoom = { title: 'Common Room', id: 0 },
+    initialCommonRoom = {
+        title: 'Common Room',
+        id: 0
+    },
     initialRooms = {
-        items: {0: initialCommonRoom},
+        items: { 0: initialCommonRoom },
         noMore: false
     };
 
@@ -29,14 +36,30 @@ const roomsReducer = (state = initialRooms, action) => {
             let obj = state.items;
 
             rooms.forEach(room => {
-                obj = Object.assign({}, obj, {[room.id]: room});
+                obj = Object.assign({}, obj, { [room.id]: room });
             });
-            return { ...state, items: {...obj} };
+            return { ...state, items: { ...obj } };
         }
         case ADD_ROOM: {
             const { room } = action.payload;
 
-            return { ...state, items: {...state.items, ...{[room.id]: room}}};
+            return { ...state, items: { ...state.items, ...{ [room.id]: room } } };
+        }
+        case INVITE_USER: {
+            const { roomId, userId } = action.payload;
+
+            state.items[roomId].users = [...state.items[roomId].users, userId];
+            return { ...state };
+        }
+        case EDIT_ROOM: {
+            const { room } = action.payload;
+
+            return { ...state, items: { ...state.items, ...{ [room.id]: room } } };
+        }
+        case DELETE_ROOM: {
+            const { roomId } = action.payload;
+
+            return { ...state, items: _.omit(state.items, roomId) };
         }
         default:
             return state;

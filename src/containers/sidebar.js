@@ -22,8 +22,8 @@ class SidebarContainer extends Component {
 
         this.state = {
             allUsers: true,
-            hideRooms: true,
-            open: false
+            hideRooms: false,
+            open: true
         };
     }
 
@@ -32,7 +32,7 @@ class SidebarContainer extends Component {
     }
 
     toggleSidebar () {
-        this.setState({open: !this.state.open});
+        this.setState({ open: !this.state.open });
     }
 
     showAllUsers () {
@@ -43,6 +43,7 @@ class SidebarContainer extends Component {
     }
 
     showRoomUsers () {
+        // getWSRoomUsers({roomId: this.props.roomId});
         this.setState({
             allUsers: false,
             hideRooms: true
@@ -51,50 +52,67 @@ class SidebarContainer extends Component {
 
     showRooms () {
         this.setState({
+            allUsers: false,
             hideRooms: false
         });
     }
 
 
     getRooms () {
-        const { rooms } = this.props;
-        const { toggleChatRoom } = this.props.chatActions;
+        const { rooms, roomId, users, loggedUser } = this.props;
+        const {
+            toggleChatRoom,
+            deleteChatRoom,
+            editChatRoom
+         } = this.props.chatActions;
 
         return rooms
             ? Object.values(rooms.items).map(room =>
                 <RoomItem
                     key={room.id}
                     room={room}
-                    toggleChatRoom={toggleChatRoom} />
+                    roomId={roomId}
+                    users={users}
+                    loggedUser={loggedUser}
+                    toggleChatRoom={toggleChatRoom}
+                    editChatRoom={editChatRoom}
+                    deleteChatRoom={deleteChatRoom} />
             ) : null;
     }
 
     getUsers () {
         let selectedUser = null;
-        const { users, selectedMessage } = this.props;
+        const { users, selectedMessage, rooms, roomId } = this.props;
 
         if (selectedMessage)
             // console.log(selectedMessage.author);
             selectedUser = selectedMessage.author;
 
+        const userArray
+            = !this.state.allUsers && this.state.hideRooms && roomId
+                ? rooms.items[roomId].users
+                : Object.keys(users.items);
+
         return users
-            ? Object.keys(users).map(id =>
+            ? userArray.map(id =>
                 <UserItem
                     key={id}
-                    user={users[id]}
+                    user={users.items[id]}
+                    roomId={roomId}
                     selectedUser={selectedUser}
                 />
             ) : null;
     }
 
     render () {
-        const { addChatRoom } = this.props.chatActions,
+        const { addChatRoom, inviteUserToRoomByName } = this.props.chatActions,
             roomsWrapperClass = classNames('rooms-wrapper', {
                 hidden: this.state.hideRooms
             }),
             usersWrapperClass = classNames('users-wrapper', {
                 hidden: !this.state.hideRooms
-            });
+            }),
+            { roomId } = this.props;
 
 
         return (
@@ -115,7 +133,8 @@ class SidebarContainer extends Component {
                     <UserList>
                         {this.getUsers()}
                     </UserList>
-                    {!this.state.allUsers && <UserNew /> }
+                    {this.isSidebarOpened() && !this.state.allUsers && !!roomId
+                        && <UserNew inviteUserToRoomByName={inviteUserToRoomByName} />}
                 </div>
             </Sidebar>
         );

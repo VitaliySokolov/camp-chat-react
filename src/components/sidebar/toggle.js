@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import autobind from 'autobindr';
 
-const ToggleSign = props => 
+const ToggleSign = props =>
     <svg
         viewBox="0 0 24 24"
-        width={props.width || "50px"}
-        fill={props.color || "rgba(255, 255, 255, .5)"}
+        width={props.width || '50px'}
+        fill={props.color || 'rgba(255, 255, 255, .5)'}
         style={props.style}
     >
         <path d="M6 4L18 12 6 20v-3L14 12 6 7z" />
     </svg>
-;
+
+    ;
 
 class SidbarToggle extends Component {
     constructor (props) {
@@ -20,6 +21,13 @@ class SidbarToggle extends Component {
             open: false
         };
     }
+
+    componentDidMount () {
+        this.setState({
+            open: this.props.isSidebarOpened()
+        });
+    }
+
 
     handleToggleClick () {
         // console.log('toggle');
@@ -32,12 +40,12 @@ class SidbarToggle extends Component {
             <label className="sidebar__toggle" htmlFor="toggle_sb"
                 onClick={this.handleToggleClick}>
                 {!this.state.open
-                    ?                    <ToggleSign
+                    ? <ToggleSign
                         style={{
                             transition: 'transform .3s'
                         }}
                     />
-                    :                    <ToggleSign
+                    : <ToggleSign
                         style={{
                             transform: 'scale(-1)',
                             transition: 'transform .3s'

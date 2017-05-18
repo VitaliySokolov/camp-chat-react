@@ -5,7 +5,8 @@
   padding-right: 15px;
 
   &:hover {
-    color: red;
+    color: $secondary-mid;
+    background-color: lighten($primary-dark, 3);
     cursor: pointer;
   }
 
@@ -44,6 +45,6 @@
     padding: 5px 10px;
   }
 }
-.user:nth-of-type(odd) {
-  background-color: lighten($primary-dark, 5%);
-}
+// .user:nth-of-type(odd) {
+//   background-color: lighten($primary-dark, 5%);
+// }

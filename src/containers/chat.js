@@ -62,7 +62,7 @@ class ChatContainer extends Component {
     }
 
     render () {
-        const {rooms, roomId} = this.props,
+        const { rooms, roomId } = this.props,
             roomTitle = rooms.items[roomId].title;
 
         return (

@@ -2,7 +2,8 @@ import {
     CHAT_JOIN,
     CHAT_LEAVE,
     MESSAGE,
-    MESSAGES
+    MESSAGES,
+    USERS
 } from '../../shared/socket.io/events';
 
 // function isUserIn(users, user) {
@@ -12,22 +13,35 @@ import {
 const initUser = {
     username: '',
     isOnline: false,
-    lastMessage: '',
-    lastMessageTime: 0
+    rooms: {
+
+    }
 };
 
 const userReducer = (state = initUser, action) => {
     switch (action.type) {
+        case USERS: {
+            const { user, roomId } = action.payload;
+
+            if (roomId && !(roomId in state.rooms))
+                user.rooms = [...state.rooms, roomId];
+            return { ...state, ...user };
+        }
+
         case MESSAGE:
         case MESSAGES:
             const message = action.payload;
+
+            message.room = message.room || 0;
             const additionalInfo = {};
 
-            if (message.time > state.lastMessageTime) {
+            if (message.time > (message.room in state.rooms ? state.rooms[message.room].lastMessageTime : 0)) {
                 additionalInfo.lastMessage = message.msg;
                 additionalInfo.lastMessageTime = message.time;
             }
-            return { ...state, ...message.user, ...additionalInfo };
+            if (additionalInfo.lastMessageTime)
+                return { ...state, ...message.user, rooms: { ...state.rooms, [message.room]: additionalInfo } };
+            return { ...state, ...message.user };
 
         case CHAT_JOIN:
             return { ...state, ...action.payload.user, ...{ isOnline: true } };
@@ -38,11 +52,31 @@ const userReducer = (state = initUser, action) => {
     }
 };
 
-const usersReducer = (state = {}, action) => {
+const initialUsers = {
+    items: {}
+};
+
+const usersReducer = (state = initialUsers, action) => {
     switch (action.type) {
+        case USERS: {
+            const { users } = action.payload;
+            const roomId = 'roomId' in action.payload ? action.payload.roomId : 0;
+            let items = state.items;
+
+            users.forEach(user => {
+                items = Object.assign({}, items, {
+                    [user.id]: userReducer(
+                        state.items[user.id],
+                        { type: action.type, payload: { user, roomId } }
+                    )
+                });
+            });
+
+            return { ...state, items };
+        }
         case MESSAGES:
             const messages = action.payload;
-            let users = state;
+            let users = state.items;
 
             messages.forEach(message => {
                 users = Object.assign({}, users, {
@@ -54,20 +88,24 @@ const usersReducer = (state = {}, action) => {
                         })
                 });
             });
-            return { ...state, ...users };
-        case MESSAGE:
-            const message = action.payload;
+            return { ...state, items: users };
+        case MESSAGE: {
+            const message = action.payload,
+                newItem = Object.assign({}, state.items, {
+                    [message.user.id]: userReducer(state.items[message.user.id], action)
+                });
 
-            return Object.assign({}, state, {
-                [message.user.id]: userReducer(state[message.user.id], action)
-            });
+            return { ...state, items: { ...state.items, ...newItem } };
+        }
         case CHAT_JOIN:
         case CHAT_LEAVE:
             const info = action.payload;
 
-            return Object.assign({}, state, {
-                [info.user.id]: userReducer(state[info.user.id], action)
-            });
+            return {
+                ...state, items: Object.assign({}, state.items, {
+                    [info.user.id]: userReducer(state.items[info.user.id], action)
+                })
+            };
 
         default:
             return state;

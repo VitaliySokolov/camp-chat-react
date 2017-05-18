@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import { List } from 'material-ui/List';
 
 class RoomList extends Component {
-  render() {
-    return (
-      <div className="room-list">
-        {this.props.children}
-      </div>
-    );
-  }
+    render () {
+        return (
+            <List className="room-list">
+                {this.props.children}
+            </List>
+        );
+    }
 }
 
 export default RoomList;

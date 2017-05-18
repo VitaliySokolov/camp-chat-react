@@ -4,10 +4,6 @@ import SidebarHeader from './header';
 import classNames from 'classnames';
 
 export default class Sidebar extends Component {
-    constructor (props) {
-        super(props);
-    }
-
     render () {
         const { isSidebarOpened, toggleSidebar } = this.props,
             sidebarClassNames = classNames('sidebar', {

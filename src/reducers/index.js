@@ -13,6 +13,10 @@ import {
     UNSELECT_MESSAGE
 } from '../actions/chatActions';
 
+import {
+    DELETE_ROOM
+} from '../../shared/socket.io/events';
+
 const selectedMessage = createReducer(null, {
     [SELECT_MESSAGE]: (state, payload) =>
         payload.message !== state
@@ -20,12 +24,17 @@ const selectedMessage = createReducer(null, {
     [UNSELECT_MESSAGE]: (state, payload) => null
 });
 
-const roomId = (state = 0, action) => {
+const initailRoomId = 0;
+
+const roomId = (state = initailRoomId, action) => {
     switch (action.type) {
         case TOGGLE_CHAT_ROOM: {
             const { roomId } = action.payload;
 
             return state !== roomId ? roomId : state;
+        }
+        case DELETE_ROOM: {
+            return initailRoomId;
         }
         default:
             return state;

@@ -1,34 +1,80 @@
 import React, { Component } from 'react';
-import { addWSRoom } from '../../actions/wsActions';
+import autobind from 'autobindr';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
+import TextField from 'material-ui/TextField';
 
 class RoomNew extends Component {
     constructor (props) {
         super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        autobind(this);
+        this.state = {
+            open: false,
+            value: null
+        };
     }
 
+    handleAddChange (event) {
+        this.setState({
+            value: event.target.value
+        });
+        // console.log(this.state.value);
+    }
 
-    handleSubmit (event) {
-        event.preventDefault();
-        // const { addChatRoom } = this.props
-        // console.log('add new room');
-        const title = this.input.value.trim();
+    handleAddSubmit () {
+        const value = this.state.value.trim();
 
-        if (title)
-            addWSRoom(title);
-            // addChatRoom(this.input.value);
-        this.input.value = '';
+        if (value)
+            this.props.addChatRoom(this.state.value);
+        this.setState({
+            open: false,
+            value: null
+        });
     }
 
     render () {
+        const addActions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={() => this.setState({ open: false })}
+            />,
+            <FlatButton
+                label="Add"
+                primary={true}
+                onTouchTap={this.handleAddSubmit}
+            />
+        ];
+
         return (
             <form className="room-new" onSubmit={this.handleSubmit}>
-                <input type="text"
+                <FloatingActionButton
+                    secondary={true}
+                    onTouchTap={() => this.setState({ open: true })}>
+                    <ContentAdd />
+                <Dialog
+                    title="Add new room"
+                    modal={true}
+                    open={this.state.open}
+                    actions={addActions}
+                >
+                    <TextField
+                        id="add_room"
+                        fullWidth={true}
+                        multiLine={false}
+                        onChange={this.handleAddChange}
+                    />
+                </Dialog>
+
+                </FloatingActionButton>
+                {/* <input type="text"
                     className="room-new__input"
                     placeholder="new room..."
                     ref={input => this.input = input} />
-                <button className="room-new__add">Add</button>
-            </form>
+                <button className="room-new__add">Add</button>*/}
+            </form >
         );
     }
 }

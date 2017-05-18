@@ -1,19 +1,16 @@
 import _ from 'lodash';
 import {
-  RECEIVE_CHAT_DATA,
-  RECEIVE_ALL_MESSAGES,
-  REQUEST_ALL_MESSAGES,
-  FAIL_ALL_MESSAGES
+    RECEIVE_ALL_MESSAGES,
+    REQUEST_ALL_MESSAGES,
+    FAIL_ALL_MESSAGES
 } from '../actions/chatActions';
 
 import {
-  EDIT_MESSAGE,
-  DELETE_MESSAGE,
-  MESSAGE,
-  MESSAGES
+    EDIT_MESSAGE,
+    DELETE_MESSAGE,
+    MESSAGE,
+    MESSAGES
 } from '../../shared/socket.io/events';
-
-import { getMaxIndex } from '../utils';
 
 const initMessage = {
     text: '',
@@ -36,11 +33,11 @@ const messageReduser = (state = initMessage, action) => {
 
             if (message.room)
                 modMsg.roomId = message.room;
-            return {...state, ...modMsg};
+            return { ...state, ...modMsg };
         case EDIT_MESSAGE:
-            const {id, text} = action.payload;
+            const { text } = action.payload;
 
-            return {...state, text};
+            return { ...state, text };
         default:
             return state;
     }
@@ -140,7 +137,7 @@ const messagesReducer = (state = initialMessages, action) => {
             if (!(action.payload.id in state.items))
                 return state;
 
-            return {...state, items: _.omit(state.items, action.payload.id)};
+            return { ...state, items: _.omit(state.items, action.payload.id) };
 
         case EDIT_MESSAGE:
             if (!(action.payload.id in state.items))
@@ -155,11 +152,11 @@ const messagesReducer = (state = initialMessages, action) => {
                 })
             };
 
-            return {...state, items: {...state.items, ...item} };
+            return { ...state, items: { ...state.items, ...item } };
         case MESSAGES:
-      // const items = messages(state.items, action);
+            // const items = messages(state.items, action);
             if (action.payload.length === 0)
-                return {...state, noMore: true};
+                return { ...state, noMore: true };
 
             let items = state.items;
             let oldest = action.payload[0].time;
@@ -182,27 +179,27 @@ const messagesReducer = (state = initialMessages, action) => {
                 theOldestTime: oldest
             };
 
-      //   const text = (typeof message.msg !== 'string') ? "" : message.msg
-      //   return {
-      //     id: message.id || index,
-      //     text: text,
-      //     author: message.user,
-      //     time: message.time
-      //   }
-      // });
+        //   const text = (typeof message.msg !== 'string') ? "" : message.msg
+        //   return {
+        //     id: message.id || index,
+        //     text: text,
+        //     author: message.user,
+        //     time: message.time
+        //   }
+        // });
 
 
-      // const oldest = items.reduce((acc, next) =>
-      //   (acc.time < next.time) ? acc : next);
-      // console.log(oldest);
-      // return (items !== state.items) ?
-      //   {
-      //     ...state,
-      //     items,
-      //     isFetching: false,
-      //     didInvalidate: false,
-      //     theOldestTime: oldest.time,
-      //   } : state
+        // const oldest = items.reduce((acc, next) =>
+        //   (acc.time < next.time) ? acc : next);
+        // console.log(oldest);
+        // return (items !== state.items) ?
+        //   {
+        //     ...state,
+        //     items,
+        //     isFetching: false,
+        //     didInvalidate: false,
+        //     theOldestTime: oldest.time,
+        //   } : state
         case REQUEST_ALL_MESSAGES:
             return { ...state, isFetching: true };
         case FAIL_ALL_MESSAGES:

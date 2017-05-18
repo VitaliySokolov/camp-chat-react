@@ -2,7 +2,14 @@ import _ from 'lodash';
 
 import * as mock_api from '../api/mock_server';
 import * as api from '../api/api';
-import { joinWSRoom, leaveWSRoom } from './wsActions';
+import {
+    joinWSRoom,
+    leaveWSRoom,
+    inviteUser,
+    addWSRoom,
+    editWSRoom,
+    deleteWSRoom
+} from './wsActions';
 
 export const RECEIVE_ROOM_LIST = 'RECEIVE_ROOM_LIST';
 export const TOGGLE_CHAT_ROOM = 'TOGGLE_CHAT_ROOM';
@@ -21,6 +28,11 @@ export const FAIL_ALL_MESSAGES = 'FAIL_ALL_MESSAGES';
 export const SELECT_MESSAGE = 'SELECT_MESSAGE';
 export const UNSELECT_MESSAGE = 'UNSELECT_MESSAGE';
 
+export const REQUEST_INVITE_USER = 'REQUEST_INVITE_USER';
+export const REQUEST_ADD_ROOM = 'REQUEST_ADD_ROOM';
+export const REQUEST_DELETE_ROOM = 'REQUEST_DELETE_ROOM';
+export const REQUEST_EDIT_ROOM = 'REQUEST_EDIT_ROOM';
+
 export const selectMessage = message => ({
     type: SELECT_MESSAGE,
     payload: { message }
@@ -31,6 +43,40 @@ export const unselectMessage = message => ({
     payload: { message }
 });
 
+export const editChatRoom = (roomId, title) => dispatch => {
+    dispatch({
+        type: REQUEST_EDIT_ROOM
+    });
+    editWSRoom({roomId, title});
+};
+
+export const addChatRoom = title => dispatch => {
+    dispatch({
+        type: REQUEST_ADD_ROOM
+    });
+    addWSRoom(title);
+};
+
+export const deleteChatRoom = roomId => dispatch => {
+    dispatch({
+        type: REQUEST_DELETE_ROOM
+    });
+    deleteWSRoom(roomId);
+};
+
+export const inviteUserToRoomByName = username => (dispatch, getState) => {
+    const { roomId, users } = getState(),
+        user = Object
+            .values(users.items)
+            .find(u => u.username === username);
+
+    dispatch({
+        type: 'REQUEST_INVITE_USER',
+        payload: { roomId, user }
+    });
+    inviteUser({ roomId, userId: user.id });
+};
+
 export const getRoomList = () => dispatch => {
     // console.log('in getRoomList');
     mock_api.fetchAllRooms().then(rooms => dispatch({
@@ -39,15 +85,15 @@ export const getRoomList = () => dispatch => {
     }));
 };
 
-const getChatRoom = roomId => dispatch => {
-    mock_api.fetchChatRoomData(roomId)
-        .then(data =>
-            dispatch(
-                {
-                    type: RECEIVE_CHAT_DATA,
-                    payload: data
-                }));
-};
+// const getChatRoom = roomId => dispatch => {
+//     mock_api.fetchChatRoomData(roomId)
+//         .then(data =>
+//             dispatch(
+//                 {
+//                     type: RECEIVE_CHAT_DATA,
+//                     payload: data
+//                 }));
+// };
 
 export const toggleChatRoom = roomId => (dispatch, getState) => {
     const { roomId: oldRoomId } = getState();
@@ -68,22 +114,22 @@ export const toggleChatRoom = roomId => (dispatch, getState) => {
     // dispatch(getChatRoom(roomId));
 };
 
-export const addChatRoom = title => dispatch => {
-    mock_api.addNewRoom(title)
-        .then(data => {
-            dispatch({
-                type: ADD_CHAT_ROOM,
-                payload: data
-            });
-            dispatch(toggleChatRoom(data.room.id));
-        })
-        .catch(error => {
-            dispatch({
-                type: ERROR_ROOM_ACTION,
-                payload: error
-            });
-        });
-};
+// export const addChatRoom = title => dispatch => {
+//     mock_api.addNewRoom(title)
+//         .then(data => {
+//             dispatch({
+//                 type: ADD_CHAT_ROOM,
+//                 payload: data
+//             });
+//             dispatch(toggleChatRoom(data.room.id));
+//         })
+//         .catch(error => {
+//             dispatch({
+//                 type: ERROR_ROOM_ACTION,
+//                 payload: error
+//             });
+//         });
+// };
 
 export const getUserList = () => dispatch => {
     dispatch({

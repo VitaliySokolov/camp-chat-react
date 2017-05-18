@@ -74,6 +74,10 @@ export const getWSRooms = () => {
     emit(SOCKETS.ROOMS);
 };
 
+export const getWSRoomUsers = ({ roomId }) => {
+    emit(SOCKETS.ROOM_USERS, { roomId });
+};
+
 export const getWSAllUsers = () => {
     emit(SOCKETS.USERS);
 };
@@ -89,8 +93,18 @@ export const addWSRoom = title => {
     // });
 };
 
+export const inviteUser = ({ roomId, userId }) => {
+    emit(SOCKETS.INVITE_USER, { roomId, userId });
+};
+
 export const deleteWSRoom = roomId => {
     emit(SOCKETS.DELETE_ROOM, { roomId });
+};
+
+export const editWSRoom = ({ roomId, title }) => {
+    title = title.trim();
+    if (title)
+        emit(SOCKETS.EDIT_ROOM, { roomId, title });
 };
 
 export const joinWSRoom = roomId => {
@@ -117,6 +131,7 @@ export const initWS = (data, store) => dispatch => {
                     loginWsFailure(`unauthorized: ${JSON.stringify(msg.data)}`)))
                 .once('join', () => {
                     getWSRooms();
+                    getWSAllUsers();
                     getWsMessages();
                 });
         });
