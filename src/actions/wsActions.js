@@ -133,6 +133,9 @@ export const initWS = (data, store) => dispatch => {
                     getWSRooms();
                     getWSAllUsers();
                     getWsMessages();
+                })
+                .on(SOCKETS.DISCONNECT, () => {
+                    socket.disconnect();
                 });
         });
     } catch (error) {

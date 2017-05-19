@@ -75,7 +75,7 @@ const usersReducer = (state = initialUsers, action) => {
             return { ...state, items };
         }
         case MESSAGES:
-            const messages = action.payload;
+            const { messages } = action.payload;
             let users = state.items;
 
             messages.forEach(message => {

@@ -9,6 +9,7 @@ import Delete from 'material-ui/svg-icons/action/delete-forever';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import { Draggable } from 'react-drag-and-drop';
 
 class RoomItem extends Component {
     constructor (props) {
@@ -21,8 +22,14 @@ class RoomItem extends Component {
         };
     }
 
-    onRoomClick () {
+    onRoomClick (event) {
+        event.preventDefault();
         this.props.toggleChatRoom(this.props.room.id);
+    }
+
+    onRoomDoubleClick (event) {
+        event.preventDefault();
+        console.log('dbl click');
     }
 
     handleEditClick () {
@@ -33,11 +40,8 @@ class RoomItem extends Component {
         this.setState({ editOpen: false });
     }
 
-    handleEditBlur (event) {
-        const value = event.target.value.trim();
-
-        if (value !== this.props.room.title)
-            this.setState({ newValue: value });
+    handleEditChange (event) {
+        this.setState({ newValue: event.target.value });
     }
 
     handleEditSubmit () {
@@ -133,7 +137,7 @@ class RoomItem extends Component {
                     open={this.state.deleteOpen}
                     actions={deleteActions}
                 >
-                     {this.props.room.title}
+                    {this.props.room.title}
                 </Dialog>
             </IconButton>
 
@@ -149,12 +153,12 @@ class RoomItem extends Component {
                     open={this.state.editOpen}
                     actions={editActions}
                 >
-                     <TextField
+                    <TextField
                         id={`${this.props.room.id}`}
                         defaultValue={this.props.room.title}
                         fullWidth={true}
                         multiLine={false}
-                        onBlur={this.handleEditBlur}
+                        onChange={this.handleEditChange}
                     />
                 </Dialog>
             </IconButton>
@@ -169,12 +173,18 @@ class RoomItem extends Component {
             : null;
 
         return (
-            <div className={roomClassNames} onClick={this.onRoomClick}>
-                <Avatar
-                    wrapperClasses="room-logo user-image"
-                    title={title}
-                    round={false}
-                    value="hello" />
+            <div
+                className={roomClassNames}
+                onClick={this.onRoomClick}
+                onDoubleClick={this.onRoomDoubleClick}
+            >
+                <Draggable type="roomid" data={room.id}>
+                    <Avatar
+                        wrapperClasses="room-logo user-image"
+                        title={title}
+                        round={false}
+                        value="hello" />
+                </Draggable>
                 <div className="room__info-wrapper">
                     <div className="room__title">
                         {title}

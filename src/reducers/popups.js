@@ -40,7 +40,7 @@ export default createReducer(popupInitialState, {
         ...state,
         open: true,
         message: payload.length !== 0
-            ? `Loading ${payload.length} message(s).`
+            ? `Loaded ${payload.messages.length} message(s).`
             : 'No messages'
     })
 });

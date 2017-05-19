@@ -47,7 +47,7 @@ export const editChatRoom = (roomId, title) => dispatch => {
     dispatch({
         type: REQUEST_EDIT_ROOM
     });
-    editWSRoom({roomId, title});
+    editWSRoom({ roomId, title });
 };
 
 export const addChatRoom = title => dispatch => {
@@ -65,16 +65,44 @@ export const deleteChatRoom = roomId => dispatch => {
 };
 
 export const inviteUserToRoomByName = username => (dispatch, getState) => {
-    const { roomId, users } = getState(),
+    const { roomId, users, rooms } = getState(),
         user = Object
             .values(users.items)
             .find(u => u.username === username);
+
+    const hasUser = rooms.items[roomId].users
+        .find(u => u.id === user.id);
+
+    if (!roomId || hasUser)
+        return;
 
     dispatch({
         type: 'REQUEST_INVITE_USER',
         payload: { roomId, user }
     });
     inviteUser({ roomId, userId: user.id });
+};
+
+export const inviteUserToRoomById = userId => (dispatch, getState) => {
+    const { roomId, rooms, auth } = getState();
+
+    if (!roomId)
+        return;
+    const isCreator = rooms.items[roomId].creator.id === auth.id;
+
+    if (!isCreator)
+        return;
+
+    const hasUser = rooms.items[roomId].users
+        .find(id => id === userId);
+
+    if (hasUser)
+        return;
+    dispatch({
+        type: 'REQUEST_INVITE_USER',
+        payload: { roomId, userId }
+    });
+    inviteUser({ roomId, userId });
 };
 
 export const getRoomList = () => dispatch => {

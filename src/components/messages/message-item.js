@@ -38,21 +38,20 @@ class MessageItem extends Component {
     handleEditBlur (event) {
         const value = event.target.value.trim();
 
-        if (value !== this.props.message.text) 
+        if (value !== this.props.message.text)
             this.setState({ newValue: value });
-        
     }
 
     handleEditSubmit () {
         const newValue = this.state.newValue;
 
         if (newValue !== null
-            && newValue !== this.props.message.text) 
+            && newValue !== this.props.message.text)
             editWsMessage({
                 msgId: this.props.message.id,
                 msgText: newValue
             });
-        
+
         this.setState({ editOpen: false });
     }
 
@@ -88,7 +87,7 @@ class MessageItem extends Component {
 
     render () {
         const {
-      loggedUser,
+            loggedUser,
             message,
             selectedMessage } = this.props;
         const { text, time, author } = message;
@@ -127,8 +126,8 @@ class MessageItem extends Component {
             />
         ];
 
-        const editButton = 
-            <IconButton
+        const editButton
+            = <IconButton
                 onTouchTap={this.handleEditClick}
             >
                 <Edit />
@@ -148,9 +147,10 @@ class MessageItem extends Component {
                     />
                 </Dialog>
             </IconButton>
-        ;
-        const deleteButton = 
-            <IconButton
+
+            ;
+        const deleteButton
+            = <IconButton
                 onTouchTap={this.handleDeleteClick}
             >
                 <Delete />
@@ -163,14 +163,15 @@ class MessageItem extends Component {
                     {this.props.message.text}
                 </Dialog>
             </IconButton>
-        ;
 
-        const messageTools = author.id === loggedUser.id ? 
-            <div className="message-tools">
+            ;
+
+        const messageTools = author.id === loggedUser.id
+            ? <div className="message-tools">
                 {editButton}
                 {deleteButton}
             </div>
-         : null;
+            : null;
 
         return (
             <div className={rowClassName}

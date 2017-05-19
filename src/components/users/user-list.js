@@ -1,14 +1,25 @@
 import React, { Component } from 'react';
 
 class UserList extends Component {
+    constructor (props) {
+        super(props);
+        this.handleDblClick = this.handleDblClick.bind(this);
+    }
 
-  render() {
-    return (
-      <div className="user-list">
-        {this.props.children}
-      </div>
-    );
-  }
+    handleDblClick (event) {
+        event.preventDefault();
+        this.props.showRooms();
+    }
+
+    render () {
+        return (
+            <div
+                className="user-list"
+                onDoubleClick={this.handleDblClick}>
+                {this.props.children}
+            </div>
+        );
+    }
 }
 
 export default UserList;

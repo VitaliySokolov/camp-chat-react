@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import autobind from 'autobindr';
 
+import { dev } from '../config';
+
 import Sidebar from '../components/sidebar/sidebar';
 import RoomList from '../components/rooms/room-list';
 import RoomItem from '../components/rooms/room-item';
@@ -19,11 +21,10 @@ class SidebarContainer extends Component {
     constructor (props) {
         super(props);
         autobind(this);
-
         this.state = {
             allUsers: true,
             hideRooms: false,
-            open: true
+            open: !!dev
         };
     }
 
@@ -112,7 +113,7 @@ class SidebarContainer extends Component {
             usersWrapperClass = classNames('users-wrapper', {
                 hidden: !this.state.hideRooms
             }),
-            { roomId } = this.props;
+            { roomId, rooms, loggedUser } = this.props;
 
 
         return (
@@ -124,16 +125,20 @@ class SidebarContainer extends Component {
                 isSidebarOpened={this.isSidebarOpened}
             >
                 <div className={roomsWrapperClass}>
-                    <RoomList>
+                    <RoomList
+                        showRoomUsers={this.showRoomUsers}
+                    >
                         {this.getRooms()}
                     </RoomList>
                     {this.isSidebarOpened() && <RoomNew addChatRoom={addChatRoom} />}
                 </div>
                 <div className={usersWrapperClass}>
-                    <UserList>
+                    <UserList
+                        showRooms={this.showRooms}
+                    >
                         {this.getUsers()}
                     </UserList>
-                    {this.isSidebarOpened() && !this.state.allUsers && !!roomId
+                    {this.isSidebarOpened() && !this.state.allUsers && !!roomId && rooms.items[roomId].creator.id === loggedUser.id
                         && <UserNew inviteUserToRoomByName={inviteUserToRoomByName} />}
                 </div>
             </Sidebar>

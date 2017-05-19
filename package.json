@@ -11,6 +11,7 @@
     "react": "15.4.2",
     "react-avatar": "^2.3.0",
     "react-dom": "15.4.2",
+    "react-drag-and-drop": "^2.4.0",
     "react-emoji": "^0.5.0",
     "react-pull-to-refresh": "^1.0.6",
     "react-redux": "^5.0.4",

@@ -19,7 +19,7 @@ class ChatHeader extends Component {
                 <AppBar
                     iconElementLeft={<PrivateMessages {...this.props} />}
                     iconElementRight={<PersonAccount />}
-                    title={<ChatTitle roomTitle={this.props.roomTitle} />}
+                    title={<ChatTitle {...this.props} />}
                     titleStyle={{
                         textAlign: 'center',
                         color: 'black'

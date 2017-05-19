@@ -124,10 +124,9 @@ const messageReduser = (state = initMessage, action) => {
 
 const initialMessages = {
     items: {},
+    rooms: {},
     isFetching: false,
-    didInvalidate: false,
-    theOldestTime: null,
-    noMore: false
+    didInvalidate: false
 };
 
 const messagesReducer = (state = initialMessages, action) => {
@@ -143,7 +142,7 @@ const messagesReducer = (state = initialMessages, action) => {
             if (!(action.payload.id in state.items))
                 return state;
 
-        case MESSAGE:
+        case MESSAGE: {
             const message = action.payload;
             const item = {
                 [message.id]: messageReduser(state.items[message.id], {
@@ -153,15 +152,21 @@ const messagesReducer = (state = initialMessages, action) => {
             };
 
             return { ...state, items: { ...state.items, ...item } };
-        case MESSAGES:
-            // const items = messages(state.items, action);
-            if (action.payload.length === 0)
-                return { ...state, noMore: true };
+        }
+        case MESSAGES: {
+            const { messages, roomId } = action.payload;
+
+            if (messages.length === 0) {
+                const id = {...state.rooms[roomId], noMore: true};
+
+                return { ...state, rooms: {...state.rooms, ...{[roomId]: id} } };
+            }
+
 
             let items = state.items;
-            let oldest = action.payload[0].time;
+            let oldest = messages[0].time;
 
-            action.payload.forEach(message => {
+            messages.forEach(message => {
                 items = Object.assign({}, items, {
                     [message.id]: messageReduser(state.items[message.id], {
                         type: action.type,
@@ -176,8 +181,9 @@ const messagesReducer = (state = initialMessages, action) => {
                 items,
                 isFetching: false,
                 didInvalidate: false,
-                theOldestTime: oldest
+                rooms: {...state.rooms, ...{[roomId]: { theOldestTime: oldest }} }
             };
+        }
 
         //   const text = (typeof message.msg !== 'string') ? "" : message.msg
         //   return {

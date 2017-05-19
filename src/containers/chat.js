@@ -15,31 +15,22 @@ function NoMessages (props) {
 
 class ChatContainer extends Component {
 
-    componentDidMount () {
-        // console.log('in cdm');
-        // this.props.chatActions.getRoomList();
-        // this.props.chatActions.toggleChatRoom(4);
-
-        // work!!
-        // this.props.chatActions.getUserList();
-        // this.props.chatActions.getMessageList();
-    }
-
     getMessages () {
         const {
-      messages,
+            messages,
             selectedMessage,
             loggedUser,
             roomId
-     } = this.props;
-        // const getAuthor = (message) => users.find(user => user.id === message.authorId);
+          } = this.props;
         const {
-      selectMessage,
+            selectMessage,
             unselectMessage
-    } = this.props.chatActions;
+          } = this.props.chatActions;
 
-        return messages
-            ? sortMessages(Object.values(messages), roomId)
+        const items = messages.items;
+
+        return items
+            ? sortMessages(Object.values(items), roomId)
                 .map(message =>
                     <MessageItem
                         key={message.id}
@@ -62,16 +53,23 @@ class ChatContainer extends Component {
     }
 
     render () {
-        const { rooms, roomId } = this.props,
-            roomTitle = rooms.items[roomId].title;
+        const { messages, rooms, roomId } = this.props,
+            roomTitle = rooms.items[roomId].title,
+            { inviteUserToRoomById } = this.props.chatActions;
+
+        const noMore = !!(roomId in messages.rooms
+            && messages.rooms[roomId].noMore);
+        const cutoff = roomId in messages.rooms
+            && messages.rooms[roomId].theOldestTime;
 
         return (
             <Chat
                 roomTitle={roomTitle}
+                inviteUserToRoomById={inviteUserToRoomById}
             >
                 <MessageList
-                    cutoff={this.props.cutoff}
-                    noMore={this.props.noMore}>
+                    cutoff={cutoff}
+                    noMore={noMore}>
                     {this.getMessages()}
                 </MessageList>
                 {this.showMessageNew()}
@@ -88,9 +86,7 @@ function sortMessages (items, roomId) {
 
 function mapStateToProps (state) {
     return {
-        messages: state.messages.items,
-        cutoff: state.messages.theOldestTime,
-        noMore: state.messages.noMore,
+        messages: state.messages,
         roomId: state.roomId,
         rooms: state.rooms,
         selectedMessage: state.selectedMessage,

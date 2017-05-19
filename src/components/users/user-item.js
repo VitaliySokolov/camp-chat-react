@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import autobind from 'autobindr';
 import classNames from 'classnames';
 import ReactEmoji from 'react-emoji';
+import { Draggable } from 'react-drag-and-drop';
 
 import Avatar from '../avatar';
 import TimeFromNow from '../time-from-now';
@@ -29,7 +30,7 @@ class UserItem extends Component {
         }
 
         return (
-            <div className={userClassName}>
+            <Draggable className={userClassName} type="id" data={user.id}>
                 <Avatar user={user} />
                 <div className="user__info-wrapper">
                     <div className="user__name">{username}</div>
@@ -40,7 +41,7 @@ class UserItem extends Component {
                         )}</div>
                 </div>
                 <TimeFromNow time={lastMessageTime} classes="user__last-message-time" />
-            </div>
+            </Draggable>
         );
     }
 }

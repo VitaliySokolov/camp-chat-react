@@ -5,6 +5,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import { Droppable } from 'react-drag-and-drop';
 
 class RoomNew extends Component {
     constructor (props) {
@@ -14,6 +15,10 @@ class RoomNew extends Component {
             open: false,
             value: null
         };
+    }
+
+    onDrop (data) {
+        console.log(data);
     }
 
     handleAddChange (event) {
@@ -49,7 +54,7 @@ class RoomNew extends Component {
         ];
 
         return (
-            <form className="room-new" onSubmit={this.handleSubmit}>
+            <Droppable types={['roomid']} onDrop={this.onDrop} className="room-new">
                 <FloatingActionButton
                     secondary={true}
                     onTouchTap={() => this.setState({ open: true })}>
@@ -69,12 +74,7 @@ class RoomNew extends Component {
                 </Dialog>
 
                 </FloatingActionButton>
-                {/* <input type="text"
-                    className="room-new__input"
-                    placeholder="new room..."
-                    ref={input => this.input = input} />
-                <button className="room-new__add">Add</button>*/}
-            </form >
+            </Droppable>
         );
     }
 }
