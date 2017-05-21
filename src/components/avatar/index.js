@@ -9,17 +9,31 @@ function ModAvatar (props) {
         return <Avatar src={'/img/robot.png'} alt="robot" className="user-image robot" size={50}
         />;
 
+    if (props.online) {
+
+    }
+    const onlineOffline = props.online
+        ? <i className="online-status online-status--active" />
+        : <i className="online-status" />;
+
+    const onlineStatus = props.online !== undefined
+        ? onlineOffline
+        : null;
+
     return (
-        <Avatar
-            name={props.title
-                || props.user.username
-                || props.user.name}
-            alt="img"
-            className={props.wrapperClasses || 'user-image'}
-            size={props.size || DEFAULT_SIZE}
-            round={props.round || true}
-            {...props}
-        />
+        <span className="avatar-wrapper">
+            <Avatar
+                name={props.title
+                    || props.user.username
+                    || props.user.name}
+                alt="img"
+                className={props.wrapperClasses || 'user-image'}
+                size={props.size || DEFAULT_SIZE}
+                round={props.round || true}
+                {...props}
+            />
+            {onlineStatus}
+        </span>
     );
 }
 

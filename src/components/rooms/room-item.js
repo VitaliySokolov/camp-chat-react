@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import autobind from 'autobindr';
 import classNames from 'classnames';
 import Avatar from '../avatar';
@@ -10,6 +11,8 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { Draggable } from 'react-drag-and-drop';
+
+const COMMON_ROOM_ID = 0;
 
 class RoomItem extends Component {
     constructor (props) {
@@ -24,12 +27,13 @@ class RoomItem extends Component {
 
     onRoomClick (event) {
         event.preventDefault();
-        this.props.toggleChatRoom(this.props.room.id);
+        const { room } = this.props;
+
+        this.props.toggleChatRoom(room.id);
     }
 
     onRoomDoubleClick (event) {
         event.preventDefault();
-        console.log('dbl click');
     }
 
     handleEditClick () {
@@ -45,11 +49,12 @@ class RoomItem extends Component {
     }
 
     handleEditSubmit () {
-        const newValue = this.state.newValue;
+        const newValue = this.state.newValue,
+            { room } = this.props;
 
         if (newValue !== null
-            && newValue !== this.props.room.title)
-            this.props.editChatRoom(this.props.room.id, newValue);
+            && newValue !== room.title)
+            this.props.editChatRoom(room.id, newValue);
 
         this.setState({ editOpen: false });
     }
@@ -83,7 +88,7 @@ class RoomItem extends Component {
             roomClassNames = classNames('room', {
                 'room--selected': room.id === roomId
             }),
-            roomInfo = room.id !== 0
+            roomInfo = room.id !== COMMON_ROOM_ID
                 ? <div>
                     <Avatar
                         user={creator}
@@ -92,7 +97,7 @@ class RoomItem extends Component {
                     {creator.username}
                 </div>
                 : null,
-            roomTime = room.id !== 0
+            roomTime = room.id !== COMMON_ROOM_ID
                 ? <TimeFromNow
                     time={room.createdAt}
                     classes="room__last-message-time"
@@ -102,11 +107,13 @@ class RoomItem extends Component {
 
         const editActions = [
             <FlatButton
+                key="roomEditCancel"
                 label="Cancel"
                 primary={true}
                 onTouchTap={this.handleEditClose}
             />,
             <FlatButton
+                key="roomEditSubmit"
                 label="Submit"
                 primary={true}
                 onTouchTap={this.handleEditSubmit}
@@ -115,11 +122,13 @@ class RoomItem extends Component {
 
         const deleteActions = [
             <FlatButton
+                key="roomDeleteCancel"
                 label="Cancel"
                 primary={true}
                 onTouchTap={this.handleDeleteClose}
             />,
             <FlatButton
+                key="roomDeleteSubmit"
                 label="Delete"
                 primary={true}
                 onTouchTap={this.handleDeleteSubmit}
@@ -197,5 +206,14 @@ class RoomItem extends Component {
         );
     }
 }
+RoomItem.propTypes = {
+    room: PropTypes.object.isRequired,
+    roomId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    users: PropTypes.object,
+    loggedUser: PropTypes.object,
+    toggleChatRoom: PropTypes.func.isRequired,
+    editChatRoom: PropTypes.func.isRequired,
+    deleteChatRoom: PropTypes.func.isRequired
 
+};
 export default RoomItem;

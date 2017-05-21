@@ -12,7 +12,7 @@ import {
 
 const initUser = {
     username: '',
-    isOnline: false,
+    online: false,
     rooms: {
 
     }
@@ -44,9 +44,9 @@ const userReducer = (state = initUser, action) => {
             return { ...state, ...message.user };
 
         case CHAT_JOIN:
-            return { ...state, ...action.payload.user, ...{ isOnline: true } };
+            return { ...state, ...action.payload.user, ...{ online: true } };
         case CHAT_LEAVE:
-            return { ...state, ...action.payload.user, ...{ isOnline: false } };
+            return { ...state, ...action.payload.user, ...{ online: false } };
         default:
             return state;
     }

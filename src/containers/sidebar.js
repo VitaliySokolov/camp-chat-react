@@ -12,7 +12,7 @@ import RoomItem from '../components/rooms/room-item';
 import RoomNew from '../components/rooms/room-new';
 import UserList from '../components/users/user-list';
 import UserItem from '../components/users/user-item';
-import UserNew from '../components/users/user-new';
+// import UserNew from '../components/users/user-new';
 
 import * as chatActions from '../actions/chatActions';
 
@@ -22,10 +22,13 @@ class SidebarContainer extends Component {
         super(props);
         autobind(this);
         this.state = {
-            allUsers: true,
-            hideRooms: false,
-            open: !!dev
+            open: !!dev,
+            tabIndex: 0
         };
+    }
+
+    getTabIndex () {
+        return this.state.tabIndex;
     }
 
     isSidebarOpened () {
@@ -38,23 +41,20 @@ class SidebarContainer extends Component {
 
     showAllUsers () {
         this.setState({
-            allUsers: true,
-            hideRooms: true
+            tabIndex: 2
         });
     }
 
     showRoomUsers () {
         // getWSRoomUsers({roomId: this.props.roomId});
         this.setState({
-            allUsers: false,
-            hideRooms: true
+            tabIndex: 1
         });
     }
 
     showRooms () {
         this.setState({
-            allUsers: false,
-            hideRooms: false
+            tabIndex: 0
         });
     }
 
@@ -83,14 +83,21 @@ class SidebarContainer extends Component {
 
     getUsers () {
         let selectedUser = null;
-        const { users, selectedMessage, rooms, roomId } = this.props;
+        const {
+            users,
+            loggedUser,
+            selectedMessage,
+            rooms,
+            roomId } = this.props,
+            { inviteUserToRoomById,
+                kickUserFromRoom } = this.props.chatActions;
 
         if (selectedMessage)
             // console.log(selectedMessage.author);
             selectedUser = selectedMessage.author;
 
         const userArray
-            = !this.state.allUsers && this.state.hideRooms && roomId
+            = this.state.tabIndex === 1 && roomId
                 ? rooms.items[roomId].users
                 : Object.keys(users.items);
 
@@ -100,20 +107,23 @@ class SidebarContainer extends Component {
                     key={id}
                     user={users.items[id]}
                     roomId={roomId}
+                    room={rooms.items[roomId]}
+                    loggedUser={loggedUser}
                     selectedUser={selectedUser}
+                    inviteUserToRoom={inviteUserToRoomById}
+                    kickUserFromRoom={kickUserFromRoom}
                 />
             ) : null;
     }
 
     render () {
-        const { addChatRoom, inviteUserToRoomByName } = this.props.chatActions,
+        const { addChatRoom } = this.props.chatActions,
             roomsWrapperClass = classNames('rooms-wrapper', {
-                hidden: this.state.hideRooms
+                hidden: this.state.tabIndex
             }),
             usersWrapperClass = classNames('users-wrapper', {
-                hidden: !this.state.hideRooms
-            }),
-            { roomId, rooms, loggedUser } = this.props;
+                hidden: !this.state.tabIndex
+            });
 
 
         return (
@@ -123,6 +133,7 @@ class SidebarContainer extends Component {
                 showRooms={this.showRooms}
                 toggleSidebar={this.toggleSidebar}
                 isSidebarOpened={this.isSidebarOpened}
+                getTabIndex={this.getTabIndex}
             >
                 <div className={roomsWrapperClass}>
                     <RoomList
@@ -138,8 +149,8 @@ class SidebarContainer extends Component {
                     >
                         {this.getUsers()}
                     </UserList>
-                    {this.isSidebarOpened() && !this.state.allUsers && !!roomId && rooms.items[roomId].creator.id === loggedUser.id
-                        && <UserNew inviteUserToRoomByName={inviteUserToRoomByName} />}
+                    {/* {this.isSidebarOpened() && !this.state.allUsers && !!roomId && rooms.items[roomId].creator.id === loggedUser.id
+                        && <UserNew inviteUserToRoomByName={inviteUserToRoomByName} />}*/}
                 </div>
             </Sidebar>
         );

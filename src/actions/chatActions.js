@@ -1,37 +1,33 @@
-import _ from 'lodash';
-
-import * as mock_api from '../api/mock_server';
+import * as mockApi from '../api/mock_server';
 import * as api from '../api/api';
 import {
     joinWSRoom,
     leaveWSRoom,
     inviteUser,
+    kickUser,
     addWSRoom,
     editWSRoom,
     deleteWSRoom
 } from './wsActions';
 
-export const RECEIVE_ROOM_LIST = 'RECEIVE_ROOM_LIST';
-export const TOGGLE_CHAT_ROOM = 'TOGGLE_CHAT_ROOM';
-export const RECEIVE_CHAT_DATA = 'RECEIVE_CHAT_DATA';
-export const ADD_CHAT_ROOM = 'ADD_CHAT_ROOM';
-export const ERROR_ROOM_ACTION = 'ERROR_ROOM_ACTION';
-
-export const REQUEST_ALL_USERS = 'REQUEST_ALL_USERS';
-export const RECEIVE_ALL_USERS = 'RECEIVE_ALL_USERS';
-export const FAIL_ALL_USERS = 'FAIL_ALL_USERS';
-
-export const REQUEST_ALL_MESSAGES = 'REQUEST_ALL_MESSAGES';
-export const RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES';
-export const FAIL_ALL_MESSAGES = 'FAIL_ALL_MESSAGES';
-
-export const SELECT_MESSAGE = 'SELECT_MESSAGE';
-export const UNSELECT_MESSAGE = 'UNSELECT_MESSAGE';
-
-export const REQUEST_INVITE_USER = 'REQUEST_INVITE_USER';
-export const REQUEST_ADD_ROOM = 'REQUEST_ADD_ROOM';
-export const REQUEST_DELETE_ROOM = 'REQUEST_DELETE_ROOM';
-export const REQUEST_EDIT_ROOM = 'REQUEST_EDIT_ROOM';
+export const RECEIVE_ROOM_LIST = 'RECEIVE_ROOM_LIST',
+    TOGGLE_CHAT_ROOM = 'TOGGLE_CHAT_ROOM',
+    RECEIVE_CHAT_DATA = 'RECEIVE_CHAT_DATA',
+    ADD_CHAT_ROOM = 'ADD_CHAT_ROOM',
+    ERROR_ROOM_ACTION = 'ERROR_ROOM_ACTION',
+    REQUEST_ALL_USERS = 'REQUEST_ALL_USERS',
+    RECEIVE_ALL_USERS = 'RECEIVE_ALL_USERS',
+    FAIL_ALL_USERS = 'FAIL_ALL_USERS',
+    REQUEST_ALL_MESSAGES = 'REQUEST_ALL_MESSAGES',
+    RECEIVE_ALL_MESSAGES = 'RECEIVE_ALL_MESSAGES',
+    FAIL_ALL_MESSAGES = 'FAIL_ALL_MESSAGES',
+    SELECT_MESSAGE = 'SELECT_MESSAGE',
+    UNSELECT_MESSAGE = 'UNSELECT_MESSAGE',
+    REQUEST_INVITE_USER = 'REQUEST_INVITE_USER',
+    REQUEST_KICK_USER = 'REQUEST_KICK_USER',
+    REQUEST_ADD_ROOM = 'REQUEST_ADD_ROOM',
+    REQUEST_DELETE_ROOM = 'REQUEST_DELETE_ROOM',
+    REQUEST_EDIT_ROOM = 'REQUEST_EDIT_ROOM';
 
 export const selectMessage = message => ({
     type: SELECT_MESSAGE,
@@ -104,17 +100,38 @@ export const inviteUserToRoomById = userId => (dispatch, getState) => {
     });
     inviteUser({ roomId, userId });
 };
+export const kickUserFromRoom = userId => (dispatch, getState) => {
+    const { roomId, rooms, auth } = getState();
+
+    if (!roomId)
+        return;
+    const isCreator = rooms.items[roomId].creator.id === auth.id;
+
+    if (!isCreator)
+        return;
+
+    const hasUser = rooms.items[roomId].users
+        .find(id => id === userId);
+
+    if (!hasUser)
+        return;
+    dispatch({
+        type: 'REQUEST_KICK_USER',
+        payload: { roomId, userId }
+    });
+    kickUser({ roomId, userId });
+};
 
 export const getRoomList = () => dispatch => {
     // console.log('in getRoomList');
-    mock_api.fetchAllRooms().then(rooms => dispatch({
+    mockApi.fetchAllRooms().then(rooms => dispatch({
         type: 'RECEIVE_ROOM_LIST',
         payload: { rooms: [].concat(rooms) }
     }));
 };
 
 // const getChatRoom = roomId => dispatch => {
-//     mock_api.fetchChatRoomData(roomId)
+//     mockApi.fetchChatRoomData(roomId)
 //         .then(data =>
 //             dispatch(
 //                 {
@@ -143,7 +160,7 @@ export const toggleChatRoom = roomId => (dispatch, getState) => {
 };
 
 // export const addChatRoom = title => dispatch => {
-//     mock_api.addNewRoom(title)
+//     mockApi.addNewRoom(title)
 //         .then(data => {
 //             dispatch({
 //                 type: ADD_CHAT_ROOM,

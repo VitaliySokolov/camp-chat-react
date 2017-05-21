@@ -97,6 +97,10 @@ export const inviteUser = ({ roomId, userId }) => {
     emit(SOCKETS.INVITE_USER, { roomId, userId });
 };
 
+export const kickUser = ({ roomId, userId }) => {
+    emit(SOCKETS.KICK_USER, { roomId, userId });
+};
+
 export const deleteWSRoom = roomId => {
     emit(SOCKETS.DELETE_ROOM, { roomId });
 };
@@ -110,6 +114,7 @@ export const editWSRoom = ({ roomId, title }) => {
 export const joinWSRoom = roomId => {
     socket.once(SOCKETS.JOIN_ROOM, () => {
         emit(SOCKETS.MESSAGES);
+        emit(SOCKETS.ROOM_USERS, { roomId });
     });
     emit(SOCKETS.JOIN_ROOM, { roomId });
 };

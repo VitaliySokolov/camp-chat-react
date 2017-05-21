@@ -22,7 +22,7 @@ class TimeFromNow extends Component {
 }
 
 TimeFromNow.propTypes = {
-    time: PropTypes.any.isRequired,
+    time: PropTypes.any,
     ago: PropTypes.bool,
     classes: PropTypes.string
 };

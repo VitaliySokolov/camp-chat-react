@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import autobind from 'autobindr';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
@@ -42,11 +43,13 @@ class RoomNew extends Component {
     render () {
         const addActions = [
             <FlatButton
+                key="addRoomCancel"
                 label="Cancel"
                 primary={true}
                 onTouchTap={() => this.setState({ open: false })}
             />,
             <FlatButton
+                key="addRoomSubmit"
                 label="Add"
                 primary={true}
                 onTouchTap={this.handleAddSubmit}
@@ -54,6 +57,7 @@ class RoomNew extends Component {
         ];
 
         return (
+            <div>
             <Droppable types={['roomid']} onDrop={this.onDrop} className="room-new">
                 <FloatingActionButton
                     secondary={true}
@@ -75,8 +79,13 @@ class RoomNew extends Component {
 
                 </FloatingActionButton>
             </Droppable>
+            </div>
         );
     }
 }
+
+RoomNew.propTypes = {
+    addChatRoom: PropTypes.func.isRequired
+};
 
 export default RoomNew;

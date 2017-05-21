@@ -9,6 +9,7 @@ import {
     ROOMS,
     ADD_ROOM,
     INVITE_USER,
+    KICK_USER,
     EDIT_ROOM,
     DELETE_ROOM
 } from '../../shared/socket.io/events';
@@ -49,6 +50,12 @@ const roomsReducer = (state = initialRooms, action) => {
             const { roomId, userId } = action.payload;
 
             state.items[roomId].users = [...state.items[roomId].users, userId];
+            return { ...state };
+        }
+        case KICK_USER: {
+            const { roomId, userId } = action.payload;
+
+            state.items[roomId].users = state.items[roomId].users.filter(u => u !== userId);
             return { ...state };
         }
         case EDIT_ROOM: {

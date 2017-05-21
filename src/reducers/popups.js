@@ -2,7 +2,9 @@ import {
     CHAT_JOIN,
     CHAT_LEAVE,
     MESSAGE,
-    MESSAGES
+    MESSAGES,
+    JOIN_ROOM,
+    LEAVE_ROOM
 } from '../../shared/socket.io/events';
 
 import {
@@ -31,10 +33,22 @@ export default createReducer(popupInitialState, {
         open: true,
         message: `${payload.user.username} left the chat`
     }),
+    [JOIN_ROOM]: (state, payload) => ({
+        ...state,
+        open: true,
+        message: `${payload.user.username} joined the room`
+    }),
+    [LEAVE_ROOM]: (state, payload) => ({
+        ...state,
+        open: true,
+        message: `${payload.user.username} left the room`
+    }),
     [MESSAGE]: (state, payload) => ({
         ...state,
         open: true,
-        message: `${payload.user.username} sent a message`
+        message: payload.room
+            ? `${payload.user.username} sent a message`
+            : `${payload.user.username} sent a message to the Common Room`
     }),
     [MESSAGES]: (state, payload) => ({
         ...state,
