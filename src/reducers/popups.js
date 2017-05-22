@@ -4,7 +4,9 @@ import {
     MESSAGE,
     MESSAGES,
     JOIN_ROOM,
-    LEAVE_ROOM
+    LEAVE_ROOM,
+    INVITE_USER,
+    KICK_USER
 } from '../../shared/socket.io/events';
 
 import {
@@ -42,6 +44,16 @@ export default createReducer(popupInitialState, {
         ...state,
         open: true,
         message: `${payload.user.username} left the room`
+    }),
+    [INVITE_USER]: (state, payload) => ({
+        ...state,
+        open: true,
+        message: 'user invited to the room'
+    }),
+    [KICK_USER]: (state, payload) => ({
+        ...state,
+        open: true,
+        message: 'user kicked from the room'
     }),
     [MESSAGE]: (state, payload) => ({
         ...state,

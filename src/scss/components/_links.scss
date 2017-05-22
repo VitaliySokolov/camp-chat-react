@@ -12,17 +12,20 @@
     color: $primary-dark;
     padding: 5px;
     text-decoration: none;
+    // min-width: 70px;
+    text-align: center;
 
-    @include hoverChangeColor;
-    @include no-focus-outline;
+    // @include hoverChangeColor;
+    // @include no-focus-outline;
     &:first-of-type {
       margin-left: 10px;
     }
     &:not(:last-of-type) {
-      border-right: 1px solid $secondary-light;
+      // border-right: 1px solid $secondary-light;
     }
     &.active {
-      border-bottom: 1px solid $secondary-light;
+      // background-color: $secondary-light;
+      // border-bottom: 1px solid $secondary-light;
     }
 }
 
@@ -37,15 +40,16 @@
     padding: 5px;
     text-decoration: none;
 
-    @include hoverChangeColor;
+    // @include hoverChangeColor;
     &:first-of-type {
       margin-left: 10px;
     }
     &:not(:last-of-type) {
-      border-right: 1px solid $secondary-light;
+      // border-right: 1px solid $secondary-light;
     }
     &.active {
-      border-bottom: 1px solid $secondary-light;
+      // background-color: $primary-mid;
+      border-bottom: 3px solid $primary-mid;
     }
   }
 }

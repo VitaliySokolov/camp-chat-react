@@ -32,8 +32,8 @@
   .user-name {
     padding: 0 10px;
   }
-  button {
-    background-color: $primary-mid;
+  .btn-logout {
+    // background-color: $primary-mid;
     border: none;
     color: $secondary-light;
     //display: inline-block;
@@ -43,8 +43,7 @@
 
     @include hoverChangeColor;
     &:hover {
-      background-color: $primary-dark;
-      color: $secondary-mid;
+      background-color: $primary-mid;
     }
   }
 

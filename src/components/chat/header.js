@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 
-import PrivateMessages from './private-messages';
+// import PrivateMessages from './private-messages';
 import ChatTitle from './title';
 import PersonAccount from './account';
+import Avatar from '../avatar';
 
 class ChatHeader extends Component {
 
@@ -17,7 +18,13 @@ class ChatHeader extends Component {
         return (
             <div>
                 <AppBar
-                    iconElementLeft={<PrivateMessages {...this.props} />}
+                    iconElementLeft={
+                        // <PrivateMessages {...this.props} />
+                        <Avatar
+                        title={this.props.roomTitle}
+                        round={false}
+                        size={50} />
+                        }
                     iconElementRight={<PersonAccount />}
                     title={<ChatTitle {...this.props} />}
                     titleStyle={{

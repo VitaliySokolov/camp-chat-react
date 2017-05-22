@@ -14,7 +14,8 @@ class RoomNew extends Component {
         autobind(this);
         this.state = {
             open: false,
-            value: null
+            value: '',
+            error: ''
         };
     }
 
@@ -24,7 +25,8 @@ class RoomNew extends Component {
 
     handleAddChange (event) {
         this.setState({
-            value: event.target.value
+            value: event.target.value,
+            error: ''
         });
         // console.log(this.state.value);
     }
@@ -32,12 +34,17 @@ class RoomNew extends Component {
     handleAddSubmit () {
         const value = this.state.value.trim();
 
-        if (value)
+        if (value) {
             this.props.addChatRoom(this.state.value);
-        this.setState({
-            open: false,
-            value: null
-        });
+            this.setState({
+                open: false,
+                value: '',
+                error: ''
+            });
+        } else
+            this.setState({
+                error: 'Title cannot not be empty'
+            });
     }
 
     render () {
@@ -46,7 +53,7 @@ class RoomNew extends Component {
                 key="addRoomCancel"
                 label="Cancel"
                 primary={true}
-                onTouchTap={() => this.setState({ open: false })}
+                onTouchTap={() => this.setState({ open: false, value: '', error: '' })}
             />,
             <FlatButton
                 key="addRoomSubmit"
@@ -58,27 +65,28 @@ class RoomNew extends Component {
 
         return (
             <div>
-            <Droppable types={['roomid']} onDrop={this.onDrop} className="room-new">
-                <FloatingActionButton
-                    secondary={true}
-                    onTouchTap={() => this.setState({ open: true })}>
-                    <ContentAdd />
-                <Dialog
-                    title="Add new room"
-                    modal={true}
-                    open={this.state.open}
-                    actions={addActions}
-                >
-                    <TextField
-                        id="add_room"
-                        fullWidth={true}
-                        multiLine={false}
-                        onChange={this.handleAddChange}
-                    />
-                </Dialog>
+                <Droppable types={['roomid']} onDrop={this.onDrop} className="room-new">
+                    <FloatingActionButton
+                        secondary={true}
+                        onTouchTap={() => this.setState({ open: true })}>
+                        <ContentAdd />
+                        <Dialog
+                            title="Add new room"
+                            modal={true}
+                            open={this.state.open}
+                            actions={addActions}
+                        >
+                            <TextField
+                                id="add_room"
+                                fullWidth={true}
+                                multiLine={false}
+                                errorText={this.state.error}
+                                onChange={this.handleAddChange}
+                            />
+                        </Dialog>
 
-                </FloatingActionButton>
-            </Droppable>
+                    </FloatingActionButton>
+                </Droppable>
             </div>
         );
     }

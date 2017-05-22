@@ -1,42 +1,53 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import Home from 'material-ui/svg-icons/action/home';
+import Chat from 'material-ui/svg-icons/communication/chat';
+import FlatButton from 'material-ui/FlatButton';
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      active: 'chats'
+    constructor (props) {
+        super(props);
+        this.state = {
+            active: 'chats'
+        };
+        this.handleLinkClick = this.handleLinkClick.bind(this);
     }
-    this.handleLinkClick = this.handleLinkClick.bind(this);
-  }
 
-  handleLinkClick(event) {
-    event.preventDefault();
-    // console.log(`clicked ${event.target.href}`);
+    handleLinkClick (event) {
+        event.preventDefault();
 
-    if (event.target.href.match(/\/chats$/)) {
-      this.setState({ active: 'chats' });
-    } else {
-      this.setState({ active: 'home' });
+        if (event.target.href.match(/\/chats$/))
+            this.setState({ active: 'chats' });
+        else
+            this.setState({ active: 'home' });
     }
-  }
-  render() {
-    return (
-      <nav className="nav-main">
-        <NavLink to="/"
-          activeClassName='active'
-          exact
-          className="nav-link">
-          Home
+    render () {
+        return (
+            <nav className="nav-main">
+                <NavLink to="/"
+                    activeClassName="active"
+                    exact
+                    className="nav-link">
+                    <FlatButton
+                        primary={true}
+                        label="Home"
+                        icon={<Home/>}
+                        />
+
         </NavLink>
-        <NavLink to="/chats"
-          activeClassName='active'
-          className="nav-link">
-          Chats
+                <NavLink to="/chats"
+                    activeClassName="active"
+                    className="nav-link">
+                    <FlatButton
+                        primary={true}
+                        label="Chats"
+                        icon={<Chat />}
+                        />
+
         </NavLink>
-      </nav>
-    );
-  }
+            </nav>
+        );
+    }
 }
 
 export default Navbar;

@@ -130,7 +130,7 @@ class UserItem extends Component {
                     >
                         <UserKick />
                         <Dialog
-                            title={`Kick "${user.username}" user from "${room.title}" room`}
+                            title={`Kick ${user.username} from ${room.title}`}
                             modal={true}
                             open={this.state.kickOpen}
                             actions={kickActions}
@@ -143,7 +143,7 @@ class UserItem extends Component {
                     >
                         <UserInvite />
                         <Dialog
-                            title={`Invite "${user.username}" user to "${room.title}" room`}
+                            title={`Invite ${user.username} to ${room.title}`}
                             modal={true}
                             open={this.state.inviteOpen}
                             actions={inviteActions}

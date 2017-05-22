@@ -49,7 +49,7 @@ class MessageNew extends Component {
                 <div className="message-new__wrapper">
                     <TextField
                         className="message-new__input"
-                        hintText="Type here...(Ctrl+Enter to send)"
+                        hintText="Type here..."
                         errorText=""
                         floatingLabelText="Send a new message:"
                         multiLine={true}
