@@ -37,12 +37,12 @@ export default createReducer(popupInitialState, {
     }),
     [JOIN_ROOM]: (state, payload) => ({
         ...state,
-        open: true,
+        open: !payload.self,
         message: `${payload.user.username} joined the room`
     }),
     [LEAVE_ROOM]: (state, payload) => ({
         ...state,
-        open: true,
+        open: !payload.self,
         message: `${payload.user.username} left the room`
     }),
     [INVITE_USER]: (state, payload) => ({
@@ -57,15 +57,15 @@ export default createReducer(popupInitialState, {
     }),
     [MESSAGE]: (state, payload) => ({
         ...state,
-        open: true,
+        open: !payload.self,
         message: payload.room
             ? `${payload.user.username} sent a message`
             : `${payload.user.username} sent a message to the Common Room`
     }),
     [MESSAGES]: (state, payload) => ({
         ...state,
-        open: true,
-        message: payload.length !== 0
+        open: !payload.messages.length,
+        message: payload.messages.length !== 0
             ? `Loaded ${payload.messages.length} message(s).`
             : 'No messages'
     })

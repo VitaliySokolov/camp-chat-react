@@ -40,7 +40,7 @@ class FooterContainer extends Component {
             }}
             >
                 {infoButton}
-                {message}
+                {open && message}
                 {closeButton}
             </div>;
 

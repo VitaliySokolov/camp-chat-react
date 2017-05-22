@@ -8,10 +8,10 @@ class ChatTitle extends Component {
     }
 
     handleDrop (data) {
-        console.log(data);
+        // console.log(data);
         const userId = data.id;
 
-        console.log(userId);
+        // console.log(userId);
         this.props.inviteUserToRoomById(userId);
     }
 
